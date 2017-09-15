@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Zend\Diactoros\Request;
+use JWTAuth;
 
 class LoginController extends Controller
 {
@@ -35,5 +38,22 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    protected function redirectTo()
+    {
+        return '/salon';
+    }
+
+    /**
+     *
+     * By default, Laravel uses the email field for authentication.
+     * If you would like to customize this, you may define a username method on your LoginController.
+     *
+     * @return string
+     */
+    public function username()
+    {
+        return 'email';
     }
 }
