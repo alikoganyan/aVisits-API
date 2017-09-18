@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateClientHasNotificationsTable extends Migration
+class CreateEmployeeHasNotificationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateClientHasNotificationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('client_has_notifications', function (Blueprint $table) {
+        Schema::create('employee_has_notifications', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('client_id',false,true);
+            $table->integer('employee_id',false,true);
             $table->integer('notification_id',false,true);
             $table->tinyInteger('active',false,true);
             $table->timestamps();
 
-            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
+            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
             $table->foreign('notification_id')->references('id')->on('notifications')->onDelete('cascade');
         });
     }
@@ -32,6 +32,6 @@ class CreateClientHasNotificationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('client_has_notifications');
+        Schema::dropIfExists('employee_has_notifications');
     }
 }

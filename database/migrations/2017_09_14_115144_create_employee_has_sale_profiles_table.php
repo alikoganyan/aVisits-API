@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateClientHasSaleProfilesTable extends Migration
+class CreateEmployeeHasSaleProfilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateClientHasSaleProfilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('client_has_sale_profiles', function (Blueprint $table) {
+        Schema::create('employee_has_sale_profiles', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('client_id',false,true);
+            $table->integer('employee_id',false,true);
             $table->integer('sale_profile_id',false,true);
             $table->timestamps();
 
-            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
+            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
             $table->foreign('sale_profile_id')->references('id')->on('sale_profiles')->onDelete('cascade');
         });
     }
@@ -31,6 +31,6 @@ class CreateClientHasSaleProfilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('client_has_sale_profiles');
+        Schema::dropIfExists('employee_has_sale_profiles');
     }
 }

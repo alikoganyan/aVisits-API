@@ -19,7 +19,7 @@ class CreateRecordsTable extends Migration
             $table->string('last_name',255);
             $table->string('father_name',255);
             $table->integer('salon_id',false,true);
-            $table->integer('master_id',false,true);
+            $table->integer('employee_id',false,true);
             $table->text('service_list');
             $table->decimal('price',10,2);
             $table->time('from_time');
@@ -30,7 +30,7 @@ class CreateRecordsTable extends Migration
             $table->timestamps();
 
             $table->foreign('salon_id')->references('id')->on('salons')->onDelete('cascade');
-            $table->foreign('master_id')->references('id')->on('masters')->onDelete('cascade');
+            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
         });
     }
 
