@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSchedulesTable extends Migration
+class CreateSalonSchedulesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,17 @@ class CreateSchedulesTable extends Migration
      */
     public function up()
     {
-        Schema::create('schedules', function (Blueprint $table) {
+        Schema::create('salon_schedules', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('salon_id',false,true);
-            $table->integer('employee_id',false,true);
-            $table->time('start_time');
-            $table->time('end_time');
-            $table->date('day');
+            $table->integer('salon_id',false, true);
+            $table->time('start');
+            $table->time('end');
+            $table->tinyInteger('num_of_day'); /* the number of day of the week ( 1 - 7) */
             $table->tinyInteger('working_status',false,true)->default(1);
             $table->timestamps();
 
             $table->foreign('salon_id')->references('id')->on('salons')->onDelete('cascade');
-            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
+
         });
     }
 
@@ -35,6 +34,6 @@ class CreateSchedulesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('schedules');
+        Schema::dropIfExists('salon_schedules');
     }
 }

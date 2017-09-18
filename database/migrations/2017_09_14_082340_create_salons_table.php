@@ -17,8 +17,6 @@ class CreateSalonsTable extends Migration
             $table->increments('id');
             $table->string('title',255);
             $table->string('img',255);
-            $table->time('start_workingtime',255);
-            $table->time('end_workingtime',255);
             $table->string('city',255);
             $table->string('address',255);
             $table->decimal('latitude',10,8);

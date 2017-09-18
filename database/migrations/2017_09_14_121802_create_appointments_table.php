@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRecordsTable extends Migration
+class CreateAppointmentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateRecordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('records', function (Blueprint $table) {
+        Schema::create('appointments', function (Blueprint $table) {
             $table->increments('id');
             $table->string('first_name',255);
             $table->string('last_name',255);
             $table->string('father_name',255);
             $table->integer('salon_id',false,true);
             $table->integer('employee_id',false,true);
-            $table->text('service_list');
             $table->decimal('price',10,2);
             $table->time('from_time');
             $table->time('to_time');
