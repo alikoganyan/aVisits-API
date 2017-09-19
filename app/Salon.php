@@ -12,7 +12,7 @@ class Salon extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'img', 'city', 'address', 'latitude', 'longitude', 'user_id', 'chain_id'
+        'title', 'img', 'country','city', 'address', 'latitude', 'longitude', 'current_time','user_id', 'chain_id'
     ];
 
     public static function getAll(){

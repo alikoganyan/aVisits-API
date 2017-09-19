@@ -16,13 +16,17 @@ use Illuminate\Http\Request;
 Route::get('/user', function (Request $request) {
     return $request->user();
 });
+Route::group(['middleware'=>['auth.jwt','own.chain'],'prefix' => '{chain}/salon'], function()
+{
+    Route::resource('/','SalonController');
+});
 
-
-Route::middleware('auth.jwt')->resource('salon', 'SalonController');
+//Route::middleware(['auth.jwt'])->resource('salon', 'SalonController');
 
 Route::group(array('prefix' => 'user'), function()
 {
     Route::post('signup','UserController@signup');
     Route::post('signin','UserController@signin');
-    Route::post('logout','UserController@logout');
+    Route::get('logout','UserController@logout');
+    Route::get('users','UserController@users');
 });

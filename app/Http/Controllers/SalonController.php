@@ -26,8 +26,9 @@ class SalonController extends Controller
         $salon =  new Salon();
         $salon->fill($request->all());
         $salon->user_id = Auth::id();
+        $salon->chain_id = $request->route('chain');
         if($salon->save()){
-            return response()->json($salon,200);
+            return response()->json(Salon::find($salon->id),200);
         }
         return response()->json(["error"=>"any problem with storing data"],400);
     }
@@ -46,11 +47,17 @@ class SalonController extends Controller
         if($salon->save()){
             return response()->json($salon,200);
         }
-        return response()->json(["error"=>"any problem with storing data"],400);;
+        return response()->json(["error"=>"any problem with storing data"],400);
     }
 
     public function destroy(Salon $salon){
         $salon->delete();
         return response()->json(["success"=>"1"],200);
+    }
+
+    public function haveAnySalon(){
+        return Salon::join('chains','salons.chain_id','=','chains.id')
+            ->where(['chains.user_id'=>Auth::id(),'salons.user_id'=>Auth::id()])
+            ->count();
     }
 }
