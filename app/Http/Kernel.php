@@ -60,6 +60,7 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'auth.jwt'=> \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
-        'own.chain'=>\App\Http\Middleware\CheckChain::class
+        'own.chain'=>\App\Http\Middleware\CheckChain::class,
+        'own.salon'=>\App\Http\Middleware\CheckSalon::class,
     ];
 }

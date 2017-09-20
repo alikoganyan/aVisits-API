@@ -12,14 +12,17 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+//Route::resource('salon','SalonController');
 Route::get('/user', function (Request $request) {
     return $request->user();
 });
-Route::group(['middleware'=>['auth.jwt','own.chain'],'prefix' => '{chain}/salon'], function()
+
+Route::group(['middleware'=>['auth.jwt','own.chain'],'prefix' => '{chain}'], function()
 {
-    Route::resource('/','SalonController');
+    Route::put('salon/{salon}','SalonController@update')->middleware(['own.salon']);
+    Route::resource('salon','SalonController')->except('update');
 });
+
 
 //Route::middleware(['auth.jwt'])->resource('salon', 'SalonController');
 

@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class CheckChain
+class CheckSalon
 {
     /**
      * Handle an incoming request.
@@ -19,13 +19,14 @@ class CheckChain
      */
     public function handle($request, Closure $next)
     {
+        $salonId = $request->route('salon') ? (integer)$request->route('salon') : null;
         $chainId = $request->route('chain') || null;
-        if($chainId!==null){
-            $chain = Chain::where(['user_id'=>Auth::id(),'id'=>$chainId])->count();
-            if($chain !== 0){
+        if($salonId !== null){
+            $salon = Salon::where(['user_id'=>Auth::id(),'id'=>$salonId])->count();
+            if($salon !== 0){
                 return $next($request);
             }
         }
-        return response()->json(['error'=>'incorrect chain'],400);
+        return response()->json(['error'=>'incorrect Salon ID'],400);
     }
 }
