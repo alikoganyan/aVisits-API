@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Chain;
-use App\Salon;
+use App\Models\Salon;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +19,7 @@ class CheckChain
      */
     public function handle($request, Closure $next)
     {
-        $chainId = $request->route('chain') || null;
+        $chainId = $request->route('chain') ? (integer)$request->route('chain') : null;
         if($chainId!==null){
             $chain = Chain::where(['user_id'=>Auth::id(),'id'=>$chainId])->count();
             if($chain !== 0){

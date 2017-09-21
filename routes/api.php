@@ -21,6 +21,10 @@ Route::group(['middleware'=>['auth.jwt','own.chain'],'prefix' => '{chain}'], fun
 {
     Route::put('salon/{salon}','SalonController@update')->middleware(['own.salon']);
     Route::resource('salon','SalonController')->except('update');
+    Route::resource('service_category','ServiceCategoryController');
+    Route::resource('service','ServiceController');
+
+    Route::resource('salon_schedule','SalonScheduleController');
 });
 
 

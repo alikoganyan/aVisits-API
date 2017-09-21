@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Chain;
-use App\Salon;
+use App\Models\Salon;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

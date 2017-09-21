@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use \App\Http\Requests\StoreSalonRequest;
 use \App\Http\Requests\UpdateSalonRequest;
-use App\Salon;
+use App\Models\Salon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
@@ -43,8 +43,8 @@ class SalonController extends Controller
         return "edit";
     }
 
-    public function update(Request $request, $salon){
-
+    public function update(Request $request){
+        $salon = (integer)$request->route('salon');
         $model = Salon::find($salon);
         $model->fill($request->all());
         $model->img = null;
