@@ -29,7 +29,7 @@ class SalonController extends Controller
         $salon->user_id = Auth::id();
         $salon->chain_id = $request->route('chain');
         if($salon->save()){
-            return response()->json(Salon::find($salon->id),200);
+            return response()->json(['success'=>'Created successfully','data'=>Salon::find($salon->id)],200);
         }
         return response()->json(["error"=>"any problem with storing data"],400);
     }

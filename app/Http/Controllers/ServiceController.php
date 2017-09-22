@@ -61,7 +61,7 @@ class ServiceController extends Controller
         if($model->save()){
             return response()->json($model,200);
         }
-        return response()->json(["error"=>"update error"],200);
+        return response()->json(["error"=>"update error"],400);
     }
 
     public function destroy(Request $request)

@@ -14,6 +14,7 @@ class SalonSchedule extends Model
      * @var array
      */
     protected $fillable = [
+        'salon_id',
         'start',
         'end',
         'num_of_day',
@@ -28,7 +29,6 @@ class SalonSchedule extends Model
      * @var array
      */
     protected $hidden = [
-        'salon_id',
     ];
 
     public static function days_of_week()
@@ -48,6 +48,7 @@ class SalonSchedule extends Model
     {
         $filters = $request->route()->parameters();
         return self::join("salons", "salon_schedules.salon_id", "=", "salons.id")
+            ->select(['salon_schedules.*'])
             ->where(['salons.chain_id' => $filters['chain'], 'user_id' => Auth::id()])
             ->get();
     }

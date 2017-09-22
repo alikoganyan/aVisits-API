@@ -44,7 +44,7 @@ class UserController extends Controller
                 return response()->json(["signin_error" => "authentication failed"], 400);
             }
         } else {
-            return response()->json(["error" => $user], 400);
+            return response()->json(["error" => "saving error"], 400);
         }
     }
 
@@ -62,11 +62,11 @@ class UserController extends Controller
         $response = ['token' => $token,"user"=>Auth::User()];
         if($havSalon === 0){
             $response['redirect_to_create_salon'] = 1;
-            $response['chain'] = Chain::where(['user_id'=>Auth::id()])->select("id")->first();
         }
         else{
             $response['redirect_to_create_salon'] = 0;
         }
+        $response['chain'] = Chain::where(['user_id'=>Auth::id()])->select("id")->first();
         return response()->json($response, 200);
 
     }
