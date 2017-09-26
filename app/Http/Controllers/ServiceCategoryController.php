@@ -11,7 +11,7 @@ class ServiceCategoryController extends Controller
     public function index(Request $request){
         $chain = $request->route('chain');
         $serviceCategory = ServiceCategory::where(["chain_id"=>$chain])->get();
-        return response()->json($serviceCategory,200);
+        return response()->json(["data"=>$serviceCategory],200);
     }
 
     public function create(){
@@ -24,7 +24,7 @@ class ServiceCategoryController extends Controller
         $serviceCategory = new ServiceCategory($data);
         $serviceCategory->chain_id = $chain_id;
         if($serviceCategory->save()){
-            return response()->json($serviceCategory,200);
+            return response()->json(["data"=>$serviceCategory],200);
         }
         return response()->json(["error"=>"save error"],400);
     }
@@ -42,7 +42,7 @@ class ServiceCategoryController extends Controller
         $model->fill($request->all());
         $model->chain_id = $params['chain'];
         if($model->save()){
-            return response()->json($model,200);
+            return response()->json(["data"=>$model],200);
         }
         return response()->json(["error"=>"update error"],200);
     }

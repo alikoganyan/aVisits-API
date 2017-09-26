@@ -16,7 +16,7 @@ class SalonController extends Controller
 
     public function index(Request $request){
         $salons = Salon::getAll();
-        return response()->json($salons,200);
+        return response()->json(["data"=>$salons],200);
     }
 
     public function create(Request $request){
@@ -36,7 +36,7 @@ class SalonController extends Controller
 
     public function show($salon){
         $model = Salon::find($salon);
-        return response()->json($model,200);
+        return response()->json(["data"=>$model],200);
     }
 
     public function edit(StoreSalonRequest $request, Salon $salon){
@@ -56,9 +56,9 @@ class SalonController extends Controller
             }
         }
         if($model->save()){
-            return response()->json($model,200);
+            return response()->json(["data"=>$model],200);
         }
-        return response()->json(["error"=>"any problem with storing data"],400);
+        return response()->json(["error"=>"any problem with storing data!"],400);
     }
 
     public function upload(Request $request){

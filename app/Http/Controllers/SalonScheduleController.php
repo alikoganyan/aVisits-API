@@ -14,7 +14,7 @@ class SalonScheduleController extends Controller
     public function index(Request $request)
     {
         $salonSchedules = SalonSchedule::getScheduleList($request);
-        return response()->json($salonSchedules, 200);
+        return response()->json(["data"=>$salonSchedules], 200);
     }
 
     public function create()
@@ -32,7 +32,7 @@ class SalonScheduleController extends Controller
         $salonSchedule = new SalonSchedule($data);
         $salonSchedule->salon_id = $data['salon_id'];
         $salonSchedule->save();
-        return response()->json($salonSchedule, 200);
+        return response()->json(["data"=>$salonSchedule], 200);
     }
 
     public function edit()
@@ -57,7 +57,7 @@ class SalonScheduleController extends Controller
         $salon_schedule = SalonSchedule::find((integer)$params['salon_schedule']);
         $salon_schedule->fill($data);
         if($salon_schedule->save()){
-            return response()->json($salon_schedule,200);
+            return response()->json(["data"=>$salon_schedule],200);
         }else{
             return response()->json(["error"=>"UPDATE Error"],400);
         }

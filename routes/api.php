@@ -23,8 +23,8 @@ Route::group(['middleware'=>['auth.jwt','own.chain'],'prefix' => '{chain}'], fun
     Route::resource('salon','SalonController')->except('update');
     Route::resource('service_category','ServiceCategoryController');
     Route::resource('service','ServiceController');
-
     Route::resource('salon_schedule','SalonScheduleController');
+    Route::resource('employee','EmployeeController');
 });
 
 
@@ -36,4 +36,11 @@ Route::group(array('prefix' => 'user'), function()
     Route::post('signin','UserController@signin');
     Route::get('logout','UserController@logout');
     Route::get('users','UserController@users');
+});
+
+Route::group(['prefix' => '{chain}'], function(){
+    Route::group(array('prefix' => 'user'), function()
+    {
+        Route::post('login','UserController@login');
+    });
 });

@@ -14,7 +14,7 @@ class ServiceController extends Controller
     {
         $params = $recuest->route()->parameters();
         $services = Service::where(["chain_id" => $params['chain']])->get();
-        return response()->json($services, 200);
+        return response()->json(["data"=>$services], 200);
     }
 
     public function create()
@@ -34,7 +34,7 @@ class ServiceController extends Controller
         $service->service_category_id = $data['service_category_id'];
         $service->chain_id = $chain_id;
         if ($service->save()) {
-            return response()->json($service, 200);
+            return response()->json(["data"=>$service], 200);
         }
         return response()->json(["error" => "save error"], 400);
     }
@@ -59,7 +59,7 @@ class ServiceController extends Controller
         $model->fill($request->all());
         $model->chain_id = $params['chain'];
         if($model->save()){
-            return response()->json($model,200);
+            return response()->json(["data"=>$model],200);
         }
         return response()->json(["error"=>"update error"],400);
     }
