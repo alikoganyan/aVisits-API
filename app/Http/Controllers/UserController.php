@@ -93,6 +93,7 @@ class UserController extends Controller
             if(!$ownChain || $ownChain->id !== $chainId){
                 return response()->json(["error"=>"Incorrect the ID of chain or permission denied!"],400);
             }
+            $response["chain"] = $ownChain;
             return response()->json($response, 200);
         }
         return response()->json(['error'=>'One and may be all fields: email, phone, password, are empty.'], 400);

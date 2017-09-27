@@ -25,6 +25,8 @@ Route::group(['middleware'=>['auth.jwt','own.chain'],'prefix' => '{chain}'], fun
     Route::resource('service','ServiceController');
     Route::resource('salon_schedule','SalonScheduleController');
     Route::resource('employee','EmployeeController');
+    Route::resource('position','PositionController');
+    Route::resource('schedule','ScheduleController');
 });
 
 
