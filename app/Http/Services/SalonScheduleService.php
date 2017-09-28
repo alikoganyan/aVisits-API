@@ -6,7 +6,7 @@ use App\Models\SalonSchedule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
-class SAlonScheduleService
+class SalonScheduleService
 {
     public static function ownSalonSchedule($salon_schedule){
         $salon = SalonSchedule::join("salons","salons.id","=",'salon_schedules.salon_id')

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SalonSchedule\SalonScheduleStoreRequest;
 use App\Http\Requests\SalonSchedule\SalonScheduleUpdateRequest;
-use App\Http\Services\SAlonScheduleService;
+use App\Http\Services\SalonScheduleService;
 use App\Http\Services\SalonService;
 use App\Models\SalonSchedule;
 use Illuminate\Http\Request;

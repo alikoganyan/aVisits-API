@@ -65,6 +65,18 @@ class EmployeeController extends Controller
         return response()->json(["success"=>"1"],200);
     }
 
+    public function photo(Request $request){
+        if($request->hasFile('img')){
+            $file = $this->upload($request);
+            if($file){
+                return response()->json($file,200);
+            }
+        }else{
+            return response()->json(["error"=>"File not selected"],400);
+        }
+
+    }
+
     public function upload(Request $request){
         $ds = DIRECTORY_SEPARATOR;
         $file = $request->file('img');
