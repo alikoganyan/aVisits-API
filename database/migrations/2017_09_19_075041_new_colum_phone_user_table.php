@@ -14,9 +14,9 @@ class NewColumPhoneUserTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('last_name',255);
-            $table->string('father_name',255);
-            $table->string('phone',20);
+            $table->string('last_name',255)->nullable();
+            $table->string('father_name',255)->nullable();
+            $table->string('phone',20)->nullable();
         });
     }
 

@@ -10,9 +10,9 @@ use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
-    public function index(Request $recuest)
+    public function index(Request $request)
     {
-        $params = $recuest->route()->parameters();
+        $params = $request->route()->parameters();
         $services = Service::where(["chain_id" => $params['chain']])->get();
         return response()->json(["data"=>$services], 200);
     }
