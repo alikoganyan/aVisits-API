@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class NewColumPhoneUserTable extends Migration
+class AlterPositionsAddChainId extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class NewColumPhoneUserTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('last_name',255)->nullable();
-            $table->string('father_name',255)->nullable();
-            $table->string('phone',20)->nullable();
+        Schema::table('positions', function (Blueprint $table) {
+            $table->integer('chain_id',false,true);
+
+            $table->foreign('chain_id')->references('id')->on('chains')->onDelete('cascade');
         });
     }
 
@@ -27,7 +27,7 @@ class NewColumPhoneUserTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('positions', function (Blueprint $table) {
             //
         });
     }

@@ -13,7 +13,12 @@ class ServiceCategoryController extends Controller
         $serviceCategory = ServiceCategory::where(["chain_id"=>$chain])->get();
         return response()->json(["data"=>$serviceCategory],200);
     }
-
+    public function groups(Request $request)
+    {
+        $chain = $request->route('chain');
+        $groups= ServiceCategory::where(["chain_id" => $chain,"parent_id" => null])->get();
+        return response()->json(["data"=>["groups"=>$groups]], 200);
+    }
     public function create(){
         return response()->json(["success"=>"coming soon"],200);
     }

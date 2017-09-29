@@ -16,15 +16,22 @@ use Illuminate\Http\Request;
 Route::get('/user', function (Request $request) {
     return $request->user();
 });
-
+Route::group(['middleware'=>['auth.jwt']], function()
+{
+    Route::resource('chain','ChainController');
+});
 Route::group(['middleware'=>['auth.jwt','own.chain'],'prefix' => '{chain}'], function()
 {
     Route::put('salon/{salon}','SalonController@update')->middleware(['own.salon']);
     Route::resource('salon','SalonController')->except('update');
     Route::resource('service_category','ServiceCategoryController');
+    Route::get('service-groups','ServiceCategoryController@groups');
     Route::resource('service','ServiceController');
     Route::resource('salon_schedule','SalonScheduleController');
     Route::resource('employee','EmployeeController');
+    Route::post('employee-photo-upload','EmployeeController@photo');
+    Route::resource('position','PositionController');
+    Route::resource('schedule','ScheduleController');
 });
 
 
