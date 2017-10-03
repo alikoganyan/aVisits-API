@@ -17,7 +17,7 @@ class CreateServicesTable extends Migration
             $table->increments('id');
             $table->integer('parent_id',false,true);
             $table->string('title',255);
-            $table->string('description',255);
+            $table->string('description',255)->nullable();
             $table->integer('chain_id',false,true);
             $table->timestamps();
 

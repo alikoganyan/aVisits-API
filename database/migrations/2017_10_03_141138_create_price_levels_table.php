@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateNotificationsTable extends Migration
+class CreatePriceLevelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateNotificationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('notifications', function (Blueprint $table) {
+        Schema::create('price_levels', function (Blueprint $table) {
             $table->increments('id');
-            $table->enum('type',['birthday','notification','mailing_lists']);
-            $table->enum('category',['sms','email']);
-            $table->string('message',255)->nullable();
+            $table->string('title');
+            $table->tinyInteger('inactive')->default(0)->nullable();
+            $table->integer('chain_id',false,true);
             $table->timestamps();
+
+            $table->foreign('chain_id')->references('id')->on('chains')->onDelete('cascade');
         });
     }
 
@@ -29,6 +31,6 @@ class CreateNotificationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('notifications');
+        Schema::dropIfExists('price_levels');
     }
 }

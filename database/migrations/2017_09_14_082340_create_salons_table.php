@@ -16,11 +16,11 @@ class CreateSalonsTable extends Migration
         Schema::create('salons', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title',255);
-            $table->string('img',255);
-            $table->string('city',255);
-            $table->string('address',255);
-            $table->decimal('latitude',10,8);
-            $table->decimal('longitude',11,8);
+            $table->string('img',255)->nullable();
+            $table->string('city',255)->nullable();
+            $table->string('address',255)->nullable();
+            $table->decimal('latitude',10,8)->nullable();
+            $table->decimal('longitude',11,8)->nullable();
             $table->integer('user_id',false,true);
             $table->integer('chain_id',false,true);
             $table->timestamps();

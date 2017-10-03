@@ -19,7 +19,7 @@ class CreateSchedulesTable extends Migration
             $table->integer('employee_id',false,true);
             $table->time('start_time');
             $table->time('end_time');
-            $table->date('day');
+            $table->date('day')->nullable();
             $table->tinyInteger('working_status',false,true)->default(1);
             $table->timestamps();
 
