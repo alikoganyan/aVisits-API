@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 //Route::resource('salon','SalonController');
+Route::resource('service_price','ServicePriceController');
 Route::get('/user', function (Request $request) {
     return $request->user();
 });
@@ -33,6 +34,7 @@ Route::group(['middleware'=>['auth.jwt','own.chain'],'prefix' => '{chain}'], fun
     Route::post('employee-photo-upload','EmployeeController@photo');
     Route::resource('position','PositionController');
     Route::resource('schedule','ScheduleController');
+    Route::resource('service_price','ServicePriceController');
 });
 
 

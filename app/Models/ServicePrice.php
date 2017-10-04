@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Service extends Model
+class ServicePrice extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -27,4 +27,12 @@ class Service extends Model
     protected $hidden = [
 
     ];
+
+    public static function getAll(){
+        return self::with('level')->get();
+    }
+
+    public function level(){
+        return $this->hasOne('App\Models\PriceLevel','id','price_level_id');
+    }
 }

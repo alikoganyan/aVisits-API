@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 
-class PositionController extends Controller
+use App\Models\ServicePrice;
+
+class ServicePriceController extends Controller
 {
     public function index(){
-
+        $servicePrice = ServicePrice::getAll();
+        return response()->json($servicePrice,200);
     }
 
     public function store(){
