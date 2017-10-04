@@ -27,6 +27,7 @@ Route::group(['middleware'=>['auth.jwt','own.chain'],'prefix' => '{chain}'], fun
     Route::resource('service_category','ServiceCategoryController');
     Route::get('service_groups','ServiceCategoryController@groups');
     Route::resource('service','ServiceController');
+    Route::get('salon_schedule/{salon}/salon','SalonScheduleController@salon_schedule');
     Route::resource('salon_schedule','SalonScheduleController');
     Route::resource('employee','EmployeeController');
     Route::post('employee-photo-upload','EmployeeController@photo');

@@ -16,8 +16,8 @@ class CreateSalonSchedulesTable extends Migration
         Schema::create('salon_schedules', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('salon_id',false, true);
-            $table->time('start');
-            $table->time('end');
+            $table->time('start')->nullabel();
+            $table->time('end')->nullabel();
             $table->tinyInteger('num_of_day'); /* the number of day of the week ( 1 - 7) */
             $table->tinyInteger('working_status',false,true)->default(1);
             $table->timestamps();

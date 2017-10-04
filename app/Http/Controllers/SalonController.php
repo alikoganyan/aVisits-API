@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use \App\Http\Requests\StoreSalonRequest;
 use \App\Http\Requests\UpdateSalonRequest;
 use App\Models\Salon;
+use App\Models\SalonSchedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use JWTAuth;
 use File;
+use Exception;
 
 class SalonController extends Controller
 {
@@ -29,7 +31,14 @@ class SalonController extends Controller
         $salon->user_id = Auth::id();
         $salon->chain_id = $request->route('chain');
         if($salon->save()){
-            return response()->json(['success'=>'Created successfully','data'=>Salon::find($salon->id)],200);
+            $default_schedules = SalonSchedule::default_schedules(1);
+            try{
+                SalonSchedule::insert($default_schedules);
+            }
+            catch (Exception $e){
+                return response()->json($e->getMessage(),400);
+            }
+            return response()->json(['success'=>'Created successfully','data'=>Salon::find($salon->id),'salon_schedule'=>$default_schedules],200);
         }
         return response()->json(["error"=>"any problem with storing data"],400);
     }

@@ -16,7 +16,7 @@ class PositionController extends Controller
         $params  = $baseRequest->route()->parameters();
         $data = $request->all();
         $position = new Position($data);
-        $position->chain_id = $params['chain_id'];
+        $position->chain_id = $params['chain'];
         if($position->save()){
             return response()->json(["data"=>["position"=>$position],"status"=>"OK"],200);
         }

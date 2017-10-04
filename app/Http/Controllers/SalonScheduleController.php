@@ -75,4 +75,13 @@ class SalonScheduleController extends Controller
         $salon_schedule->delete();
         return response()->json(["success"=>"1"],200);
     }
+
+    public function salon_schedule(Request $request,$salonId)
+    {
+        if (!SalonService::ownSalon($request, $salonId)) {
+            return SalonService::ownErrorResponse();
+        }
+        $salonSchedule = SalonSchedule::where(['salon_id'=>$salonId])->get();
+        return response()->json($salonSchedule,200);
+    }
 }

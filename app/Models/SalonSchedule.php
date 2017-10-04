@@ -31,9 +31,9 @@ class SalonSchedule extends Model
     protected $hidden = [
     ];
 
-    public static function days_of_week()
+    public static function days_of_week($key = null)
     {
-        return [
+        $days =  [
             "1" => ["short" => "ПН", "working" => 1, "title" => "Понедельник"],
             "2" => ["short" => "ВТ", "working" => 1, "title" => "Вторник"],
             "3" => ["short" => "СР", "working" => 1, "title" => "Среда"],
@@ -42,8 +42,30 @@ class SalonSchedule extends Model
             "6" => ["short" => "СБ", "working" => 0, "title" => "Суббота"],
             "7" => ["short" => "ВС", "working" => 0, "title" => "Воскресенье"]
         ];
+        if($key !== null && isset($days[$key])){
+            return $days[$key];
+        }
+        return $days;
     }
-
+    public static function default_schedules($salon_id = null){
+        $days_of_week = self::days_of_week();
+        $default = [];
+        foreach($days_of_week as $key => $day){
+            $value = [
+                "salon_id" => $salon_id,
+                "num_of_day" => $key,
+                "working_status" => $day['working'],
+                "start"=>null,
+                "end"=>null
+            ];
+            if($day['working']){
+                $value["start"] = "10:00:00";
+                $value["end"] = "22:00:00";
+            }
+            array_push($default,$value);
+        }
+        return $default;
+    }
     public static function getScheduleList(Request $request)
     {
         $filters = $request->route()->parameters();
