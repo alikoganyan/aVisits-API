@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\ServicePrice\ServicePriceStoreRequest;
 use App\Models\ServicePrice;
 
 class ServicePriceController extends Controller
@@ -12,7 +13,7 @@ class ServicePriceController extends Controller
         return response()->json($servicePrice,200);
     }
 
-    public function store(){
+    public function store(ServicePriceStoreRequest $request){
 
     }
 

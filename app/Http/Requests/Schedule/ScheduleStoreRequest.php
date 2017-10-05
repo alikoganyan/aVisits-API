@@ -28,7 +28,7 @@ class ScheduleStoreRequest extends FormRequest
             "employee_id"=>"required|integer|max:9999999999",
             "start_time"=>"required|date_format:H:i",
             "end_time"=>"required|date_format:H:i",
-            "dat"=>"string",
+            "day"=>"string",
             "working_status"=>"integer|max:1"
         ];
     }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Schedule;
+namespace App\Http\Requests\ServicePrice;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ScheduleUpdateRequest extends FormRequest
+class ServicePriceUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class ScheduleUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -24,12 +24,10 @@ class ScheduleUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            "salon_id"=>"integer|max:9999999999",
-            "employee_id"=>"integer|max:9999999999",
-            "start_time"=>"date_format:H:i",
-            "end_time"=>"date_format:H:i",
-            "day"=>"string",
-            "working_status"=>"integer|max:1"
+            'price_level_id'=>'exists:price_levels,id',
+            'service_id'=>'exists:services,id',
+            "price"=>"between:0,999999.99",
+            "from"=>"date_format:Y-m-d"
         ];
     }
 }

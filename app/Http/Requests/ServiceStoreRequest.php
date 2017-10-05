@@ -27,8 +27,7 @@ class ServiceStoreRequest extends FormRequest
             "service_category_id"=>"required|exists:service_categories,id",
             "title"=>"required|string|max:255",
             "description"=>"string|max:255",
-            "duration"=>"integer",
-            "price"=>"between:0,999999.99"
+            "duration"=>"integer"
         ];
     }
     public function messages()
