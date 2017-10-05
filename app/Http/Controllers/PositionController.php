@@ -10,7 +10,8 @@ class PositionController extends Controller
 {
     public function index(Request $request){
         $positions = Position::where(['chain_id'=>$request->route('chain')])->get();
-        return response()->json(["data"=>$positions],200);
+        return response()->json(["data"=>$positions,
+            "meta"=>["field"=>"id","page"=>1,"pages"=>2,"perpage"=>10,"sort"=>"desc","total"=>18]],200);
     }
     public function store(Request $baseRequest,PositionStoreRequest $request){
         $params  = $baseRequest->route()->parameters();
@@ -18,8 +19,7 @@ class PositionController extends Controller
         $position = new Position($data);
         $position->chain_id = $params['chain'];
         if($position->save()){
-            return response()->json(["data"=>["position"=>$position],"status"=>"OK",
-                "meta"=>["field"=>"id","page"=>1,"pages"=>2,"perpage"=>10,"sort"=>"desc","total"=>18]],200);
+            return response()->json(["data"=>["position"=>$position],"status"=>"OK"],200);
         }
         return response()->json(["error"=>"saving error"],400);
 
