@@ -14,7 +14,7 @@ class ServicePriceController extends Controller
     }
 
     public function store(ServicePriceStoreRequest $request){
-
+        
     }
 
     public function show(){

@@ -10,10 +10,15 @@ class PositionController extends Controller
 {
     public function index(Request $request){
         $data = $request->all();
-        $positions = Position::getAll($request->route('chain') , $data['datatable']);
-        $data['datatable']['pagination']['total'] = $positions['total'];
+        $datatable = isset($data['datatable']) ? $data['datatable'] : null;
+        $positions = Position::getAll($request->route('chain') , $datatable);
+        $meta = [];
+        if($datatable){
+            $datatable['pagination']['total'] = $positions['total'];
+            $meta = $datatable['pagination'];
+        }
         return response()->json(["data"=>$positions['position'],
-            "meta"=>$data['datatable']['pagination']],200);
+            "meta"=>$meta],200);
     }
     public function store(Request $baseRequest,PositionStoreRequest $request){
         $params  = $baseRequest->route()->parameters();
