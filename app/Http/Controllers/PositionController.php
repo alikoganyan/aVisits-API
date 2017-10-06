@@ -51,6 +51,5 @@ class PositionController extends Controller
         if($position->delete()){
             return response()->json(["success"=>1],200);
         }
-
     }
 }

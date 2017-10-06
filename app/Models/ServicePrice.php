@@ -28,11 +28,20 @@ class ServicePrice extends Model
 
     ];
 
-    public static function getAll(){
+    public static function getAll()
+    {
         return self::with('level')->get();
     }
 
-    public function level(){
-        return $this->hasOne('App\Models\PriceLevel','id','price_level_id');
+    public function level()
+    {
+        return $this->hasOne('App\Models\PriceLevel', 'id', 'price_level_id');
+    }
+
+    public static function getOne($params)
+    {
+        return self::join("price_levels", "price_levels.id", "=", "service_prices.price_level_id")
+            ->where(["price_levels.chain_id" => $params["chain"], "service_prices.id" => $params['service_price']])
+            ->first();
     }
 }

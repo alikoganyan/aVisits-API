@@ -37,7 +37,7 @@ class CreateEmployeesTable extends Migration
             $table->integer('chain_id',false,true);
             $table->timestamps();
 
-            $table->foreign('position_id')->references('id')->on('positions')->onDelete('cascade');
+            $table->foreign('position_id')->references('id')->on('positions')->onDelete('RESTRICT');
             $table->foreign('chain_id')->references('id')->on('chains')->onDelete('cascade');
 
         });

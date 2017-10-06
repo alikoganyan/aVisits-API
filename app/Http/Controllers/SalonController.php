@@ -31,7 +31,7 @@ class SalonController extends Controller
         $salon->user_id = Auth::id();
         $salon->chain_id = $request->route('chain');
         if($salon->save()){
-            $default_schedules = SalonSchedule::default_schedules(1);
+            $default_schedules = SalonSchedule::default_schedules($salon->id);
             try{
                 SalonSchedule::insert($default_schedules);
             }
