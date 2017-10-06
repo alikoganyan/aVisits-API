@@ -27,7 +27,8 @@ class ServicePriceStoreRequest extends FormRequest
             'price_level_id'=>'required|exists:price_levels,id',
             'service_id'=>'required|exists:services,id',
             "price"=>"between:0,999999.99",
-            "from"=>"date_format:Y-m-d"
+            "from"=>"date_format:Y-m-d",
+            "inactive"=>"integer|max:1"
         ];
     }
 }

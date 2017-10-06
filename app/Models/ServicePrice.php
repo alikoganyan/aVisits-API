@@ -16,6 +16,7 @@ class ServicePrice extends Model
         'service_id',
         'price',
         'from',
+        'inactive',
         'created_at',
         'updated_at'
     ];
@@ -40,7 +41,7 @@ class ServicePrice extends Model
 
     public static function getOne($params)
     {
-        return self::join("price_levels", "price_levels.id", "=", "service_prices.price_level_id")
+        return self::select((new self)->getTable().'.*')->join("price_levels", "price_levels.id", "=", "service_prices.price_level_id")
             ->where(["price_levels.chain_id" => $params["chain"], "service_prices.id" => $params['service_price']])
             ->first();
     }

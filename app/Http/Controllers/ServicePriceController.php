@@ -7,6 +7,7 @@ use App\Http\Requests\ServicePrice\ServicePriceStoreRequest;
 use App\Http\Requests\ServicePrice\ServicePriceUpdateRequest;
 use App\Http\Services\CheckOwnService;
 use App\Models\ServicePrice;
+use Illuminate\Http\Request;
 
 class ServicePriceController extends Controller
 {
@@ -15,8 +16,10 @@ class ServicePriceController extends Controller
         return response()->json($servicePrice,200);
     }
 
-    public function show(){
-
+    public function show(Request $request){
+        $params = $request->route()->parameters();
+        $servicePrice = ServicePrice::getOne($params);
+        return response()->json(["data"=>["ServicePrice"=>$servicePrice],"status"=>"OK"],200);
     }
 
     public function store(ServicePriceStoreRequest $request){
@@ -37,7 +40,6 @@ class ServicePriceController extends Controller
         $params = $request->route()->parameters();
         $data = $request->all();
         $servicePrice = ServicePrice::getOne($params);
-        dd($servicePrice);
         if(!$servicePrice){
             return response()->json(["status"=>"ERROR", "message"=>"The ServicePrice have not been found!"],400);
         }
@@ -48,11 +50,15 @@ class ServicePriceController extends Controller
         }
         $servicePrice->fill($data);
         if($servicePrice->save()){
-            return response()->json(["data"=>["ServicePrice"=>$servicePrice]],200);
+            return response()->json(["data"=>["ServicePrice"=>$servicePrice],"status"=>"OK"],200);
         }
     }
 
-    public function destroy(){
-
+    public function destroy(Request $request){
+        $params = $request->route()->parameters();
+        $servicePrice = ServicePrice::getOne($params);
+        if($servicePrice->delete()){
+            return response()->json(["success"=>1,"status"=>"OK"],200);
+        }
     }
 }

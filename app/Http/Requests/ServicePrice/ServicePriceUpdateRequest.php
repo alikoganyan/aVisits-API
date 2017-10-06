@@ -27,7 +27,8 @@ class ServicePriceUpdateRequest extends FormRequest
             'price_level_id'=>'exists:price_levels,id',
             'service_id'=>'exists:services,id',
             "price"=>"between:0,999999.99",
-            "from"=>"date_format:Y-m-d"
+            "from"=>"date_format:Y-m-d",
+            "inactive"=>"between:0,1"
         ];
     }
 }

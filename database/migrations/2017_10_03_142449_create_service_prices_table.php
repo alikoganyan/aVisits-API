@@ -18,6 +18,7 @@ class CreateServicePricesTable extends Migration
             $table->integer('price_level_id',false,true);
             $table->integer('service_id',false,true);
             $table->decimal('price',8,2)->nullable();
+            $table->tinyInteger('inactive')->default(0)->nullable();
             $table->date('from');
             $table->timestamps();
 

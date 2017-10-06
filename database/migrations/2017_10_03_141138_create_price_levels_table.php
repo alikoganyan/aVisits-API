@@ -16,7 +16,6 @@ class CreatePriceLevelsTable extends Migration
         Schema::create('price_levels', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->tinyInteger('inactive')->default(0)->nullable();
             $table->integer('chain_id',false,true);
             $table->timestamps();
 
