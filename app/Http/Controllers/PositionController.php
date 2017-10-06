@@ -33,12 +33,12 @@ class PositionController extends Controller
     }
     public function show(Request $request){
         $params  = $request->route()->parameters();
-        $position = Position::where(["chain_id"=>$params['chain'],"id"=>$params["position "]])->first();
+        $position = Position::where(["chain_id"=>$params['chain'],"id"=>$params["position"]])->first();
         return response()->json(["data"=>["position"=>$position],"status"=>"OK"],200);
     }
     public function update(Request $baseRequest, PositionStoreRequest $request){
         $params  = $request->route()->parameters();
-        $position = Position::where(["chain_id"=>$params['chain'],"id"=>$params["position "]])->first();
+        $position = Position::where(["chain_id"=>$params['chain'],"id"=>$params["position"]])->first();
         $position->fill($request->all());
         if($position->save()){
             return response()->json(["data"=>["position"=>$position],"status"=>"OK"],200);
@@ -47,7 +47,7 @@ class PositionController extends Controller
     }
     public function destroy(Request $request){
         $params  = $request->route()->parameters();
-        $position = Position::where(["chain_id"=>$params['chain'],"id"=>$params["position "]])->first();
+        $position = Position::where(["chain_id"=>$params['chain'],"id"=>$params["position"]])->first();
         return response()->json(["data"=>["position"=>$position],"status"=>"OK"],200);
 
     }

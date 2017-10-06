@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Requests\ServicePrice\ServicePriceStoreRequest;
+use App\Http\Services\CheckOwnService;
 use App\Models\ServicePrice;
 
 class ServicePriceController extends Controller
@@ -14,7 +15,13 @@ class ServicePriceController extends Controller
     }
 
     public function store(ServicePriceStoreRequest $request){
-        
+        $data = $request->all();
+        if(!CheckOwnService::ownService($request,$data['service_id'])){
+            return CheckOwnService::serviceErrorResponse();
+        }
+        $servicePrice = new ServicePrice($data);
+        dd($servicePrice);
+
     }
 
     public function show(){
