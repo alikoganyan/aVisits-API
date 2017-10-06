@@ -48,7 +48,9 @@ class PositionController extends Controller
     public function destroy(Request $request){
         $params  = $request->route()->parameters();
         $position = Position::where(["chain_id"=>$params['chain'],"id"=>$params["position"]])->first();
-        return response()->json(["data"=>["position"=>$position],"status"=>"OK"],200);
+        if($position->delete()){
+            return response()->json(["success"=>1],200);
+        }
 
     }
 }
