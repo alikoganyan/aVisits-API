@@ -9,9 +9,11 @@ use Illuminate\Http\Request;
 class PositionController extends Controller
 {
     public function index(Request $request){
-        $positions = Position::where(['chain_id'=>$request->route('chain')])->get();
-        return response()->json(["data"=>$positions,
-            "meta"=>["field"=>"id","page"=>1,"pages"=>2,"perpage"=>10,"sort"=>"desc","total"=>18]],200);
+        $data = $request->all();
+        $positions = Position::getAll($request->route('chain') , $data['datatable']);
+        $data['datatable']['pagination']['total'] = $positions['total'];
+        return response()->json(["data"=>$positions['position'],
+            "meta"=>$data['datatable']['pagination']],200);
     }
     public function store(Request $baseRequest,PositionStoreRequest $request){
         $params  = $baseRequest->route()->parameters();
