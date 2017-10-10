@@ -12,6 +12,7 @@ class Service extends Model
      * @var array
      */
     protected $fillable = [
+        'service_category_id',
         'title',
         'description',
         'duration',
@@ -25,7 +26,6 @@ class Service extends Model
      * @var array
      */
     protected $hidden = [
-        'service_category_id',
         'chain_id',
     ];
 }

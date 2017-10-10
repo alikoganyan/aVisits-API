@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Service;
 
 class ServiceCategory extends Model
 {
@@ -13,6 +14,7 @@ class ServiceCategory extends Model
      */
     protected $fillable = [
         'title',
+        'parent_id',
         'created_at',
         'updated_at'
     ];
@@ -22,8 +24,14 @@ class ServiceCategory extends Model
      * @var array
      */
     protected $hidden = [
-        'parent_id',
         'chain_id',
     ];
 
+    public function groups(){
+        return $this->hasMany(self::class,'parent_id','id')
+            ->with('services');
+    }
+    public function services(){
+        return $this->hasMany(Service::class,'service_category_id','id');
+    }
 }

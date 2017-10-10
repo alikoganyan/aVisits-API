@@ -16,7 +16,10 @@ class ServiceCategoryController extends Controller
     public function categories(Request $request)
     {
         $chain = $request->route('chain');
-        $categories = ServiceCategory::where(["chain_id"=>$chain])->whereNull('parent_id')->get();
+        $categories = ServiceCategory::where(["chain_id"=>$chain])
+            ->with('groups')
+            ->whereNull('parent_id')
+            ->get();
         return response()->json(["data"=>["categories"=>$categories]], 200);
     }
     public function groups(Request $request)
