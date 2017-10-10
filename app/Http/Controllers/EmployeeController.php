@@ -12,7 +12,7 @@ class EmployeeController extends Controller
     public function index(Request $request){
         $params = $request->route()->parameters();
         $employee = Employee::where(['chain_id'=>$params['chain']])->get();
-        return response()->json(['data'=>$employee],200);
+        return response()->json(['data'=>$employee,"status"=>"OK"],200);
     }
     public function create(){
 
@@ -29,14 +29,14 @@ class EmployeeController extends Controller
             }
         }
         if($employee->save()){
-            return response()->json(["data" => ["employee"=>$employee]],200);
+            return response()->json(["data" => ["employee"=>$employee],"status"=>"OK"],200);
         }
-        return response()->json(["error" => "store Error"],400);
+        return response()->json(["error" => "store Error" ,"status"=>"ERROR"],400);
     }
 
     public function show(Request $request){
         $model = Employee::where(["id"=>$request->route('employee'),"chain_id"=>$request->route('chain')])->first();
-        return response()->json(["data"=>["employee"=>$model]],200);
+        return response()->json(["data"=>["employee"=>$model, "status" => "OK" ]],200);
     }
 
     public function edit(){
@@ -54,15 +54,15 @@ class EmployeeController extends Controller
         }
         $employee->fill($data);
         if($employee->save()){
-            return response()->json(["data" => ["employee"=>$employee]],200);
+            return response()->json(["data" => ["employee"=>$employee], "status"=>"OK"],200);
         }
-        return response()->json(["error" => "update Error"],400);
+        return response()->json(["error" => "update Error" ,"status"=>"ERROR"],400);
     }
 
     public function destroy(Request $request){
         $model = Employee::where(["id"=>$request->route('employee'),"chain_id"=>$request->route('chain')])->first();;
         $model->delete();
-        return response()->json(["success"=>"1"],200);
+        return response()->json(["success"=>"1", "status"=>"OK"],200);
     }
 
     public function photo(Request $request){
@@ -72,7 +72,7 @@ class EmployeeController extends Controller
                 return response()->json($file,200);
             }
         }else{
-            return response()->json(["error"=>"File not selected"],400);
+            return response()->json(["error"=>"File not selected", "status"=>"ERROR"],400);
         }
 
     }
