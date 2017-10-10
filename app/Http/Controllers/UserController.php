@@ -39,7 +39,7 @@ class UserController extends Controller
             if ($token = JWTAuth::attempt(["email" => $data['email'], 'password' => $data['password']])
             ) {
                 $chain = app('App\Http\Controllers\ChainController')->firstChain();
-                return response()->json(['token' => $token, 'chain' => $chain, 'status' => "OK" ], 201);
+                return response()->json(['token' => $token,'user' => $user, 'chain' => $chain, 'status' => "OK" ], 201);
             } else {
                 return response()->json(["signin_error" => "authentication failed"], 400);
             }
