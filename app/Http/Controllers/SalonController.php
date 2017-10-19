@@ -60,7 +60,8 @@ class SalonController extends Controller
     /**
      * Get salon
      *
-     * @param $id
+     * @param $chainId
+     * @param $salonId
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($chainId,$salonId)

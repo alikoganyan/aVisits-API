@@ -32,6 +32,11 @@ class Salon extends Model
         return self::all();
     }
 
+    /**
+     * Relationship for salon schedule
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function schedule()
     {
         return $this->hasMany('App\Models\SalonSchedule', 'salon_id', 'id');
