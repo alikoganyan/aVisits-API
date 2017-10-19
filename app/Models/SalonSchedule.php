@@ -82,19 +82,23 @@ class SalonSchedule extends Model
     }
 
     /**
-     * Add salon schedule
+     * Add salon change
      *
-     * @param $schedule
-     * @return SalonSchedule
+     * @param $salonId
+     * @param $numOfDay
+     * @param $workingStatus
+     * @param $start
+     * @param $end
+     * @return SalonSchedule|array
      */
-    public static function add($schedule)
+    public static function add($salonId,$numOfDay,$workingStatus,$start,$end)
     {
         $salonSchedule = new self();
-        $salonSchedule->salon_id = $schedule['salon_id'];
-        $salonSchedule->num_of_day = $schedule['num_of_day'];
-        $salonSchedule->working_status = $schedule['working_status'];
-        $salonSchedule->start = $schedule['start'];
-        $salonSchedule->end = $schedule['end'];
+        $salonSchedule->salon_id = $salonId;
+        $salonSchedule->num_of_day = $numOfDay;
+        $salonSchedule->working_status = $workingStatus;
+        $salonSchedule->start = $start;
+        $salonSchedule->end = $end;
         if ($salonSchedule->save()) {
             return $salonSchedule;
         }
@@ -104,22 +108,27 @@ class SalonSchedule extends Model
     /**
      * Edit salon schedule
      *
-     * @param $schedule_id
-     * @param $schedule
-     * @return SalonSchedule|array
+     * @param $id
+     * @param $salonId
+     * @param $numOfDay
+     * @param $workingStatus
+     * @param $start
+     * @param $end
+     * @return SalonSchedule|array|\Illuminate\Database\Eloquent\Collection|Model|null|static[]
      */
-    public static function edit($schedule_id, $schedule)
+    public static function edit($id, $salonId,$numOfDay,$workingStatus,$start,$end)
     {
-        $salonSchedule = self::getById($schedule_id);
+        $salonSchedule = self::getById($id);
         if($salonSchedule) {
-            $salonSchedule->salon_id = $schedule['salon_id'];
-            $salonSchedule->num_of_day = $schedule['num_of_day'];
-            $salonSchedule->working_status = $schedule['working_status'];
-            $salonSchedule->start = $schedule['start'];
-            $salonSchedule->end = $schedule['end'];
+            $salonSchedule->salon_id = $salonId;
+            $salonSchedule->num_of_day = $numOfDay;
+            $salonSchedule->working_status = $workingStatus;
+            $salonSchedule->start = $start;
+            $salonSchedule->end = $end;
             if ($salonSchedule->save()) {
                 return $salonSchedule;
             }
+            return [];
         }
         return [];
     }

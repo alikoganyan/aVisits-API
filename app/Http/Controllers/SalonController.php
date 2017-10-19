@@ -42,14 +42,8 @@ class SalonController extends Controller
         $salon->chain_id = $request->route('chain');
         $salon->current_time = Carbon::parse($request->input('current_time'))->format('Y-m-d H:i:s');
         if ($salon->save()) {
-            for ($i = 1; $i <= 7; $i++) {
-                $schedule = [];
-                $schedule['salon_id'] = $salon->id;
-                $schedule['num_of_day'] = $request->input('schedule[' . $i . '][num_of_day]');
-                $schedule['working_status'] = $request->input('schedule[' . $i . '][working_status]');
-                $schedule['start'] = $request->input('schedule[' . $i . '][start]');
-                $schedule['end'] = $request->input('schedule[' . $i . '][end]');
-                SalonSchedule::add($schedule);
+            foreach ($request->input('schedule') as $key => $value) {
+                SalonSchedule::add($salon->id, $value['num_of_day'], $value['working_status'], $value['start'], $value['end']);
             }
             $salon->refresh();
             return response()->json(['success' => 'Created successfully', 'data' => Salon::find($salon->id), 'salon_schedule' => $salon->schedule], 200);
@@ -64,7 +58,7 @@ class SalonController extends Controller
      * @param $salonId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($chainId,$salonId)
+    public function show($chainId, $salonId)
     {
         $salon = Salon::getById($salonId);
         return response()->json(["data" => $salon], 200);
@@ -96,19 +90,12 @@ class SalonController extends Controller
             }
         }
         if ($model->save()) {
-            foreach ($model->schedule as $key => $value) {
-                if ($request->input('schedule[' . $value->id . '][num_of_day]')) {
-                    $schedule = [];
-                    $schedule['salon_id'] = $model->id;
-                    $schedule['num_of_day'] = $request->input('schedule[' . $value->id . '][num_of_day]');
-                    $schedule['working_status'] = $request->input('schedule[' . $value->id . '][working_status]');
-                    $schedule['start'] = $request->input('schedule[' . $value->id . '][start]');
-                    $schedule['end'] = $request->input('schedule[' . $value->id . '][end]');
-                    SalonSchedule::edit($value->id, $schedule);
-                }
+            foreach ($request->input('schedule') as $key => $value) {
+                SalonSchedule::edit($value['id'],$model->id, $value['num_of_day'], $value['working_status'], $value['start'], $value['end']);
             }
             $model->refresh();
-            return response()->json(["data" => $model], 200);
+            $salon=Salon::getById($model->id);
+            return response()->json(["data" => $salon], 200);
         }
         return response()->json(["error" => "any problem with storing data!"], 400);
     }
