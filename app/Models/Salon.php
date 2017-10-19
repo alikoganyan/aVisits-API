@@ -18,4 +18,8 @@ class Salon extends Model
     public static function getAll(){
         return self::all();
     }
+
+    public function schedule() {
+        return $this->hasMany('App\Models\SalonSchedule','salon_id','id');
+    }
 }
