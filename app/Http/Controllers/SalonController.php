@@ -57,10 +57,16 @@ class SalonController extends Controller
         return response()->json(["error" => "any problem with storing data"], 400);
     }
 
-    public function show($salon)
+    /**
+     * Get salon
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show($chainId,$salonId)
     {
-        $model = Salon::find($salon);
-        return response()->json(["data" => $model], 200);
+        $salon = Salon::getById($salonId);
+        return response()->json(["data" => $salon], 200);
     }
 
     public function edit(StoreSalonRequest $request, Salon $salon)

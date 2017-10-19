@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class EmployeeUpdateRequest extends FormRequest
 {
@@ -27,6 +28,7 @@ class EmployeeUpdateRequest extends FormRequest
     public function rules(Request $request)
     {
         $chain = $request->route('chain');
+        $employee = $request->route('employee');
         return [
             'first_name'             =>'string|max:255',
             'last_name'             =>'string|max:255',
@@ -34,8 +36,8 @@ class EmployeeUpdateRequest extends FormRequest
             'photo'                 =>'string|max:255',
             'sex'                   =>'string|max:255',
             'birthday'              =>'string|max:255',
-            'email'                 =>'string|email|max:255|unique:employees,email,NULL,id,chain_id,'.$chain,
-            'phone'                 =>'string|max:255|unique:employees,phone,NULL,id,chain_id,'.$chain,
+            'email'                 =>'string|email|max:255|'.Rule::unique('employees')->ignore($employee,'id'),
+            'phone'                 =>'string|max:255|'.Rule::unique('employees')->ignore($employee,'id'),
             'phone_2'               =>'string|max:255',
             'address'               =>'string|max:255',
             'card_number'           =>'numeric',
