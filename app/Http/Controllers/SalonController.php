@@ -78,7 +78,7 @@ class SalonController extends Controller
     /**
      * Update salon
      *
-     * @param Request $request
+     * @param UpdateSalonRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(UpdateSalonRequest $request)
