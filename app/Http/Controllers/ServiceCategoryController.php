@@ -16,6 +16,7 @@ class ServiceCategoryController extends Controller
     public function categoryGroups(Request $request) {
         $chain = $request->route('chain');
         $categories = ServiceCategory::where(["chain_id"=>$chain])
+            ->whereNull('parent_id')
             ->with('groups')
             ->get();
         return response()->json(["data"=>["categories"=>$categories]], 200);
@@ -44,6 +45,9 @@ class ServiceCategoryController extends Controller
         $data  = $request->only('title');
         $chain_id = (integer)$request->route('chain');
         $serviceCategory = new ServiceCategory($data);
+        if($request->input('parent_id')) {
+            $serviceCategory->parent_id = $request->input('parent_id');
+        }
         $serviceCategory->chain_id = $chain_id;
         if($serviceCategory->save()){
             return response()->json(["data"=>$serviceCategory],200);
@@ -62,6 +66,9 @@ class ServiceCategoryController extends Controller
             return response()->json(["error"=>"incorrect service category"],400);
         }
         $model->fill($request->all());
+        if($request->input('parent_id')) {
+            $model->parent_id = $request->input('parent_id');
+        }
         $model->chain_id = $params['chain'];
         if($model->save()){
             return response()->json(["data"=>$model],200);
