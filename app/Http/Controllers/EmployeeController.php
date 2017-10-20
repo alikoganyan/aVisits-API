@@ -22,7 +22,7 @@ class EmployeeController extends Controller
     public function store(Request $baseRequest,EmployeeStoreRequest $request){
         $params = $request->route()->parameters();
         $employee = New Employee($request->all());
-        $employee->chain_id = (integer)$params['chain'];
+        $employee->chain_id =  (integer)$params['chain'];
         if($request->hasFile('img')){
             $file = $this->upload($baseRequest);
             if($file){
