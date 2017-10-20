@@ -17,7 +17,6 @@ class ServiceCategoryController extends Controller
         $chain = $request->route('chain');
         $categories = ServiceCategory::where(["chain_id"=>$chain])
             ->with('groups')
-            ->whereNull('parent_id')
             ->get();
         return response()->json(["data"=>["categories"=>$categories]], 200);
     }
