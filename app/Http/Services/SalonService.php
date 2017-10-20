@@ -7,7 +7,7 @@ use App\Models\Salon;
 
 class SalonService
 {
-    public static function ownSalon(Request $request , $salon_id){
+    public static function ownSalon(Request $request , $salon_id) {
         $chainId = $request->route('chain') || null;
         $salon = Salon::where(['user_id'=>Auth::id(),'id'=>$salon_id])->count();
         if($salon !== 0){
