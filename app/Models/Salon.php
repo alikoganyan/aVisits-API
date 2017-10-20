@@ -12,10 +12,33 @@ class Salon extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'img', 'country','city', 'address', 'latitude', 'longitude', 'current_time','user_id', 'chain_id'
+        'title', 'img', 'country', 'city', 'address', 'latitude', 'longitude', 'current_time', 'user_id', 'chain_id'
     ];
 
-    public static function getAll(){
+    /**
+     * Get salon by id
+     *
+     * @param $id
+     * @return \Illuminate\Database\Eloquent\Collection|Model|null|static|static[]
+     */
+    public static function getById($id)
+    {
+        $salon = self::query()->with(['schedule'])->find($id);
+        return $salon;
+    }
+
+    public static function getAll()
+    {
         return self::all();
+    }
+
+    /**
+     * Relationship for salon schedule
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function schedule()
+    {
+        return $this->hasMany('App\Models\SalonSchedule', 'salon_id', 'id');
     }
 }

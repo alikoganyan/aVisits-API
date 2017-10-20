@@ -6,6 +6,7 @@ use \App\Http\Requests\StoreSalonRequest;
 use \App\Http\Requests\UpdateSalonRequest;
 use App\Models\Salon;
 use App\Models\SalonSchedule;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
@@ -16,89 +17,120 @@ use Exception;
 class SalonController extends Controller
 {
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         $salons = Salon::getAll();
-        return response()->json(["data"=>$salons],200);
+        return response()->json(["data" => $salons], 200);
     }
 
-    public function create(Request $request){
+    public function create(Request $request)
+    {
         return "create";
     }
 
-    public function store(StoreSalonRequest $request){
-        $salon =  new Salon();
+    /**
+     * Create salon
+     *
+     * @param StoreSalonRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store(StoreSalonRequest $request)
+    {
+        $salon = new Salon();
         $salon->fill($request->all());
         $salon->user_id = Auth::id();
         $salon->chain_id = $request->route('chain');
-        if($salon->save()){
-            $default_schedules = SalonSchedule::default_schedules($salon->id);
-            try{
-                SalonSchedule::insert($default_schedules);
+        $salon->current_time = Carbon::parse($request->input('current_time'))->format('Y-m-d H:i:s');
+        if ($salon->save()) {
+            foreach ($request->input('schedule') as $key => $value) {
+                SalonSchedule::add($salon->id, $value['num_of_day'], $value['working_status'], $value['start'], $value['end']);
             }
-            catch (Exception $e){
-                return response()->json($e->getMessage(),400);
-            }
-            return response()->json(['success'=>'Created successfully','data'=>Salon::find($salon->id),'salon_schedule'=>$default_schedules],200);
+            $salon->refresh();
+            return response()->json(['success' => 'Created successfully', 'data' => Salon::find($salon->id), 'salon_schedule' => $salon->schedule], 200);
         }
-        return response()->json(["error"=>"any problem with storing data"],400);
+        return response()->json(["error" => "any problem with storing data"], 400);
     }
 
-    public function show($salon){
-        $model = Salon::find($salon);
-        return response()->json(["data"=>$model],200);
+    /**
+     * Get salon
+     *
+     * @param $chainId
+     * @param $salonId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show($chainId, $salonId)
+    {
+        $salon = Salon::getById($salonId);
+        return response()->json(["data" => $salon], 200);
     }
 
-    public function edit(StoreSalonRequest $request, Salon $salon){
+    public function edit(StoreSalonRequest $request, Salon $salon)
+    {
         return "edit";
     }
 
-    public function update(Request $request){
+    /**
+     * Update salon
+     *
+     * @param UpdateSalonRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(UpdateSalonRequest $request)
+    {
         $salon = (integer)$request->route('salon');
         $model = Salon::find($salon);
         $model->fill($request->all());
         $model->img = null;
         $model->user_id = Auth::id();
-        if($request->hasFile('img')){
+        $model->current_time = Carbon::parse($request->input('current_time'))->format('Y-m-d H:i:s');
+        if ($request->hasFile('img')) {
             $file = $this->upload($request);
-            if($file){
+            if ($file) {
                 $model->img = $file['fileName'];
             }
         }
-        if($model->save()){
-            return response()->json(["data"=>$model],200);
+        if ($model->save()) {
+            foreach ($request->input('schedule') as $key => $value) {
+                SalonSchedule::edit($value['id'],$model->id, $value['num_of_day'], $value['working_status'], $value['start'], $value['end']);
+            }
+            $model->refresh();
+            $salon=Salon::getById($model->id);
+            return response()->json(["data" => $salon], 200);
         }
-        return response()->json(["error"=>"any problem with storing data!"],400);
+        return response()->json(["error" => "any problem with storing data!"], 400);
     }
 
-    public function upload(Request $request){
+    public function upload(Request $request)
+    {
         $ds = DIRECTORY_SEPARATOR;
         $file = $request->file('img');
-        $path = public_path("files".$ds."salons".$ds."images".$ds."main");
-        $fileName = time()."_".md5($file->getClientOriginalName()).".".$file->getClientOriginalExtension();
-        if(!File::exists($path)){
+        $path = public_path("files" . $ds . "salons" . $ds . "images" . $ds . "main");
+        $fileName = time() . "_" . md5($file->getClientOriginalName()) . "." . $file->getClientOriginalExtension();
+        if (!File::exists($path)) {
             File::makeDirectory($path, $mode = 0777, true, true);
         }
-        if($file->move($path,$fileName)){
+        if ($file->move($path, $fileName)) {
             return [
-                "fileName"=>$fileName,
-                "path"=>$path
+                "fileName" => $fileName,
+                "path" => $path
             ];
-        }
-        else{
+        } else {
             return false;
         }
 
     }
 
-    public function destroy($salon){
+    public function destroy($salon)
+    {
         $model = Salon::find($salon);
         $model->delete();
-        return response()->json(["success"=>"1"],200);
+        return response()->json(["success" => "1"], 200);
     }
 
-    public function haveAnySalon(){
-        return Salon::join('chains','salons.chain_id','=','chains.id')
-            ->where(['chains.user_id'=>Auth::id(),'salons.user_id'=>Auth::id()])
+    public function haveAnySalon()
+    {
+        return Salon::join('chains', 'salons.chain_id', '=', 'chains.id')
+            ->where(['chains.user_id' => Auth::id(), 'salons.user_id' => Auth::id()])
             ->count();
     }
 }

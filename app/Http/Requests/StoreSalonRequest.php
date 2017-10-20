@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
 
 class StoreSalonRequest extends FormRequest
 {
@@ -23,7 +25,7 @@ class StoreSalonRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules=[
             'title' => 'required|max:255',
             "img" => "max:255",
             "city" => "max:255",
@@ -31,6 +33,12 @@ class StoreSalonRequest extends FormRequest
             "latitude" => "between:0,99.99999999",
             "longitude" => "between:0,999.99999999",
             "chain_id" => "integer|max:10",
+            "schedule"=>"required"
         ];
+        return $rules;
+    }
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json(['ValidationError' => $validator->messages()]));
     }
 }

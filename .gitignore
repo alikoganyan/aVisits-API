@@ -12,3 +12,5 @@ yarn-error.log
 .env
 public/files/
 public/.htaccess
+/public/documentation
+apidoc.json

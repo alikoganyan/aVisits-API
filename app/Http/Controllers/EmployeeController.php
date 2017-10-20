@@ -14,6 +14,7 @@ class EmployeeController extends Controller
         $employee = Employee::where(['chain_id'=>$params['chain']])->get();
         return response()->json(['data'=>$employee,"status"=>"OK"],200);
     }
+
     public function create(){
 
     }

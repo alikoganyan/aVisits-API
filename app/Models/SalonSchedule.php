@@ -31,9 +31,21 @@ class SalonSchedule extends Model
     protected $hidden = [
     ];
 
+    /**
+     * Get salon schedule by id
+     *
+     * @param $id
+     * @return \Illuminate\Database\Eloquent\Collection|Model|null|static|static[]
+     */
+    public static function getById($id)
+    {
+        $schedule = self::query()->find($id);
+        return $schedule;
+    }
+
     public static function days_of_week($key = null)
     {
-        $days =  [
+        $days = [
             "1" => ["short" => "ПН", "working" => 1, "title" => "Понедельник"],
             "2" => ["short" => "ВТ", "working" => 1, "title" => "Вторник"],
             "3" => ["short" => "СР", "working" => 1, "title" => "Среда"],
@@ -42,30 +54,85 @@ class SalonSchedule extends Model
             "6" => ["short" => "СБ", "working" => 0, "title" => "Суббота"],
             "7" => ["short" => "ВС", "working" => 0, "title" => "Воскресенье"]
         ];
-        if($key !== null && isset($days[$key])){
+        if ($key !== null && isset($days[$key])) {
             return $days[$key];
         }
         return $days;
     }
-    public static function default_schedules($salon_id = null){
+
+    public static function default_schedules($salon_id = null)
+    {
         $days_of_week = self::days_of_week();
         $default = [];
-        foreach($days_of_week as $key => $day){
+        foreach ($days_of_week as $key => $day) {
             $value = [
                 "salon_id" => $salon_id,
                 "num_of_day" => $key,
                 "working_status" => $day['working'],
-                "start"=>null,
-                "end"=>null
+                "start" => null,
+                "end" => null
             ];
-            if($day['working']){
+            if ($day['working']) {
                 $value["start"] = "10:00:00";
                 $value["end"] = "22:00:00";
             }
-            array_push($default,$value);
+            array_push($default, $value);
         }
         return $default;
     }
+
+    /**
+     * Add salon change
+     *
+     * @param $salonId
+     * @param $numOfDay
+     * @param $workingStatus
+     * @param $start
+     * @param $end
+     * @return SalonSchedule|array
+     */
+    public static function add($salonId,$numOfDay,$workingStatus,$start,$end)
+    {
+        $salonSchedule = new self();
+        $salonSchedule->salon_id = $salonId;
+        $salonSchedule->num_of_day = $numOfDay;
+        $salonSchedule->working_status = $workingStatus;
+        $salonSchedule->start = $start;
+        $salonSchedule->end = $end;
+        if ($salonSchedule->save()) {
+            return $salonSchedule;
+        }
+        return [];
+    }
+
+    /**
+     * Edit salon schedule
+     *
+     * @param $id
+     * @param $salonId
+     * @param $numOfDay
+     * @param $workingStatus
+     * @param $start
+     * @param $end
+     * @return SalonSchedule|array|\Illuminate\Database\Eloquent\Collection|Model|null|static[]
+     */
+    public static function edit($id, $salonId,$numOfDay,$workingStatus,$start,$end)
+    {
+        $salonSchedule = self::getById($id);
+        if($salonSchedule) {
+            $salonSchedule->salon_id = $salonId;
+            $salonSchedule->num_of_day = $numOfDay;
+            $salonSchedule->working_status = $workingStatus;
+            $salonSchedule->start = $start;
+            $salonSchedule->end = $end;
+            if ($salonSchedule->save()) {
+                return $salonSchedule;
+            }
+            return [];
+        }
+        return [];
+    }
+
     public static function getScheduleList(Request $request)
     {
         $filters = $request->route()->parameters();
