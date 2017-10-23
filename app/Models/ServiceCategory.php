@@ -27,11 +27,37 @@ class ServiceCategory extends Model
         'chain_id',
     ];
 
-    public function groups(){
-        return $this->hasMany(self::class,'parent_id','id')
+    /**
+     * Get service category by id
+     *
+     * @param $id
+     * @return \Illuminate\Database\Eloquent\Collection|Model|null|static|static[]
+     */
+    public static function getById($id)
+    {
+        $serviceCategory = self::query()->find($id);
+        return $serviceCategory;
+    }
+
+    /**
+     * Get service categories by parent id
+     *
+     * @param $parent_id
+     * @return $this
+     */
+    public static function getByParentId($parent_id) {
+        $serviceCategories=self::query()->where('parent_id',$parent_id)->get();
+        return $serviceCategories;
+    }
+
+    public function groups()
+    {
+        return $this->hasMany(self::class, 'parent_id', 'id')
             ->with('services');
     }
-    public function services(){
-        return $this->hasMany(Service::class,'service_category_id','id');
+
+    public function services()
+    {
+        return $this->hasMany(Service::class, 'service_category_id', 'id');
     }
 }

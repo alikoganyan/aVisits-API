@@ -168,6 +168,7 @@ Route::group(['middleware'=>['auth.jwt','own.chain'],'prefix' => '{chain}'], fun
     Route::get('category-groups','ServiceCategoryController@categoryGroups');
     Route::get('service_categories','ServiceCategoryController@categories');
     Route::get('service_groups','ServiceCategoryController@groups');
+    Route::get('service_categories/{category_id}','ServiceCategoryController@groupsByCategory');
     Route::resource('service','ServiceController');
     Route::get('salon_schedule/{salon}/salon','SalonScheduleController@salon_schedule');
     Route::resource('salon_schedule','SalonScheduleController');
