@@ -172,6 +172,8 @@ Route::group(['middleware'=>['auth.jwt','own.chain'],'prefix' => '{chain}'], fun
     Route::resource('service','ServiceController');
     Route::get('salon_schedule/{salon}/salon','SalonScheduleController@salon_schedule');
     Route::resource('salon_schedule','SalonScheduleController');
+    Route::post('employee-schedule','EmployeeScheduleController@create');
+    Route::put('employee-schedule','EmployeeScheduleController@edit');
     Route::resource('employee','EmployeeController');
     Route::post('employee-photo-upload','EmployeeController@photo');
     Route::resource('position','PositionController')->except('index');

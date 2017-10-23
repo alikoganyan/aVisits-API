@@ -134,10 +134,22 @@ class SalonSchedule extends Model
         return [];
     }
 
+    /**
+     * Format start column
+     *
+     * @param $value
+     * @return string
+     */
     public function getStartAttribute($value) {
         return Carbon::parse($value)->format('H:i');
     }
 
+    /**
+     * Format end column
+     *
+     * @param $value
+     * @return string
+     */
     public function getEndAttribute($value) {
         return Carbon::parse($value)->format('H:i');
     }
