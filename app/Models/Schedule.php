@@ -23,7 +23,7 @@ class Schedule extends Model
     ];
 
     /**
-     * Get by id
+     * Get employee by id
      *
      * @param $id
      * @return \Illuminate\Database\Eloquent\Collection|Model|null|static|static[]
@@ -31,6 +31,20 @@ class Schedule extends Model
     public static function getById($id)
     {
         $schedule = self::query()->with(['periods'])->find($id);
+        return $schedule;
+    }
+
+    /**
+     * Get employee by employee id and num of day
+     *
+     * @param $salonId
+     * @param $employeeId
+     * @param $numOfDay
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public static function getByEmployeeIdAndNumOfDay($salonId, $employeeId, $numOfDay)
+    {
+        $schedule = self::query()->where('salon_id', $salonId)->where('employee_id', $employeeId)->where('num_of_day', $numOfDay)->get();
         return $schedule;
     }
 
@@ -45,38 +59,64 @@ class Schedule extends Model
      * @param $date
      * @return Schedule|array
      */
-    public static function create($salonId, $employeeId, $type, $workingDays, $weekend, $date)
+    public static function create($salonId, $employeeId, $type, $workingStatus, $workingDays = 0, $weekend = 0, $numOfDay = 0, $date)
     {
         $schedule = new self();
-        if ($type == 1) {
-            $schedule->salon_id = $salonId;
-            $schedule->employee_id = $employeeId;
-            $schedule->type = $type;
-            $schedule->working_days = $workingDays;
-            $schedule->weekend = $weekend;
-            $schedule->date = $date;
+        $schedule->salon_id = $salonId;
+        $schedule->employee_id = $employeeId;
+        $schedule->type = $type;
+        if ($type == 2) {
+            $schedule->working_status = $workingStatus;
         }
+        if ($workingDays) {
+            $schedule->working_days = $workingDays;
+        }
+        if ($weekend) {
+            $schedule->weekend = $weekend;
+        }
+        if ($numOfDay) {
+            $schedule->num_of_day = $numOfDay;
+        }
+        $schedule->date = $date;
         if ($schedule->save()) {
             return $schedule;
         }
         return [];
     }
 
-    public static function edit($scheduleId, $salonId, $employeeId, $type, $workingDays, $weekend, $date)
+    /**
+     * Edit employee schedule
+     *
+     * @param $scheduleId
+     * @param $salonId
+     * @param $employeeId
+     * @param $type
+     * @param $workingDays
+     * @param $weekend
+     * @param $date
+     * @return Schedule|array|\Illuminate\Database\Eloquent\Collection|Model|null|static[]
+     */
+    public static function edit($scheduleId, $salonId, $employeeId, $type, $workingStatus, $workingDays = 0, $weekend = 0, $numOfDay = 0, $date)
     {
         $schedule = self::getById($scheduleId);
-        if ($schedule) {
-            if ($type == 1) {
-                $schedule->salon_id = $salonId;
-                $schedule->employee_id = $employeeId;
-                $schedule->type = $type;
-                $schedule->working_days = $workingDays;
-                $schedule->weekend = $weekend;
-                $schedule->date = $date;
-            }
-            if ($schedule->save()) {
-                return $schedule;
-            }
+        $schedule->salon_id = $salonId;
+        $schedule->employee_id = $employeeId;
+        $schedule->type = $type;
+        if ($type == 2) {
+            $schedule->working_status = $workingStatus;
+        }
+        if ($workingDays) {
+            $schedule->working_days = $workingDays;
+        }
+        if ($weekend) {
+            $schedule->weekend = $weekend;
+        }
+        if ($numOfDay) {
+            $schedule->num_of_day = $numOfDay;
+        }
+        $schedule->date = $date;
+        if ($schedule->save()) {
+            return $schedule;
         }
         return [];
     }

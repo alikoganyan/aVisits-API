@@ -27,6 +27,7 @@ class CheckSalon
                 return $next($request);
             }
         }
+        return $next($request);
         return response()->json(['error'=>'incorrect Salon ID'],400);
     }
 }
