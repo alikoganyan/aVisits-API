@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -131,6 +132,14 @@ class SalonSchedule extends Model
             return [];
         }
         return [];
+    }
+
+    public function getStartAttribute($value) {
+        return Carbon::parse($value)->format('H:i');
+    }
+
+    public function getEndAttribute($value) {
+        return Carbon::parse($value)->format('H:i');
     }
 
     public static function getScheduleList(Request $request)
