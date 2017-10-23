@@ -112,12 +112,7 @@ class EmployeeScheduleController extends Controller
                         $workingStatus = $b[0]['working_status'];
                         break;
                     }
-//                    $oldSchedule = Schedule::getByEmployeeIdAndNumOfDay($request->input('salon_id'), $request->input('employee_id'), $numOfDay);
-//                    if($oldSchedule) {
                     $schedule = Schedule::edit($request->input('id'),$request->input('salon_id'), $request->input('employee_id'), $request->input('type'), $workingStatus, 0, 0, $numOfDay, Carbon::parse($request->input('date'))->format('Y-m-d'));
-//                    }else {
-//                        $schedule = Schedule::create($request->input('salon_id'), $request->input('employee_id'), $request->input('type'), $workingStatus, 0, 0, $numOfDay, Carbon::parse($request->input('date'))->format('Y-m-d'));
-//                    }
                     $periodIds = [];
                     foreach ($dayValue as $i => $b) {
                         foreach ($b as $r => $s) {

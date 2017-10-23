@@ -91,7 +91,9 @@ class SalonController extends Controller
         }
         if ($model->save()) {
             foreach ($request->input('schedule') as $key => $value) {
-                SalonSchedule::edit($value['id'],$model->id, $value['num_of_day'], $value['working_status'], $value['start'], $value['end']);
+                if(isset($value['id'])) {
+                    SalonSchedule::edit($value['id'],$model->id, $value['num_of_day'], $value['working_status'], $value['start'], $value['end']);
+                }
             }
             $model->refresh();
             $salon=Salon::getById($model->id);
