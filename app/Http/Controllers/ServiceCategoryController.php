@@ -43,8 +43,9 @@ class ServiceCategoryController extends Controller
      * @param $categoryId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function groupsByCategory(Request $request,$chainId,$categoryId) {
-        $groups=ServiceCategory::getByParentId($categoryId);
+    public function groupsByCategory(Request $request, $chainId, $categoryId)
+    {
+        $groups = ServiceCategory::getByParentId($categoryId);
         return response()->json(["data" => ["groups" => $groups]], 200);
     }
 
@@ -70,6 +71,7 @@ class ServiceCategoryController extends Controller
         }
         $serviceCategory->chain_id = $chain_id;
         if ($serviceCategory->save()) {
+            $serviceCategory = ServiceCategory::getById($serviceCategory->id);
             return response()->json(["data" => $serviceCategory], 200);
         }
         return response()->json(["error" => "save error"], 400);
@@ -93,6 +95,7 @@ class ServiceCategoryController extends Controller
         }
         $model->chain_id = $params['chain'];
         if ($model->save()) {
+            $model = ServiceCategory::getById($model->id);
             return response()->json(["data" => $model], 200);
         }
         return response()->json(["error" => "update error"], 200);

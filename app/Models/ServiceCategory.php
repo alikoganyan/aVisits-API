@@ -35,7 +35,7 @@ class ServiceCategory extends Model
      */
     public static function getById($id)
     {
-        $serviceCategory = self::query()->find($id);
+        $serviceCategory = self::query()->with(['groups'])->find($id);
         return $serviceCategory;
     }
 
@@ -50,12 +50,22 @@ class ServiceCategory extends Model
         return $serviceCategories;
     }
 
+    /**
+     * Relationship for get groups
+     *
+     * @return $this
+     */
     public function groups()
     {
         return $this->hasMany(self::class, 'parent_id', 'id')
             ->with('services');
     }
 
+    /**
+     * Relationship for get services
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function services()
     {
         return $this->hasMany(Service::class, 'service_category_id', 'id');
