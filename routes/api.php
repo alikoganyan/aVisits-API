@@ -184,13 +184,17 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      */
 
     /**
-     * @api {post} /{chain}?token=:token Get chains
+     * @api {post} /chain?token=:token Create chain
      * @apiName Create chain
      * @apiHeaderExample {json} Header-Example:
      *     {
      *       "Content-Type": "Application/json"
      *     }
      * @apiGroup Chain
+     *
+     * @apiParam {String} title Title
+     * @apiParam {String} description Description
+     * @apiParam {String} created_at Created At
      *
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200
@@ -208,10 +212,145 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      *       "Invalid input"
      *     }
      */
+
+    /**
+     * @api {put} /chain/{chain}?token=:token Update chain
+     * @apiName Update chain
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Chain
+     *
+     * @apiParam {String} title Title
+     * @apiParam {String} description Description
+     * @apiParam {String} created_at Created At
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *      {
+     *          "title": "string",
+     *          "description": "string",
+     *          "created_at": "string"
+     *      }
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     *     {
+     *       "Invalid input"
+     *     }
+     */
+
+    /**
+     * @api {delete} /chain/{chain}?token=:token Delete chain
+     * @apiName Delete chain
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Chain
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *     {
+     *          "success": 1
+     *     }
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     *     {
+     *       "Invalid input"
+     *     }
+     */
     Route::resource('chain', 'ChainController');
 });
 
 Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'], function () {
+    /**
+     * @api {get} /{chain}/salon?token=:token Get salons
+     * @apiName Get salons
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Salon
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *     [
+     *          {
+     *              "title": "string",
+     *              "country": "string",
+     *              "city": "string",
+     *              "address": "string",
+     *              "latitude": 0,
+     *              "longitude": 0,
+     *              "current_time": "2017-10-24T07:14:40.498Z"
+     *          }
+     *      ]
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     *     {
+     *       "Invalid input"
+     *     }
+     */
+
+    /**
+     * @api {get} /{chain}/salon/{salon}?token=:token Get salon
+     * @apiName Get salon
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Salon
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *     {
+     *          "title": "string",
+     *          "country": "string",
+     *          "city": "string",
+     *          "address": "string",
+     *          "latitude": 0,
+     *          "longitude": 0,
+     *          "current_time": "2017-10-24T07:14:40.498Z"
+     *     }
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     *     {
+     *       "Invalid input"
+     *     }
+     */
+
+    /**
+     * @api {post} /{chain}/salon/?token=:token Create salon
+     * @apiName Get salon
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Salon
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *     {
+     *          "title": "string",
+     *          "country": "string",
+     *          "city": "string",
+     *          "address": "string",
+     *          "latitude": 0,
+     *          "longitude": 0,
+     *          "current_time": "2017-10-24T07:14:40.498Z"
+     *     }
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     *     {
+     *       "Invalid input"
+     *     }
+     */
     Route::put('salon/{salon}', 'SalonController@update')->middleware(['own.salon']);
     Route::resource('salon', 'SalonController')->except('update');
     Route::resource('service_category', 'ServiceCategoryController');
