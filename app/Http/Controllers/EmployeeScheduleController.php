@@ -91,7 +91,7 @@ class EmployeeScheduleController extends Controller
             $data['ExceptionHandler'] = 'invalid_request';
         } else {
             if ($request->input('type') == 1) {
-                $schedule = Schedule::edit($request->input('id'), $request->input('salon_id'), $request->input('employee_id'), $request->input('type'), $request->input('working_days'), $request->input('weekends'), Carbon::parse($request->input('date'))->format('Y-m-d'));
+                $schedule = Schedule::edit($request->input('id'), $request->input('salon_id'), $request->input('employee_id'), $request->input('type'), 1,$request->input('working_days'), $request->input('weekends'),0, Carbon::parse($request->input('date'))->format('Y-m-d'));
                 $periodIds = [];
                 foreach ($request->input('periods') as $key => $value) {
                     if (isset($value['id'])) {
