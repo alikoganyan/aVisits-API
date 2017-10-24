@@ -122,7 +122,7 @@ class SalonController extends Controller
 
     }
 
-    public function destroy($salon)
+    public function destroy($chain,$salon)
     {
         $model = Salon::find($salon);
         $model->delete();

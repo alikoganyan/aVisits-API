@@ -157,29 +157,79 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 });
 Route::group(['middleware' => ['auth.jwt']], function () {
+    /**
+     * @api {get} /{chain}?token=:token Get chains
+     * @apiName Get chains
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Chain
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     * [
+     *      {
+     *          "title": "string",
+     *          "description": "string",
+     *          "created_at": "string"
+     *      }
+     * ]
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     *     {
+     *       "Invalid input"
+     *     }
+     */
+
+    /**
+     * @api {post} /{chain}?token=:token Get chains
+     * @apiName Create chain
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Chain
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     * [
+     *      {
+     *          "title": "string",
+     *          "description": "string",
+     *          "created_at": "string"
+     *      }
+     * ]
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     *     {
+     *       "Invalid input"
+     *     }
+     */
     Route::resource('chain', 'ChainController');
 });
 
-Route::group(['middleware'=>['auth.jwt','own.chain'],'prefix' => '{chain}'], function()
-{
-    Route::put('salon/{salon}','SalonController@update')->middleware(['own.salon']);
-    Route::resource('salon','SalonController')->except('update');
-    Route::resource('service_category','ServiceCategoryController');
-    Route::get('category-groups','ServiceCategoryController@categoryGroups');
-    Route::get('service_categories','ServiceCategoryController@categories');
-    Route::get('service_groups','ServiceCategoryController@groups');
-    Route::get('service_categories/{category_id}','ServiceCategoryController@groupsByCategory');
-    Route::resource('service','ServiceController');
-    Route::get('salon_schedule/{salon}/salon','SalonScheduleController@salon_schedule');
-    Route::resource('salon_schedule','SalonScheduleController');
-    Route::post('employee-schedule','EmployeeScheduleController@create');
-    Route::put('employee-schedule','EmployeeScheduleController@edit');
-    Route::resource('employee','EmployeeController');
-    Route::post('employee-photo-upload','EmployeeController@photo');
-    Route::resource('position','PositionController')->except('index');
-    Route::post('position_index','PositionController@index');
-    Route::resource('schedule','ScheduleController');
-    Route::resource('service_price','ServicePriceController');
+Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'], function () {
+    Route::put('salon/{salon}', 'SalonController@update')->middleware(['own.salon']);
+    Route::resource('salon', 'SalonController')->except('update');
+    Route::resource('service_category', 'ServiceCategoryController');
+    Route::get('category-groups', 'ServiceCategoryController@categoryGroups');
+    Route::get('service_categories', 'ServiceCategoryController@categories');
+    Route::get('service_groups', 'ServiceCategoryController@groups');
+    Route::get('service_categories/{category_id}', 'ServiceCategoryController@groupsByCategory');
+    Route::resource('service', 'ServiceController');
+    Route::get('salon_schedule/{salon}/salon', 'SalonScheduleController@salon_schedule');
+    Route::resource('salon_schedule', 'SalonScheduleController');
+    Route::post('employee-schedule', 'EmployeeScheduleController@create');
+    Route::put('employee-schedule', 'EmployeeScheduleController@edit');
+    Route::resource('employee', 'EmployeeController');
+    Route::post('employee-photo-upload', 'EmployeeController@photo');
+    Route::resource('position', 'PositionController')->except('index');
+    Route::post('position_index', 'PositionController@index');
+    Route::resource('schedule', 'ScheduleController');
+    Route::resource('service_price', 'ServicePriceController');
 });
 
 
