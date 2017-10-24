@@ -29,7 +29,7 @@ class Salon extends Model
 
     public static function getAll()
     {
-        return self::orderBy('id','desc')->all();
+        return self::orderBy('id','desc')->get();
     }
 
     /**
