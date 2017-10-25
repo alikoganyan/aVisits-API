@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Chain\ChainStoreRequest;
 use App\Http\Requests\Chain\ChainUpdateRequest;
+use App\Models\ChainPriceLevel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Chain;
@@ -21,6 +22,9 @@ Class ChainController extends Controller
         $chain = new Chain($request->all());
         $chain->user_id = Auth::id();
         if ($chain->save()) {
+            foreach ($request->input('levels') as $key => $value) {
+                $level = ChainPriceLevel::add($value['level'], $chain->id);
+            }
             return response()->json(["data" => ["chain" => $chain]], 200);
         }
         return response()->json(['error' => 'The chain saving failed!'], 400);

@@ -13,7 +13,7 @@ class Chain extends Model
      */
     protected $fillable = [
         'title',
-        'description',
+        'phone_number',
         'created_at',
         'updated_at'
     ];
