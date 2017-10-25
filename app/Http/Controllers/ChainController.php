@@ -25,6 +25,10 @@ Class ChainController extends Controller
             foreach ($request->input('levels') as $key => $value) {
                 $level = ChainPriceLevel::add($value['level'], $chain->id);
             }
+            $chain=Chain::getById($chain->id);
+            $data = [];
+            $data['chain'] = $chain;
+            $data['status'] = 'OK';
             return response()->json(["data" => ["chain" => $chain]], 200);
         }
         return response()->json(['error' => 'The chain saving failed!'], 400);
@@ -37,6 +41,20 @@ Class ChainController extends Controller
         if ($chain) {
             $chain->fill($request->all());
             if ($chain->save()) {
+                $levelIds = [];
+                foreach ($request->input('levels') as $key => $value) {
+                    if (isset($value['id']) && ChainPriceLevel::getById($value['id'])) {
+                        $level = ChainPriceLevel::edit($value['id'], $value['level'], $chain->id);
+                    } else {
+                        $level = ChainPriceLevel::add($value['level'], $chain->id);
+                    }
+                    $levelIds[$level->id] = $level->id;
+                }
+                ChainPriceLevel::deleteExceptIds($levelIds, $chain->id);
+                $chain=Chain::getById($chain->id);
+                $data = [];
+                $data['chain'] = $chain;
+                $data['status'] = 'OK';
                 return response()->json($chain, 200);
             } else {
                 return response()->json(['error' => 'The process of saving data failed!'], 400);

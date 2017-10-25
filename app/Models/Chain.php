@@ -20,4 +20,26 @@ class Chain extends Model
     protected $hidden = [
         'user_id'
     ];
+
+    /**
+     * Get chain by id
+     *
+     * @param $id
+     * @return \Illuminate\Database\Eloquent\Collection|Model|null|static|static[]
+     */
+    public static function getById($id)
+    {
+        $chain = self::query()->with(['levels'])->find($id);
+        return $chain;
+    }
+
+    /**
+     * Relationship for get levels
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function levels()
+    {
+        return $this->hasMany('App\Models\ChainPriceLevel', 'chain_id', 'id');
+    }
 }

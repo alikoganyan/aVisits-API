@@ -193,18 +193,27 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      * @apiGroup Chain
      *
      * @apiParam {String} title Title
-     * @apiParam {String} description Description
-     * @apiParam {String} created_at Created At
+     * @apiParam {String} phone_number Phone number
+     * @apiParam {Object} levels [{"level":"1"}]
      *
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200
-     * [
-     *      {
+     *     {
+     *          "id": 0,
      *          "title": "string",
-     *          "description": "string",
-     *          "created_at": "string"
+     *          "phone_number": "string",
+     *          "created_at": "2017-10-25 11:16:52",
+     *          "updated_at": "2017-10-25 11:16:52",
+     *          "levels": [
+     *          {
+     *              "id": 0,
+     *              "level": "0",
+     *              "chain_id": 0,
+     *              "created_at": "2017-10-25 11:34:48",
+     *              "updated_at": "2017-10-25 11:34:48"
+     *          }
+     *          ]
      *      }
-     * ]
      *
      * @apiErrorExample {json} Error-Response:
      *     HTTP/1.1 400
@@ -223,15 +232,26 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      * @apiGroup Chain
      *
      * @apiParam {String} title Title
-     * @apiParam {String} description Description
-     * @apiParam {String} created_at Created At
+     * @apiParam {String} phone_number Phone number
+     * @apiParam {Object} levels [{"id":"0","level":"1"}]
      *
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200
-     *      {
+     *     {
+     *          "id": 0,
      *          "title": "string",
-     *          "description": "string",
-     *          "created_at": "string"
+     *          "phone_number": "string",
+     *          "created_at": "2017-10-25 11:16:52",
+     *          "updated_at": "2017-10-25 11:16:52",
+     *          "levels": [
+     *          {
+     *              "id": 0,
+     *              "level": "0",
+     *              "chain_id": 0,
+     *              "created_at": "2017-10-25 11:34:48",
+     *              "updated_at": "2017-10-25 11:34:48"
+     *          }
+     *          ]
      *      }
      *
      * @apiErrorExample {json} Error-Response:

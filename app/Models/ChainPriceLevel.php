@@ -52,4 +52,14 @@ class ChainPriceLevel extends Model
         }
         return [];
     }
+
+    /**
+     * Delete levels except ids
+     *
+     * @param $levelIds
+     * @param $chainId
+     */
+    public static function deleteExceptIds($levelIds,$chainId) {
+        $levels=self::where('chain_id',$chainId)->whereNotIn('id',$levelIds)->delete();
+    }
 }
