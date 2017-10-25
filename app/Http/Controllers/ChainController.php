@@ -13,7 +13,7 @@ Class ChainController extends Controller
 {
     public function index()
     {
-        $chains = Chain::where(["user_id" => Auth::id()])->orderBy('id', 'desc')->get();
+        $chains = Chain::where(["user_id" => Auth::id()])->with(['levels'])->orderBy('id', 'desc')->get();
         return response()->json(['data' => $chains], 200);
     }
 
@@ -68,7 +68,7 @@ Class ChainController extends Controller
     public function show(Request $request)
     {
         $params = $request->route()->parameters();
-        $chain = Chain::where(["id" => $params['chain'], "user_id" => Auth::id()])->first();
+        $chain = Chain::where(["id" => $params['chain'], "user_id" => Auth::id()])->with(['levels'])->first();
         if ($chain) {
             return response()->json(['data' => ["chain" => $chain]], 200);
         } else {
