@@ -31,6 +31,15 @@ class EmployeeScheduleController extends Controller
                 "periods" => "required"
             ];
         }
+        if($request->input('type')==2) {
+            $rules = [
+                "salon_id" => "required|integer|exists:salons,id",
+                "employee_id" => "required|integer",
+                "type" => "required|integer",
+                "date" => "required|date_format:Y-m-d",
+                "days" => "required"
+            ];
+        }
         $validation = Validator::make($request->all(), $rules);
         if ($validation->fails()) {
             $data['ExceptionHandler'] = 'invalid_request';
@@ -84,6 +93,15 @@ class EmployeeScheduleController extends Controller
                 "working_days" => "required|integer|max:7|min:0",
                 "weekends" => "required",
                 "periods" => "required"
+            ];
+        }
+        if($request->input('type')==2) {
+            $rules = [
+                "salon_id" => "required|integer|exists:salons,id",
+                "employee_id" => "required|integer",
+                "type" => "required|integer",
+                "date" => "required|date_format:Y-m-d",
+                "days" => "required"
             ];
         }
         $validation = Validator::make($request->all(), $rules);

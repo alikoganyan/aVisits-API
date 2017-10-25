@@ -13,8 +13,8 @@ class ServiceController extends Controller
     public function index(Request $request)
     {
         $params = $request->route()->parameters();
-        $services = Service::where(["chain_id" => $params['chain']])->get();
-        return response()->json(["data"=>$services], 200);
+        $services = Service::where(["chain_id" => $params['chain']])->orderBy('id', 'desc')->get();
+        return response()->json(["data" => $services], 200);
     }
 
     public function create()
@@ -34,7 +34,7 @@ class ServiceController extends Controller
         $service->service_category_id = $data['service_category_id'];
         $service->chain_id = $chain_id;
         if ($service->save()) {
-            return response()->json(["data"=>$service], 200);
+            return response()->json(["data" => $service], 200);
         }
         return response()->json(["error" => "save error"], 400);
     }
@@ -44,35 +44,35 @@ class ServiceController extends Controller
         return response()->json(["success" => "coming soon"], 200);
     }
 
-    public function update(Request $baseRequest ,ServiceUpdateRequest $request)
+    public function update(Request $baseRequest, ServiceUpdateRequest $request)
     {
         $params = $request->route()->parameters();
-        $model = Service::where(["id"=>$params['service'],'chain_id'=>$params['chain']])->first();
-        if(!$model){
-            return response()->json(["error"=>"incorrect service"],400);
+        $model = Service::where(["id" => $params['service'], 'chain_id' => $params['chain']])->first();
+        if (!$model) {
+            return response()->json(["error" => "incorrect service"], 400);
         }
-        if($request->input('service_category_id')){
-            if(!$this->ownServiceCategory($baseRequest,$request->input('service_category_id'))){
+        if ($request->input('service_category_id')) {
+            if (!$this->ownServiceCategory($baseRequest, $request->input('service_category_id'))) {
                 return response()->json(["error" => "permission error", "message" => "incorrect service_category_id"], 400);
             }
         }
         $model->fill($request->all());
         $model->chain_id = $params['chain'];
-        if($model->save()){
-            return response()->json(["data"=>$model],200);
+        if ($model->save()) {
+            return response()->json(["data" => $model], 200);
         }
-        return response()->json(["error"=>"update error"],400);
+        return response()->json(["error" => "update error"], 400);
     }
 
     public function destroy(Request $request)
     {
         $params = $request->route()->parameters();
-        $model = Service::where(["id"=>$params['service'],'chain_id'=>$params['chain']])->first();
-        if(!$model){
-            return response()->json(["error"=>"incorrect service"],400);
+        $model = Service::where(["id" => $params['service'], 'chain_id' => $params['chain']])->first();
+        if (!$model) {
+            return response()->json(["error" => "incorrect service"], 400);
         }
         $model->delete();
-        return response()->json(["success"=>"1"],200);
+        return response()->json(["success" => "1"], 200);
     }
 
     /**

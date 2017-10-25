@@ -11,7 +11,7 @@ class ServiceCategoryController extends Controller
     public function index(Request $request)
     {
         $chain = $request->route('chain');
-        $serviceCategory = ServiceCategory::where(["chain_id" => $chain])->get();
+        $serviceCategory = ServiceCategory::where(["chain_id" => $chain])->orderBy('id', 'desc')->get();
         return response()->json(["data" => $serviceCategory], 200);
     }
 
