@@ -168,13 +168,26 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      *
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200
-     * [
-     *      {
-     *          "title": "string",
-     *          "description": "string",
-     *          "created_at": "string"
-     *      }
-     * ]
+     *     {
+     *          "data": {
+     *              "chain": {
+     *                  "id": 7,
+     *                  "title": "sadasdasdasd",
+     *                  "phone_number": "37455144743",
+     *                  "created_at": "2017-10-25 11:16:52",
+     *                  "updated_at": "2017-10-25 11:16:52",
+     *                  "levels": [
+     *                  {
+     *                      "id": 17,
+     *                      "level": "1",
+     *                      "chain_id": 7,
+     *                      "created_at": "2017-10-25 11:49:08",
+     *                      "updated_at": "2017-10-25 11:49:08"
+     *                  }
+     *                  ]
+     *              }
+     *          }
+     *    }
      *
      * @apiErrorExample {json} Error-Response:
      *     HTTP/1.1 400
@@ -199,21 +212,26 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200
      *     {
-     *          "id": 0,
-     *          "title": "string",
-     *          "phone_number": "string",
-     *          "created_at": "2017-10-25 11:16:52",
-     *          "updated_at": "2017-10-25 11:16:52",
-     *          "levels": [
-     *          {
-     *              "id": 0,
-     *              "level": "0",
-     *              "chain_id": 0,
-     *              "created_at": "2017-10-25 11:34:48",
-     *              "updated_at": "2017-10-25 11:34:48"
-     *          }
-     *          ]
-     *      }
+     *          "data": {
+     *              "chain": {
+     *                  "id": 0,
+     *                  "title": "string",
+     *                  "phone_number": "37455144743",
+     *                  "created_at": "2017-10-25 11:16:52",
+     *                  "updated_at": "2017-10-25 11:16:52",
+     *                  "levels": [
+     *                  {
+     *                      "id": 0,
+     *                      "level": "string",
+     *                      "chain_id": 0,
+     *                      "created_at": "2017-10-25 11:49:08",
+     *                      "updated_at": "2017-10-25 11:49:08"
+     *                  }
+     *                  ]
+     *              }
+     *          },
+     *          "status":"OK"
+     *     }
      *
      * @apiErrorExample {json} Error-Response:
      *     HTTP/1.1 400
@@ -238,21 +256,26 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200
      *     {
-     *          "id": 0,
-     *          "title": "string",
-     *          "phone_number": "string",
-     *          "created_at": "2017-10-25 11:16:52",
-     *          "updated_at": "2017-10-25 11:16:52",
-     *          "levels": [
-     *          {
-     *              "id": 0,
-     *              "level": "0",
-     *              "chain_id": 0,
-     *              "created_at": "2017-10-25 11:34:48",
-     *              "updated_at": "2017-10-25 11:34:48"
-     *          }
-     *          ]
-     *      }
+     *          "data": {
+     *              "chain": {
+     *                  "id": 0,
+     *                  "title": "string",
+     *                  "phone_number": "37455144743",
+     *                  "created_at": "2017-10-25 11:16:52",
+     *                  "updated_at": "2017-10-25 11:16:52",
+     *                  "levels": [
+     *                  {
+     *                      "id": 0,
+     *                      "level": "string",
+     *                      "chain_id": 0,
+     *                      "created_at": "2017-10-25 11:49:08",
+     *                      "updated_at": "2017-10-25 11:49:08"
+     *                  }
+     *                  ]
+     *              }
+     *          },
+     *          "status":"OK"
+     *     }
      *
      * @apiErrorExample {json} Error-Response:
      *     HTTP/1.1 400

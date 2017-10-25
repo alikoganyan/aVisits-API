@@ -29,7 +29,7 @@ Class ChainController extends Controller
             $data = [];
             $data['chain'] = $chain;
             $data['status'] = 'OK';
-            return response()->json(["data" => ["chain" => $chain]], 200);
+            return response()->json(["data" => $data], 200);
         }
         return response()->json(['error' => 'The chain saving failed!'], 400);
     }
@@ -55,7 +55,7 @@ Class ChainController extends Controller
                 $data = [];
                 $data['chain'] = $chain;
                 $data['status'] = 'OK';
-                return response()->json($chain, 200);
+                return response()->json(["data" => $data], 200);
             } else {
                 return response()->json(['error' => 'The process of saving data failed!'], 400);
             }
