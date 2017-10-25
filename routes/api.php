@@ -171,16 +171,16 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      *     {
      *          "data": {
      *              "chain": {
-     *                  "id": 7,
-     *                  "title": "sadasdasdasd",
-     *                  "phone_number": "37455144743",
+     *                  "id": 0,
+     *                  "title": "string",
+     *                  "phone_number": "string",
      *                  "created_at": "2017-10-25 11:16:52",
      *                  "updated_at": "2017-10-25 11:16:52",
      *                  "levels": [
      *                  {
-     *                      "id": 17,
-     *                      "level": "1",
-     *                      "chain_id": 7,
+     *                      "id": 0,
+     *                      "level": "string",
+     *                      "chain_id": 0,
      *                      "created_at": "2017-10-25 11:49:08",
      *                      "updated_at": "2017-10-25 11:49:08"
      *                  }
@@ -207,6 +207,7 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      *
      * @apiParam {String} title Title
      * @apiParam {String} phone_number Phone number
+     * @apiParam {String} description Description
      * @apiParam {Object} levels [{"level":"1"}]
      *
      * @apiSuccessExample {json} Success-Response:
@@ -216,7 +217,8 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      *              "chain": {
      *                  "id": 0,
      *                  "title": "string",
-     *                  "phone_number": "37455144743",
+     *                  "phone_number": "string",
+     *                  "description": "string",
      *                  "created_at": "2017-10-25 11:16:52",
      *                  "updated_at": "2017-10-25 11:16:52",
      *                  "levels": [
@@ -251,6 +253,7 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      *
      * @apiParam {String} title Title
      * @apiParam {String} phone_number Phone number
+     * @apiParam {String} description Description
      * @apiParam {Object} levels [{"id":"0","level":"1"}]
      *
      * @apiSuccessExample {json} Success-Response:
@@ -260,7 +263,8 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      *              "chain": {
      *                  "id": 0,
      *                  "title": "string",
-     *                  "phone_number": "37455144743",
+     *                  "phone_number": "string",
+     *                  "description": "string",
      *                  "created_at": "2017-10-25 11:16:52",
      *                  "updated_at": "2017-10-25 11:16:52",
      *                  "levels": [
