@@ -17,9 +17,13 @@ use Exception;
 class SalonController extends Controller
 {
 
-    public function index(Request $request)
+    public function index(Request $request, $chainId)
     {
-        $salons = Salon::getAll();
+        if ($chainId) {
+            $salons = Salon::getByChainId($chainId);
+        } else {
+            $salons = Salon::getAll();
+        }
         return response()->json(["data" => $salons], 200);
     }
 
@@ -91,12 +95,12 @@ class SalonController extends Controller
         }
         if ($model->save()) {
             foreach ($request->input('schedule') as $key => $value) {
-                if(isset($value['id'])) {
-                    SalonSchedule::edit($value['id'],$model->id, $value['num_of_day'], $value['working_status'], $value['start'], $value['end']);
+                if (isset($value['id'])) {
+                    SalonSchedule::edit($value['id'], $model->id, $value['num_of_day'], $value['working_status'], $value['start'], $value['end']);
                 }
             }
             $model->refresh();
-            $salon=Salon::getById($model->id);
+            $salon = Salon::getById($model->id);
             return response()->json(["data" => $salon], 200);
         }
         return response()->json(["error" => "any problem with storing data!"], 400);
@@ -122,7 +126,7 @@ class SalonController extends Controller
 
     }
 
-    public function destroy($chain,$salon)
+    public function destroy($chain, $salon)
     {
         $model = Salon::find($salon);
         $model->delete();

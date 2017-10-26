@@ -1213,6 +1213,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
     Route::post('position_index', 'PositionController@index');
     Route::resource('schedule', 'ScheduleController');
     Route::resource('service_price', 'ServicePriceController');
+    Route::post('employee-salon', 'EmployeeSalonController@create');
 });
 
 

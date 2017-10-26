@@ -33,6 +33,17 @@ class Salon extends Model
     }
 
     /**
+     * Get salons by chain id
+     *
+     * @param $chainId
+     * @return mixed
+     */
+    public static function getByChainId($chainId) {
+        $salons=self::where('chain_id',$chainId)->get();
+        return $salons;
+    }
+
+    /**
      * Relationship for salon schedule
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
