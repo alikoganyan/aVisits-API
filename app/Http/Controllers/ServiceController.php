@@ -13,7 +13,7 @@ class ServiceController extends Controller
     public function index(Request $request)
     {
         $params = $request->route()->parameters();
-        $services = Service::where(["chain_id" => $params['chain']])->orderBy('id', 'desc')->get();
+        $services = Service::where(["chain_id" => $params['chain']])->with(['servicePrice'])->orderBy('id', 'desc')->get();
         return response()->json(["data" => $services], 200);
     }
 

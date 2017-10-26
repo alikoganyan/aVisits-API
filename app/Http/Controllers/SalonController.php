@@ -52,6 +52,7 @@ class SalonController extends Controller
                 }
             }else {
                 $default_schedules = SalonSchedule::default_schedules($salon->id);
+                SalonSchedule::insert($default_schedules);
             }
             $salon->refresh();
             return response()->json(['success' => 'Created successfully', 'data' => Salon::find($salon->id), 'salon_schedule' => $salon->schedule], 200);
@@ -98,16 +99,11 @@ class SalonController extends Controller
             }
         }
         if ($model->save()) {
-            if($request->input('schedule')) {
                 foreach ($request->input('schedule') as $key => $value) {
                     if (isset($value['id'])) {
                         SalonSchedule::edit($value['id'], $model->id, $value['num_of_day'], $value['working_status'], $value['start'], $value['end']);
                     }
                 }
-            }else {
-                $default_schedules = SalonSchedule::default_schedules($model->id);
-                SalonSchedule::insert($default_schedules);
-            }
             $model->refresh();
             $salon = Salon::getById($model->id);
             return response()->json(["data" => $salon], 200);

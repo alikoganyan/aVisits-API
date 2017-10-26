@@ -28,4 +28,26 @@ class Service extends Model
     protected $hidden = [
         'chain_id',
     ];
+
+    /**
+     * Get service by id
+     *
+     * @param $id
+     * @return mixed
+     */
+    public static function getById($id)
+    {
+        $service = self::query()->with(['servicePrice'])->find($id);
+        return $service;
+    }
+
+    /**
+     * Relationship for get service prices
+     *
+     * @return $this
+     */
+    public function servicePrice()
+    {
+        return $this->hasMany('App\Models\ServicePrice', 'service_id', 'id')->with(['level']);
+    }
 }

@@ -1212,8 +1212,267 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
     Route::resource('position', 'PositionController')->except('index');
     Route::post('position_index', 'PositionController@index');
     Route::resource('schedule', 'ScheduleController');
+
+    /**
+     * @api {post} /{chain}/service_price?token=:token Add service price
+     * @apiName Add service price
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Service price
+     *
+     * @apiParam {String} service_id Service ID
+     * @apiParam {String} date Date
+     * @apiParam {String} prices [{"price_id":"0","price_from":"0","price_to":"0"}]
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *     {
+     *      "data": {
+     *          "id": 1,
+     *          "service_category_id": 8,
+     *          "title": "dfsf",
+     *          "description": "sdfsdf",
+     *          "duration": 50,
+     *          "created_at": "2017-10-26 06:26:17",
+     *          "updated_at": "2017-10-26 04:16:31",
+     *          "available_for_online_recording": 1,
+     *          "only_for_online_recording": 1,
+     *          "service_price": [
+     *          {
+     *              "id": 2,
+     *              "price_level_id": 19,
+     *              "service_id": 1,
+     *              "price": "50.00",
+     *              "max_price": 40,
+     *              "inactive": 0,
+     *              "from": "2017-08-20",
+     *              "created_at": "2017-10-26 11:38:39",
+     *              "updated_at": "2017-10-26 11:38:39",
+     *              "level": {
+     *                  "id": 19,
+     *                  "level": "1",
+     *                  "chain_id": 7,
+     *                  "created_at": "2017-10-25 11:55:17",
+     *                  "updated_at": "2017-10-25 11:55:17"
+     *              }
+     *          }
+     *      "status": "OK"
+     *      }
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     *     {
+     *       "Invalid input"
+     *     }
+     */
+
+    /**
+     * @api {put} /{chain}/service_price?token=:token Edit service price
+     * @apiName Edit service price
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Service price
+     *
+     * @apiParam {String} service_id Service ID
+     * @apiParam {String} date Date
+     * @apiParam {String} prices [{"id":"0","price_id":"0","price_from":"0","price_to":"0"}]
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *     {
+     *      "data": {
+     *          "id": 1,
+     *          "service_category_id": 8,
+     *          "title": "dfsf",
+     *          "description": "sdfsdf",
+     *          "duration": 50,
+     *          "created_at": "2017-10-26 06:26:17",
+     *          "updated_at": "2017-10-26 04:16:31",
+     *          "available_for_online_recording": 1,
+     *          "only_for_online_recording": 1,
+     *          "service_price": [
+     *          {
+     *              "id": 2,
+     *              "price_level_id": 19,
+     *              "service_id": 1,
+     *              "price": "50.00",
+     *              "max_price": 40,
+     *              "inactive": 0,
+     *              "from": "2017-08-20",
+     *              "created_at": "2017-10-26 11:38:39",
+     *              "updated_at": "2017-10-26 11:38:39",
+     *              "level": {
+     *                  "id": 19,
+     *                  "level": "1",
+     *                  "chain_id": 7,
+     *                  "created_at": "2017-10-25 11:55:17",
+     *                  "updated_at": "2017-10-25 11:55:17"
+     *              }
+     *          }
+     *      "status": "OK"
+     *      }
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     *     {
+     *       "Invalid input"
+     *     }
+     */
+    Route::put('service_price', 'ServicePriceController@update');
     Route::resource('service_price', 'ServicePriceController');
+    /**
+     * @api {post} /{chain}/employee-salon?token=:token Add employee salons each other
+     * @apiName Add employee salons each other
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Employee Salon
+     *
+     * @apiParam {Integer} employee_id Employee ID
+     * @apiParam {String} salons [{"salon":"0"}]
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *     {
+     *          "employee": {
+     *              "id": 0,
+     *              "first_name": "string",
+     *              "last_name": "string",
+     *              "father_name": "string",
+     *              "photo": null,
+     *              "viber": null,
+     *              "whatsapp": null,
+     *              "birthday": null,
+     *              "email": "string",
+     *              "phone": "string",
+     *              "address": null,
+     *              "comment": null,
+     *              "position_id": 0,
+     *              "public_position": null,
+     *              "created_at": "2017-10-25 14:41:15",
+     *              "updated_at": "2017-10-25 14:41:15",
+     *              "employment_date": null,
+     *              "dismissed": 0,
+     *              "dismissed_date": null,
+     *              "displayed_in_records": null,
+     *              "available_for_online_recording": null,
+     *              "access_profile_id": null,
+     *                  "salons": [
+     *                  {
+     *                      "id": 0,
+     *                      "salon_id": 0,
+     *                      "employee_id": 4,
+     *                      "created_at": "2017-10-25 15:12:09",
+     *                      "updated_at": "2017-10-25 15:12:09",
+     *                      "salon": [
+     *                      {
+     *                          "id": 3,
+     *                          "title": "string",
+     *                          "img": null,
+     *                          "country": "string",
+     *                          "city": "string",
+     *                          "address": "string",
+     *                          "street_number": "string",
+     *                          "latitude": "string",
+     *                          "longitude": "string",
+     *                          "user_id": 0,
+     *                          "chain_id": 0,
+     *                          "current_time": "2017-10-19 10:32:40",
+     *                          "created_at": "2017-10-23 07:40:25",
+     *                          "updated_at": "2017-10-23 07:41:27"
+     *                      }
+     *                      ]
+     *            },
+     *            "status": "OK"
+     *      }
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     *     {
+     *       "Invalid input"
+     *     }
+     */
     Route::post('employee-salon', 'EmployeeSalonController@create');
+
+    /**
+     * @api {put} /{chain}/employee-salon?token=:token Edit employee salons each other
+     * @apiName Edit employee salons each other
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Employee Salon
+     *
+     * @apiParam {Integer} employee_id Employee ID
+     * @apiParam {String} salons [{"id":"employee_salon_id","salon":"0"}]
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *     {
+     *          "employee": {
+     *              "id": 0,
+     *              "first_name": "string",
+     *              "last_name": "string",
+     *              "father_name": "string",
+     *              "photo": null,
+     *              "viber": null,
+     *              "whatsapp": null,
+     *              "birthday": null,
+     *              "email": "string",
+     *              "phone": "string",
+     *              "address": null,
+     *              "comment": null,
+     *              "position_id": 0,
+     *              "public_position": null,
+     *              "created_at": "2017-10-25 14:41:15",
+     *              "updated_at": "2017-10-25 14:41:15",
+     *              "employment_date": null,
+     *              "dismissed": 0,
+     *              "dismissed_date": null,
+     *              "displayed_in_records": null,
+     *              "available_for_online_recording": null,
+     *              "access_profile_id": null,
+     *                  "salons": [
+     *                  {
+     *                      "id": 0,
+     *                      "salon_id": 0,
+     *                      "employee_id": 4,
+     *                      "created_at": "2017-10-25 15:12:09",
+     *                      "updated_at": "2017-10-25 15:12:09",
+     *                      "salon": [
+     *                      {
+     *                          "id": 3,
+     *                          "title": "string",
+     *                          "img": null,
+     *                          "country": "string",
+     *                          "city": "string",
+     *                          "address": "string",
+     *                          "street_number": "string",
+     *                          "latitude": "string",
+     *                          "longitude": "string",
+     *                          "user_id": 0,
+     *                          "chain_id": 0,
+     *                          "current_time": "2017-10-19 10:32:40",
+     *                          "created_at": "2017-10-23 07:40:25",
+     *                          "updated_at": "2017-10-23 07:41:27"
+     *                      }
+     *                      ]
+     *            },
+     *            "status": "OK"
+     *      }
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     *     {
+     *       "Invalid input"
+     *     }
+     */
+    Route::put('employee-salon', 'EmployeeSalonController@edit');
 });
 
 
