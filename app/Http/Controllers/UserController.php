@@ -82,7 +82,7 @@ class UserController extends Controller
             } catch (JWTException $e) {
                 return response()->json(['error' => 'Exception!'], 401);
             }
-            $havSalon = app('App\Http\Controllers\SalonController')->haveAnySalon();
+            $havSalon = app('App\Http\Controllers\SalonController')->haveAnySalon($chainId);
             $response = ['token' => $token, "user" => Auth::User()];
             if ($havSalon === 0) {
                 $response['redirect_to_create_salon'] = 1;

@@ -133,10 +133,13 @@ class SalonController extends Controller
         return response()->json(["success" => "1"], 200);
     }
 
-    public function haveAnySalon()
+    public function haveAnySalon($chainId=0)
     {
-        return Salon::join('chains', 'salons.chain_id', '=', 'chains.id')
-            ->where(['chains.user_id' => Auth::id(), 'salons.user_id' => Auth::id()])
-            ->count();
+        $salons=Salon::join('chains', 'salons.chain_id', '=', 'chains.id')
+            ->where(['chains.user_id' => Auth::id(), 'salons.user_id' => Auth::id()]);
+        if($chainId) {
+            $salons=$salons->where('salons.chain_id',$chainId);
+        }
+        return $salons->count();
     }
 }
