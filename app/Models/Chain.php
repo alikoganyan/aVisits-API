@@ -21,6 +21,7 @@ class Chain extends Model
     protected $hidden = [
         'user_id'
     ];
+    protected $appends = ['salonsCount'];
 
     /**
      * Get chain by id
@@ -32,6 +33,26 @@ class Chain extends Model
     {
         $chain = self::query()->with(['levels'])->find($id);
         return $chain;
+    }
+
+    /**
+     * Get salons count attribute
+     *
+     * @return int
+     */
+    public function getSalonsCountAttribute()
+    {
+        return count($this->salons);
+    }
+
+    /**
+     * Relationship for get salons
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function salons()
+    {
+        return $this->hasMany('App\Models\Salon', 'chain_id', 'id');
     }
 
     /**
