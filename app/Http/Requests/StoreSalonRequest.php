@@ -32,8 +32,7 @@ class StoreSalonRequest extends FormRequest
             "address" => "max:255",
             "latitude" => "between:0,99.99999999",
             "longitude" => "between:0,999.99999999",
-            "chain_id" => "integer|max:10",
-            "schedule"=>"required"
+            "chain_id" => "integer|max:10"
         ];
         return $rules;
     }

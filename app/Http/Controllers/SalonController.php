@@ -46,8 +46,12 @@ class SalonController extends Controller
         $salon->chain_id = $request->route('chain');
         $salon->current_time = Carbon::parse($request->input('current_time'))->format('Y-m-d H:i:s');
         if ($salon->save()) {
-            foreach ($request->input('schedule') as $key => $value) {
-                SalonSchedule::add($salon->id, $value['num_of_day'], $value['working_status'], $value['start'], $value['end']);
+            if($request->input('schedule')) {
+                foreach ($request->input('schedule') as $key => $value) {
+                    SalonSchedule::add($salon->id, $value['num_of_day'], $value['working_status'], $value['start'], $value['end']);
+                }
+            }else {
+                $default_schedules = SalonSchedule::default_schedules($salon->id);
             }
             $salon->refresh();
             return response()->json(['success' => 'Created successfully', 'data' => Salon::find($salon->id), 'salon_schedule' => $salon->schedule], 200);
@@ -94,10 +98,15 @@ class SalonController extends Controller
             }
         }
         if ($model->save()) {
-            foreach ($request->input('schedule') as $key => $value) {
-                if (isset($value['id'])) {
-                    SalonSchedule::edit($value['id'], $model->id, $value['num_of_day'], $value['working_status'], $value['start'], $value['end']);
+            if($request->input('schedule')) {
+                foreach ($request->input('schedule') as $key => $value) {
+                    if (isset($value['id'])) {
+                        SalonSchedule::edit($value['id'], $model->id, $value['num_of_day'], $value['working_status'], $value['start'], $value['end']);
+                    }
                 }
+            }else {
+                $default_schedules = SalonSchedule::default_schedules($model->id);
+                SalonSchedule::insert($default_schedules);
             }
             $model->refresh();
             $salon = Salon::getById($model->id);
