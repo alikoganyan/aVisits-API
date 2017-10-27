@@ -45,15 +45,20 @@ class SalonController extends Controller
         $salon->user_id = Auth::id();
         $salon->chain_id = $request->route('chain');
         $salon->current_time = Carbon::parse($request->input('current_time'))->format('Y-m-d H:i:s');
+        $imgName = str_random('16') . '.png';
+        if ($request->input('photo')) {
+            file_put_contents($imgName, base64_decode($request->input('photo')));
+        }
+        $salon->img=$imgName;
         if ($salon->save()) {
-            if($request->input('schedule')) {
-                foreach ($request->input('schedule') as $key => $value) {
-                    SalonSchedule::add($salon->id, $value['num_of_day'], $value['working_status'], $value['start'], $value['end']);
-                }
-            }else {
-                $default_schedules = SalonSchedule::default_schedules($salon->id);
-                SalonSchedule::insert($default_schedules);
-            }
+//            if($request->input('schedule')) {
+//                foreach ($request->input('schedule') as $key => $value) {
+//                    SalonSchedule::add($salon->id, $value['num_of_day'], $value['working_status'], $value['start'], $value['end']);
+//                }
+//            }else {
+//                $default_schedules = SalonSchedule::default_schedules($salon->id);
+//                SalonSchedule::insert($default_schedules);
+//            }
             $salon->refresh();
             return response()->json(['success' => 'Created successfully', 'data' => Salon::find($salon->id), 'salon_schedule' => $salon->schedule], 200);
         }
@@ -91,6 +96,11 @@ class SalonController extends Controller
         $model->fill($request->all());
         $model->img = null;
         $model->user_id = Auth::id();
+        $imgName = str_random('16') . '.png';
+        if ($request->input('photo')) {
+            file_put_contents('/images/'.$imgName, base64_decode($request->input('photo')));
+        }
+        $model->img=$imgName;
         $model->current_time = Carbon::parse($request->input('current_time'))->format('Y-m-d H:i:s');
         if ($request->hasFile('img')) {
             $file = $this->upload($request);
@@ -99,11 +109,11 @@ class SalonController extends Controller
             }
         }
         if ($model->save()) {
-                foreach ($request->input('schedule') as $key => $value) {
-                    if (isset($value['id'])) {
-                        SalonSchedule::edit($value['id'], $model->id, $value['num_of_day'], $value['working_status'], $value['start'], $value['end']);
-                    }
+            foreach ($request->input('schedule') as $key => $value) {
+                if (isset($value['id'])) {
+                    SalonSchedule::edit($value['id'], $model->id, $value['num_of_day'], $value['working_status'], $value['start'], $value['end']);
                 }
+            }
             $model->refresh();
             $salon = Salon::getById($model->id);
             return response()->json(["data" => $salon], 200);
@@ -138,12 +148,12 @@ class SalonController extends Controller
         return response()->json(["success" => "1"], 200);
     }
 
-    public function haveAnySalon($chainId=0)
+    public function haveAnySalon($chainId = 0)
     {
-        $salons=Salon::join('chains', 'salons.chain_id', '=', 'chains.id')
+        $salons = Salon::join('chains', 'salons.chain_id', '=', 'chains.id')
             ->where(['chains.user_id' => Auth::id(), 'salons.user_id' => Auth::id()]);
-        if($chainId) {
-            $salons=$salons->where('salons.chain_id',$chainId);
+        if ($chainId) {
+            $salons = $salons->where('salons.chain_id', $chainId);
         }
         return $salons->count();
     }

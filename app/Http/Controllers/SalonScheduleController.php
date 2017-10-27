@@ -24,7 +24,6 @@ class SalonScheduleController extends Controller
 
     public function store(Request $baseRequest, SalonScheduleStoreRequest $request)
     {
-//        $params = $request->route()->parameters();
         $data = $request->all();
         if (!SalonService::ownSalon($baseRequest, $data['salon_id'])) {
             return SalonService::ownErrorResponse();

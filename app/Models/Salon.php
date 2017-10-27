@@ -43,6 +43,10 @@ class Salon extends Model
         return $salons;
     }
 
+    public function getImgAttribute($value) {
+        return '/images/'.$value;
+    }
+
     /**
      * Relationship for salon schedule
      *
