@@ -14,7 +14,6 @@ class ChangeEmployeesTable extends Migration
     public function up()
     {
         Schema::table('employees', function (Blueprint $table) {
-            $table->dropColumn('sex');
             $table->dropColumn('card_number');
             $table->dropColumn('card_number_optional');
             $table->dropColumn('deposit');
