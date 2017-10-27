@@ -47,20 +47,19 @@ class SalonController extends Controller
         $salon->current_time = Carbon::parse($request->input('current_time'))->format('Y-m-d H:i:s');
         $imgName = str_random('16') . '.png';
         if ($request->input('photo')) {
-            fopen('/images/'.$imgName,'w');
-            chmod('/images/'.$imgName,'0777');
             file_put_contents('/images/'.$imgName, base64_decode($request->input('photo')));
+            chmod('/images/'.$imgName,'0777');
         }
         $salon->img=$imgName;
         if ($salon->save()) {
-//            if($request->input('schedule')) {
-//                foreach ($request->input('schedule') as $key => $value) {
-//                    SalonSchedule::add($salon->id, $value['num_of_day'], $value['working_status'], $value['start'], $value['end']);
-//                }
-//            }else {
-//                $default_schedules = SalonSchedule::default_schedules($salon->id);
-//                SalonSchedule::insert($default_schedules);
-//            }
+            if($request->input('schedule')) {
+                foreach ($request->input('schedule') as $key => $value) {
+                    SalonSchedule::add($salon->id, $value['num_of_day'], $value['working_status'], $value['start'], $value['end']);
+                }
+            }else {
+                $default_schedules = SalonSchedule::default_schedules($salon->id);
+                SalonSchedule::insert($default_schedules);
+            }
             $salon->refresh();
             return response()->json(['success' => 'Created successfully', 'data' => Salon::find($salon->id), 'salon_schedule' => $salon->schedule], 200);
         }
@@ -100,9 +99,8 @@ class SalonController extends Controller
         $model->user_id = Auth::id();
         $imgName = str_random('16') . '.png';
         if ($request->input('photo')) {
-            fopen('/images/'.$imgName,'w');
-            chmod('/images/'.$imgName,'0777');
             file_put_contents('/images/'.$imgName, base64_decode($request->input('photo')));
+            chmod('/images/'.$imgName,'0777');
         }
         $model->img=$imgName;
         $model->current_time = Carbon::parse($request->input('current_time'))->format('Y-m-d H:i:s');
