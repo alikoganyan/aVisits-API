@@ -14,9 +14,9 @@ class NewColumnsForEmployeesTable extends Migration
     public function up()
     {
         Schema::table('employees', function (Blueprint $table) {
-            $table->dropForeign('employees_position_id_foreign');
-            $table->dropIndex('employees_position_id_foreign');
-            $table->dropColumn('position_id');
+//            $table->dropForeign('employees_position_id_foreign');
+//            $table->dropIndex('employees_position_id_foreign');
+//            $table->dropColumn('position_id');
         });
     }
 
