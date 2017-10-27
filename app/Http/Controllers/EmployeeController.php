@@ -11,7 +11,7 @@ class EmployeeController extends Controller
 {
     public function index(Request $request){
         $params = $request->route()->parameters();
-        $employee = Employee::where(['chain_id'=>$params['chain']])->orderBy('id','desc')->get();
+        $employee = Employee::where(['chain_id'=>$params['chain']])->with(['salons'])->orderBy('id','desc')->get();
         return response()->json(['data'=>$employee,"status"=>"OK"],200);
     }
 
@@ -36,7 +36,7 @@ class EmployeeController extends Controller
     }
 
     public function show(Request $request){
-        $model = Employee::where(["id"=>$request->route('employee'),"chain_id"=>$request->route('chain')])->first();
+        $model = Employee::where(["id"=>$request->route('employee'),"chain_id"=>$request->route('chain')])->with(['salons'])->first();
         return response()->json(["data"=>["employee"=>$model, "status" => "OK" ]],200);
     }
 

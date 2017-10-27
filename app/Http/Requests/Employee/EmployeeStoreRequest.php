@@ -37,7 +37,7 @@ class EmployeeStoreRequest extends FormRequest
             'birthday'              =>'string|max:255',
             'email'                 =>'required|string|email|max:255|unique:employees,email,NULL,id,chain_id,'.$chain,
             'phone'                 =>'string|max:255|unique:employees,phone,NULL,id,chain_id,'.$chain,
-            'phone_2'               =>'string|max:255',
+//            'phone_2'               =>'string|max:255',
             'address'               =>'string|max:255',
             'card_number'           =>'numeric',
             'card_number_optional'  =>'numeric',

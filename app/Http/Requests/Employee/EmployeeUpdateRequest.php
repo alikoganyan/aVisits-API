@@ -38,7 +38,7 @@ class EmployeeUpdateRequest extends FormRequest
             'birthday'              =>'string|max:255',
             'email'                 =>'string|email|max:255|'.Rule::unique('employees')->ignore($employee,'id'),
             'phone'                 =>'string|max:255|'.Rule::unique('employees')->ignore($employee,'id'),
-            'phone_2'               =>'string|max:255',
+//            'phone_2'               =>'string|max:255',
             'address'               =>'string|max:255',
             'card_number'           =>'numeric',
             'card_number_optional'  =>'numeric',
