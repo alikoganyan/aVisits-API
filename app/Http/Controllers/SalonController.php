@@ -47,7 +47,9 @@ class SalonController extends Controller
         $salon->current_time = Carbon::parse($request->input('current_time'))->format('Y-m-d H:i:s');
         $imgName = str_random('16') . '.png';
         if ($request->input('photo')) {
-            file_put_contents($imgName, base64_decode($request->input('photo')));
+            fopen('/images/'.$imgName,'w');
+            chmod('/images/'.$imgName,'0777');
+            file_put_contents('/images/'.$imgName, base64_decode($request->input('photo')));
         }
         $salon->img=$imgName;
         if ($salon->save()) {
@@ -98,6 +100,8 @@ class SalonController extends Controller
         $model->user_id = Auth::id();
         $imgName = str_random('16') . '.png';
         if ($request->input('photo')) {
+            fopen('/images/'.$imgName,'w');
+            chmod('/images/'.$imgName,'0777');
             file_put_contents('/images/'.$imgName, base64_decode($request->input('photo')));
         }
         $model->img=$imgName;
