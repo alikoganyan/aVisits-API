@@ -886,8 +886,8 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      */
 
     /**
-     * @api {post} /{chain}/employee-schedule?token=:token Create employee schedule First Type
-     * @apiName Create employee schedule First Type
+     * @api {post} /{chain}/employee-schedule?token=:token Create employee schedule for type shifts
+     * @apiName Create employee schedule for type shifts
      * @apiHeaderExample {json} Header-Example:
      *     {
      *       "Content-Type": "Application/json"
@@ -940,8 +940,8 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
 
 
     /**
-     * @api {put} /{chain}/employee-schedule?token=:token Update employee schedule First Type
-     * @apiName Update employee schedule First Type
+     * @api {put} /{chain}/employee-schedule?token=:token Update employee schedule for type shifts
+     * @apiName Update employee schedule for type shifts
      * @apiHeaderExample {json} Header-Example:
      *     {
      *       "Content-Type": "Application/json"
@@ -994,8 +994,8 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      */
 
     /**
-     * @api {post} /{chain}/employee-schedule?token=:token Create employee schedule Second Type
-     * @apiName Create employee schedule Second Type
+     * @api {post} /{chain}/employee-schedule?token=:token Create employee schedule for type days of week
+     * @apiName Create employee schedule for type days of week
      * @apiHeaderExample {json} Header-Example:
      *     {
      *       "Content-Type": "Application/json"
@@ -1045,8 +1045,8 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      */
 
     /**
-     * @api {put} /{chain}/employee-schedule?token=:token Update employee schedule Second Type
-     * @apiName Create employee schedule Second Type
+     * @api {put} /{chain}/employee-schedule?token=:token Update employee schedule for type days of week
+     * @apiName Update employee schedule for type days of week
      * @apiHeaderExample {json} Header-Example:
      *     {
      *       "Content-Type": "Application/json"
