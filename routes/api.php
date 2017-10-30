@@ -896,7 +896,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *
      * @apiParam {String} employee_id Employee ID
      * @apiParam {String} salon_id Salon ID
-     * @apiParam {String} type Type
+     * @apiParam {Integer} type Type
      * @apiParam {String} date Date
      * @apiParam {String} working_days Working Days
      * @apiParam {String} weekends Weekends
@@ -951,7 +951,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      * @apiParam {String} id Schedule ID
      * @apiParam {String} employee_id Employee ID
      * @apiParam {String} salon_id Salon ID
-     * @apiParam {String} type Type
+     * @apiParam {Integer} type Type
      * @apiParam {String} date Date
      * @apiParam {String} working_days Working Days
      * @apiParam {String} weekends Weekends
@@ -1004,7 +1004,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *
      * @apiParam {String} employee_id Employee ID
      * @apiParam {String} salon_id Salon ID
-     * @apiParam {String} type Type
+     * @apiParam {Integer} type Type
      * @apiParam {String} date Date
      * @apiParam {String} days "days" :[{"1":[{"working_status":"1","start":"14:40","end":"14:30"}]}]
      *
@@ -1055,7 +1055,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *
      * @apiParam {String} employee_id Employee ID
      * @apiParam {String} salon_id Salon ID
-     * @apiParam {String} type Type
+     * @apiParam {Integer} type Type
      * @apiParam {String} date Date
      * @apiParam {String} days "days" :[{"1":[{"id":schedule_id,"working_status":"1","start":"14:40","end":"14:30"}]}]
      *
