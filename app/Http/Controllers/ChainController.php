@@ -95,7 +95,7 @@ Class ChainController extends Controller
     public function firstChain()
     {
         $chain = new Chain();
-        $chain->fill(["title" => "Сеть 1", "description" => "First Chain", "user_id" => Auth::id()]);
+        $chain->fill(["title" => "Сеть 1", "user_id" => Auth::id()]);
         $chain->user_id = Auth::id();
         if ($chain->save()) {
             return $chain;

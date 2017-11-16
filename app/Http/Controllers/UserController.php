@@ -32,7 +32,7 @@ class UserController extends Controller
         $user = new User([
             'name' => $data['name'],
             'email' => $data['email'],
-            'phone' => $data['phone'] || "",
+            'phone' => $data['phone'] ?: "",
             'password' => bcrypt($data['password']),
         ]);
         if ($user->save()) {
@@ -58,17 +58,17 @@ class UserController extends Controller
             $where = ['phone' => $credentials['phone']];
         }
         if (count($where) > 0) {
-            $user = User::with('chains')->where($where)->first();
+            $user = User::with('chains')->select("id")->where($where)->first();
             if($user){
-                return response()->json(["data"=>["user"=>$user],"status"=>"OK"],200);
+                return response()->json(["data"=>["chains"=>$user->chains],"status"=>"OK"],200);
             }else{
-                return response()->json(["data"=>["user"=>[]],"status"=>"USER NOT FOUND"],200);
+                return response()->json(["data"=>["chains"=>[]],"status"=>"USER NOT FOUND"],404);
             }
         }
         return response()->json(['error'=>'Phone or Email is empty'], 400);
     }
 
-    public function login(Request $request){
+    public function login(Request $request) {
         $chainId = (integer)$request->route('chain');
         if(empty($chainId)){
             return response()->json(['error'=>'The id of chain into route is required'],400);
