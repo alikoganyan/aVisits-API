@@ -57,32 +57,32 @@ use Illuminate\Http\Request;
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200
  *       {
- *          "user": {
- *          "id": 0,
- *          "name": "string",
- *          "email": "string",
- *          "last_name": "string",
- *          "father_name": "string",
- *          "phone": "string",
- *          "created_at": "2017-10-19T13:11:49.858Z",
- *          "updated_at": "2017-10-19T13:11:49.858Z",
- *          "chains": [
- *              {
- *                  "id": 0,
- *                  "title": "string",
- *                  "description": "string",
- *                  "user_id": 0,
- *                  "created_at": "string",
- *                  "updated_at": "string"
- *              }
- *          ]
- *        }
+ *          "data": {
+ *              "chains": [
+ *                  {
+ *                      "id": 0,
+ *                      "title": "string",
+ *                      "user_id": 0,
+ *                      "created_at": "string",
+ *                      "updated_at": "string"
+ *                  }
+ *              ]
+ *          },
+ *          "status": "OK"
  *       }
  *
  * @apiErrorExample {json} Error-Response:
  *     HTTP/1.1 400
  *     {
  *       "Invalid input"
+ *     }
+ *
+ *     HTTP/1.1 404
+ *     {
+ *       "data":{
+ *              "chains":[]
+ *          },
+ *       "status": "USER NOT FOUND"
  *     }
  */
 
@@ -218,7 +218,6 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      *                  "id": 0,
      *                  "title": "string",
      *                  "phone_number": "string",
-     *                  "description": "string",
      *                  "created_at": "2017-10-25 11:16:52",
      *                  "updated_at": "2017-10-25 11:16:52",
      *                  "levels": [
@@ -264,7 +263,6 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      *                  "id": 0,
      *                  "title": "string",
      *                  "phone_number": "string",
-     *                  "description": "string",
      *                  "created_at": "2017-10-25 11:16:52",
      *                  "updated_at": "2017-10-25 11:16:52",
      *                  "levels": [
@@ -361,7 +359,8 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *          "address": "string",
      *          "latitude": 0,
      *          "longitude": 0,
-     *          "current_time": "2017-10-24T07:14:40.498Z"
+     *          "current_time": "2017-10-24T07:14:40.498Z",
+     *          "notify_about_appointments":1
      *     }
      *
      * @apiErrorExample {json} Error-Response:
@@ -388,6 +387,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      * @apiParam {String} latitude Latitude
      * @apiParam {String} longitude Longitude
      * @apiParam {String} current_time Current time
+     * @apiParam {Integer} notify_about_appointments Reminders of default notes
      * @apiParam {Array}  schedule "schedule" :[  {"num_of_day":"1","working_status" :"1","start": "18:27","end": "20:20"}]
      *
      * @apiSuccessExample {json} Success-Response:
@@ -401,7 +401,8 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *          "schedule": "[]",
      *          "latitude": 0,
      *          "longitude": 0,
-     *          "current_time": "2017-10-24T07:14:40.498Z"
+     *          "current_time": "2017-10-24T07:14:40.498Z",
+     *          "notify_about_appointments": 1
      *     }
      *
      * @apiErrorExample {json} Error-Response:
@@ -429,6 +430,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      * @apiParam {String} latitude Latitude
      * @apiParam {String} longitude Longitude
      * @apiParam {String} current_time Current time
+     * @apiParam {Integer} notify_about_appointments Reminders of default notes
      * @apiParam  {Array}   schedule "schedule" :[  {"id":schedule_id,"num_of_day":"1","working_status" :"1","start": "18:27","end": "20:20"}]
      *
      * @apiSuccessExample {json} Success-Response:
@@ -443,7 +445,8 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *          "latitude": 0,
      *          "longitude": 0,
      *          "schedule": "[]",
-     *          "current_time": "2017-10-24T07:14:40.498Z"
+     *          "current_time": "2017-10-24T07:14:40.498Z",
+     *          "notify_about_appointments":1
      *     }
      *
      * @apiErrorExample {json} Error-Response:
@@ -1384,7 +1387,8 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *                          "chain_id": 0,
      *                          "current_time": "2017-10-19 10:32:40",
      *                          "created_at": "2017-10-23 07:40:25",
-     *                          "updated_at": "2017-10-23 07:41:27"
+     *                          "updated_at": "2017-10-23 07:41:27",
+     *                          "notify_about_appointment":"1",
      *                      }
      *                      ]
      *            },
