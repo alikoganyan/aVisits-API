@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -153,6 +154,92 @@ use Illuminate\Http\Request;
  *       "Invalid input"
  *     }
  */
+
+/**
+ * @api {post} /user/forgot-password Forgot Password
+ * @apiName Forgot Password
+ * @apiHeaderExample {json} Header-Example:
+ *     {
+ *       "Content-Type": "Application/json"
+ *     }
+ * @apiGroup Authentication
+ *
+ * @apiParam {String} type for (Email-1,Phone-2)
+ * @apiParam {String} email Email if type(1)
+ * @apiParam {String} phone Phone if type(2)
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200
+ *     {
+ *          "success": "true",
+ *          "errors": "[]"
+ *     }
+ *
+ * @apiErrorExample {json} Error-Response:
+ *     HTTP/1.1 400
+ *     {
+ *       "success": "false",
+ *       "errors": {
+ *         ":fieldName":[
+ *              ":errorMessage"
+ *         ]
+ *       }
+ *     }
+ */
+Route::post('/user/forgot-password', 'UserController@forgotPassword');
+
+/**
+ * @api {post} /user/reset-password Reset Password
+ * @apiName Reset Password
+ * @apiHeaderExample {json} Header-Example:
+ *     {
+ *       "Content-Type": "Application/json"
+ *     }
+ * @apiGroup Authentication
+ *
+ * @apiParam {String} token Token
+ * @apiParam {String} type Type for (Email-1,Phone-2)
+ * @apiParam {String} phone Phone number
+ * @apiParam {String} password Password
+ * @apiParam {String} confirm_password Confirm Password
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200
+ *     {
+ *          "success": "true",
+ *          "errors": "[]"
+ *     }
+ *
+ * @apiErrorExample {json} Error-Response:
+ *     HTTP/1.1 400
+ *     {
+ *       "success": "false",
+ *       "errors": {
+ *         ":fieldName":[
+ *              ":errorMessage"
+ *         ]
+ *       }
+ *     }
+ */
+Route::post('/user/reset-password', 'UserController@resetPassword');
+
+/**
+ * @api {post} /user/generate-password Generate Password
+ * @apiName Generate Password
+ * @apiHeaderExample {json} Header-Example:
+ *     {
+ *       "Content-Type": "Application/json"
+ *     }
+ * @apiGroup Authentication
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200
+ *     {
+ *          "success": "true",
+ *          "password": ":password"
+ *     }
+ */
+Route::post('/user/generate-password', 'UserController@generatePassword');
 Route::get('/user', function (Request $request) {
     return $request->user();
 });

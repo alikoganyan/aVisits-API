@@ -14,3 +14,5 @@ public/files/
 public/.htaccess
 /public/documentation
 apidoc.json
+public/*.jpg
+public/*.png
