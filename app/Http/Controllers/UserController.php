@@ -122,23 +122,27 @@ class UserController extends Controller
         if ($validation->fails()) {
             return response()->json(['success' => false, 'errors' => $validation->messages()], 400);
         } else {
-            $user = User::where('phone', $request->input('phone'))->first();
-            if ($user->send_code_block_count >= 3 && Carbon::parse($user->send_code_block_date)->diffInMinutes(Carbon::now()) < 60) {
-                return response()->json(['success' => false, 'errors' => ['user' => 'user_blocked']], 400);
-            }
             if ($request->input('type') == '2') {
-                $token = str_random(6);
-                $user->reset_password_token = $token;
-                $user->send_code_block_count = $user->send_code_block_count + 1;
-                $user->send_code_block_date = Carbon::now()->format('Y-m-d H:i:s');
-                $user->save();
+                $user = User::where('phone', $request->input('phone'))->first();
+                if ($user) {
+                    if ($user->send_code_block_count >= 3 && Carbon::parse($user->send_code_block_date)->diffInMinutes(Carbon::now()) < 60) {
+                        return response()->json(['success' => false, 'errors' => ['user' => 'user_blocked']], 400);
+                    }
+                    $token = str_random(6);
+                    $user->reset_password_token = $token;
+                    $user->send_code_block_count = $user->send_code_block_count + 1;
+                    $user->send_code_block_date = Carbon::now()->format('Y-m-d H:i:s');
+                    $user->save();
+                }
                 $client = new Client();
                 $client->request('GET', "http://smsc.ru/sys/send.php?login=plyyyy&psw=4b60008e342a5e3799190646c2a81185&phones=" . $request->input('phone') . "&mes=" . $token . "&sender=aVisits");
             } else {
                 $token = str_random(32);
                 $user = User::where('email', $request->input('email'))->first();
-                $user->reset_password_token = $token;
-                $user->save();
+                if ($user) {
+                    $user->reset_password_token = $token;
+                    $user->save();
+                }
                 $headers = "MIME-Version: 1.0" . "\r\n";
                 $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
                 $headers .= 'From: aVisits <noreply@avisits.com>' . "\r\n";
@@ -172,25 +176,29 @@ class UserController extends Controller
         if ($validation->fails()) {
             if ($request->has('phone')) {
                 $user = User::where('phone', $request->input('phone'))->first();
-                if ($user->wrong_code_block_count >= 3 && Carbon::parse($user->wrong_code_block_date)->diffInMinutes(Carbon::now()) < 30) {
-                    return response()->json(['success' => false, 'errors' => ['user' => 'user_blocked']], 400);
-                }
-                if (in_array('token', $validation->errors()->keys())) {
-                    $user->wrong_code_block_count = $user->wrong_code_block_count + 1;
-                    $user->wrong_code_block_date = Carbon::now()->format('Y-m-d H:i:s');
-                    $user->save();
+                if ($user) {
+                    if ($user->wrong_code_block_count >= 3 && Carbon::parse($user->wrong_code_block_date)->diffInMinutes(Carbon::now()) < 30) {
+                        return response()->json(['success' => false, 'errors' => ['user' => 'user_blocked']], 400);
+                    }
+                    if (in_array('token', $validation->errors()->keys())) {
+                        $user->wrong_code_block_count = $user->wrong_code_block_count + 1;
+                        $user->wrong_code_block_date = Carbon::now()->format('Y-m-d H:i:s');
+                        $user->save();
+                    }
                 }
             }
             return response()->json(['success' => false, 'errors' => $validation->messages()], 400);
         } else {
             $user = User::where('reset_password_token', $request->input('token'))->first();
-            $user->password = bcrypt($request->input('password'));
-            $user->reset_password_token = '';
-            $user->wrong_code_block_count = 0;
-            $user->wrong_code_block_date = Carbon::now();
-            $user->send_code_block_count = 0;
-            $user->send_code_block_date = Carbon::now();
-            $user->save();
+            if ($user) {
+                $user->password = bcrypt($request->input('password'));
+                $user->reset_password_token = '';
+                $user->wrong_code_block_count = 0;
+                $user->wrong_code_block_date = Carbon::now();
+                $user->send_code_block_count = 0;
+                $user->send_code_block_date = Carbon::now();
+                $user->save();
+            }
             return response()->json(['success' => true], 200);
         }
     }
