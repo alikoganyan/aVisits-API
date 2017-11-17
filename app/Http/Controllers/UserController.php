@@ -146,7 +146,7 @@ class UserController extends Controller
                 $headers = "MIME-Version: 1.0" . "\r\n";
                 $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
                 $headers .= 'From: aVisits <noreply@avisits.com>' . "\r\n";
-                mail($request->input('email'), 'Reset Password', 'http://avisits.com/#/auth/reset-password?token=' . $token, $headers);
+                mail($request->input('email'), 'Reset Password', '<p>dasdasd</p>http://avisits.com/#/auth/reset-password?token=' . $token, $headers);
             }
             return response()->json(['success' => true, 'errors' => []], 200);
         }
