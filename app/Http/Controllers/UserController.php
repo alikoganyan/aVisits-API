@@ -54,12 +54,11 @@ class UserController extends Controller
 
     public function signin(Request $request)
     {
-        $credentials = $request->only('phone', 'email');
-        $where = [];
-        if (isset($credentials['email']) && !empty($credentials['email'])) {
-            $where = ['email' => $credentials['email']];
-        } elseif (isset($credentials['phone']) && !empty($credentials['phone'])) {
-            $where = ['phone' => $credentials['phone']];
+        $credentials = $request->only('login');
+        if (strpos($request->input('login'), '@') === false) {
+            $where = ['phone' => $request->input('login')];
+        } else {
+            $where = ['email' => $request->input('login')];
         }
         if (count($where) > 0) {
             $user = User::with('chains')->select("id")->where($where)->first();
@@ -78,8 +77,13 @@ class UserController extends Controller
         if (empty($chainId)) {
             return response()->json(['error' => 'The id of chain into route is required'], 400);
         }
-        $credentials = $request->only('phone', 'email', 'password');
-        if (!empty($credentials['password']) && (!empty($credentials['email']) || !empty($credentials['phone']))) {
+        $credentials = $request->only('password');
+        if (!empty($credentials['password']) && (!empty($request->input('login')))) {
+            if (strpos($request->input('login'), '@') === false) {
+               $credentials['phone']=$request->input('login');
+            } else {
+                $credentials['email']=$request->input('login');
+            }
             try {
                 if (!$token = JWTAuth::attempt($credentials)) {
                     return response()->json(['error' => 'Invalid Credentials!'], 401);
@@ -101,7 +105,81 @@ class UserController extends Controller
             $response["chain"] = $ownChain;
             return response()->json($response, 200);
         }
-        return response()->json(['error' => 'One and may be all fields: email, phone, password, are empty.'], 400);
+        return response()->json(['error' => 'One and may be all fields: login, password, are empty.'], 400);
+    }
+
+    /**
+     * Mask
+     *
+     * @param $str
+     * @param $first
+     * @param $last
+     * @return string
+     */
+    function mask($str, $first, $last)
+    {
+        $len = strlen($str);
+        $toShow = $first + $last;
+        return substr($str, 0, $len <= $toShow ? 0 : $first) . str_repeat("*", $len - ($len <= $toShow ? 0 : $toShow)) . substr($str, $len - $last, $len <= $toShow ? 0 : $last);
+    }
+
+    /**
+     * Partially hide email
+     *
+     * @param $email
+     * @return string
+     */
+    function hide_email($email)
+    {
+        $mail_parts = explode("@", $email);
+        $domain_parts = explode('.', $mail_parts[1]);
+
+        $mail_parts[0] = $this->mask($mail_parts[0], 2, 1); // show first 2 letters and last 1 letter
+        $domain_parts[0] = $this->mask($domain_parts[0], 2, 1); // same here
+        $mail_parts[1] = implode('.', $domain_parts);
+
+        return implode("@", $mail_parts);
+    }
+
+    /**
+     * Partially hide phone
+     *
+     * @param $phone
+     * @return string
+     */
+    function hide_phone($phone)
+    {
+        return substr($phone, 0, -6) . "******";
+    }
+
+    /**
+     * Get user login info
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function loginInfo(Request $request)
+    {
+        $rules = ['login' => 'required|max:255'];
+        $validation = Validator::make($request->all(), $rules);
+        if ($validation->fails()) {
+            return response()->json(['success' => false, 'errors' => $validation->messages()], 400);
+        } else {
+            if (strpos($request->input('login'), '@') === false) {
+                $user = User::where('phone', $request->input('login'))->first();
+            } else {
+                $user = User::where('email', $request->input('login'))->first();
+            }
+            if (!$user) {
+                return response()->json(['success' => false, 'errors' => ['user' => 'User not found']], 400);
+            } else {
+                $userInfo = [
+                    'email' => $this->hide_email($user->email),
+                    'phone' => $this->hide_phone($user->phone)
+                ];
+                return response()->json(['success' => true, 'errors' => [], 'data' => $userInfo], 400);
+            }
+        }
     }
 
     /**
@@ -113,7 +191,7 @@ class UserController extends Controller
     public function forgotPassword(Request $request)
     {
         $rules = [];
-        if ($request->has('type') && $request->input('type') == '1') {
+        if ($request->has('email')) {
             $rules['email'] = 'required|max:255|exists:users,email';
         } else {
             $rules['phone'] = 'required|max:255|exists:users,phone';
@@ -122,7 +200,7 @@ class UserController extends Controller
         if ($validation->fails()) {
             return response()->json(['success' => false, 'errors' => $validation->messages()], 400);
         } else {
-            if ($request->input('type') == '2') {
+            if ($request->has('phone')) {
                 $user = User::where('phone', $request->input('phone'))->first();
                 if ($user) {
                     if ($user->send_code_block_count >= 3 && Carbon::parse($user->send_code_block_date)->diffInMinutes(Carbon::now()) < 60) {
@@ -146,7 +224,7 @@ class UserController extends Controller
                 $headers = "MIME-Version: 1.0" . "\r\n";
                 $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
                 $headers .= 'From: aVisits <noreply@avisits.com>' . "\r\n";
-                mail($request->input('email'), 'Reset Password', '<a href="http://avisits.com/#/auth/reset-password?token=' . $token.'">Reset Password</a>', $headers);
+                mail($request->input('email'), 'Reset Password', '<a href="http://avisits.com/#/auth/reset-password?token=' . $token . '">Reset Password</a>', $headers);
             }
             return response()->json(['success' => true, 'errors' => []], 200);
         }
@@ -162,14 +240,11 @@ class UserController extends Controller
     {
         $rules = [
             "token" => 'required|exists:users,reset_password_token',
-            "type" => 'required',
             "password" => "required|min:6|max:12",
             "confirm_password" => "same:password|required|min:6|max:12",
         ];
-        if ($request->input('type') == '2') {
-            $rules['phone'] = 'required|exists:users,phone';
-        }
         if ($request->has('phone')) {
+            $rules['phone'] = 'required|exists:users,phone';
             $user = User::where('phone', $request->input('phone'))->first();
         }
         $validation = Validator::make($request->all(), $rules);

@@ -29,6 +29,6 @@ class User extends Authenticatable
 
     public function chains()
     {
-        return $this->hasMany('App\Models\Chain', 'user_id', 'id');
+        return $this->hasMany('App\Models\Chain', 'user_id', 'id')->select('id','title');
     }
 }

@@ -52,8 +52,7 @@ use Illuminate\Support\Facades\Route;
  *     }
  * @apiGroup Authentication
  *
- * @apiParam {String} phone Phone
- * @apiParam {String} email Email
+ * @apiParam {String} login Login
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200
@@ -62,10 +61,7 @@ use Illuminate\Support\Facades\Route;
  *              "chains": [
  *                  {
  *                      "id": 0,
- *                      "title": "string",
- *                      "user_id": 0,
- *                      "created_at": "string",
- *                      "updated_at": "string"
+ *                      "title": "string"
  *                  }
  *              ]
  *          },
@@ -88,34 +84,6 @@ use Illuminate\Support\Facades\Route;
  */
 
 /**
- * @api {post} /user/signup Sign up
- * @apiName Sign up
- * @apiHeaderExample {json} Header-Example:
- *     {
- *       "Content-Type": "Application/json"
- *     }
- * @apiGroup Authentication
- *
- * @apiParam {String} name Name
- * @apiParam {String} phone Phone
- * @apiParam {String} email Email
- * @apiParam {String} password Password
- * @apiParam {String} password_confirmation Password Confirmation
- *
- * @apiSuccessExample {json} Success-Response:
- *     HTTP/1.1 200
- *     {
- *       "successful operation"
- *     }
- *
- * @apiErrorExample {json} Error-Response:
- *     HTTP/1.1 400
- *     {
- *       "Invalid input"
- *     }
- */
-
-/**
  * @api {post} /{chain}/user/login Authentication Second step
  * @apiName Authentication Second step
  * @apiHeaderExample {json} Header-Example:
@@ -124,8 +92,7 @@ use Illuminate\Support\Facades\Route;
  *     }
  * @apiGroup Authentication
  *
- * @apiParam {String} phone Phone
- * @apiParam {String} email Email
+ * @apiParam {String} login Login
  * @apiParam {String} password Password
  *
  * @apiSuccessExample {json} Success-Response:
@@ -156,6 +123,41 @@ use Illuminate\Support\Facades\Route;
  */
 
 /**
+ * @api {post} /user/login-info Login Info
+ * @apiName Login Info
+ * @apiHeaderExample {json} Header-Example:
+ *     {
+ *       "Content-Type": "Application/json"
+ *     }
+ * @apiGroup Authentication
+ *
+ * @apiParam {String} login Login
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200
+ *     {
+ *          "success": true,
+ *          "errors": [],
+ *          "data": {
+ *              "email": ":email",
+ *              "phone": ":phone"
+ *          }
+ *     }
+ *
+ * @apiErrorExample {json} Error-Response:
+ *     HTTP/1.1 400
+ *     {
+ *       "success": "false",
+ *       "errors": {
+ *         ":fieldName":[
+ *              ":errorMessage"
+ *         ]
+ *       }
+ *     }
+ */
+Route::post('/user/login-info', 'UserController@loginInfo');
+
+/**
  * @api {post} /user/forgot-password Forgot Password
  * @apiName Forgot Password
  * @apiHeaderExample {json} Header-Example:
@@ -164,7 +166,6 @@ use Illuminate\Support\Facades\Route;
  *     }
  * @apiGroup Authentication
  *
- * @apiParam {String} type for (Email-1,Phone-2)
  * @apiParam {String} email Email if type(1)
  * @apiParam {String} phone Phone if type(2)
  *
@@ -198,7 +199,6 @@ Route::post('/user/forgot-password', 'UserController@forgotPassword');
  * @apiGroup Authentication
  *
  * @apiParam {String} token Token
- * @apiParam {String} type Type for (Email-1,Phone-2)
  * @apiParam {String} phone Phone number
  * @apiParam {String} password Password
  * @apiParam {String} confirm_password Confirm Password
