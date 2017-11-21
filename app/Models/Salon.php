@@ -47,6 +47,10 @@ class Salon extends Model
         return '/images/'.$value;
     }
 
+    public function getNotifyAboutAppointmentsAttribute($value) {
+        return unserialize($value);
+    }
+
     /**
      * Relationship for salon schedule
      *

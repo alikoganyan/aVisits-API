@@ -45,6 +45,7 @@ class SalonController extends Controller
         $salon->user_id = Auth::id();
         $salon->chain_id = $request->route('chain');
         $salon->current_time = Carbon::parse($request->input('current_time'))->format('Y-m-d H:i:s');
+        $salon->notify_about_appointments = serialize($request->input('notify_about_appointments'));
         $imgName = str_random('16') . '.png';
         if ($request->input('photo')) {
             file_put_contents('images/'.$imgName, base64_decode($request->input('photo')));
@@ -97,6 +98,7 @@ class SalonController extends Controller
         $model->fill($request->all());
         $model->img = null;
         $model->user_id = Auth::id();
+        $salon->notify_about_appointments = serialize($request->input('notify_about_appointments'));
         $imgName = str_random('16') . '.png';
         if ($request->input('photo')) {
             file_put_contents('images/'.$imgName, base64_decode($request->input('photo')));

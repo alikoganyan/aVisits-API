@@ -447,7 +447,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *          "latitude": 0,
      *          "longitude": 0,
      *          "current_time": "2017-10-24T07:14:40.498Z",
-     *          "notify_about_appointments":1
+     *          "notify_about_appointments":"string"
      *     }
      *
      * @apiErrorExample {json} Error-Response:
@@ -489,7 +489,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *          "latitude": 0,
      *          "longitude": 0,
      *          "current_time": "2017-10-24T07:14:40.498Z",
-     *          "notify_about_appointments": 1
+     *          "notify_about_appointments": "string"
      *     }
      *
      * @apiErrorExample {json} Error-Response:
@@ -533,7 +533,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *          "longitude": 0,
      *          "schedule": "[]",
      *          "current_time": "2017-10-24T07:14:40.498Z",
-     *          "notify_about_appointments":1
+     *          "notify_about_appointments":"string"
      *     }
      *
      * @apiErrorExample {json} Error-Response:
@@ -1475,7 +1475,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *                          "current_time": "2017-10-19 10:32:40",
      *                          "created_at": "2017-10-23 07:40:25",
      *                          "updated_at": "2017-10-23 07:41:27",
-     *                          "notify_about_appointment":"1",
+     *                          "notify_about_appointment":"string",
      *                      }
      *                      ]
      *            },
