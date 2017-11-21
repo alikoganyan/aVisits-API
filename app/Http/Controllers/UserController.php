@@ -62,6 +62,12 @@ class UserController extends Controller
         }
         if (count($where) > 0) {
             $user = User::with('chains')->select("id")->where($where)->first();
+            foreach ($user->chains as $key=>$value)  {
+                $aa=new \stdClass();
+                $aa->id=$user->chains[$key]['id'];
+                $aa->title=$user->chains[$key]['title'];
+                $user->chains[$key]=$aa;
+            }
             if ($user) {
                 return response()->json(["data" => ["chains" => $user->chains], "status" => "OK"], 200);
             } else {
