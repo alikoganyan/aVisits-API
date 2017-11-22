@@ -45,7 +45,7 @@ class SalonController extends Controller
         $salon->user_id = Auth::id();
         $salon->chain_id = $request->route('chain');
         $salon->current_time = Carbon::parse($request->input('current_time'))->format('Y-m-d H:i:s');
-        $salon->notify_about_appointments = serialize($request->input('notify_about_appointments'));
+        $salon->notify_about_appointments = implode(',',$request->input('notify_about_appointments'));
         $imgName = str_random('16') . '.png';
         if ($request->input('photo')) {
             file_put_contents('images/'.$imgName, base64_decode($request->input('photo')));
@@ -62,7 +62,10 @@ class SalonController extends Controller
                 SalonSchedule::insert($default_schedules);
             }
             $salon->refresh();
-            return response()->json(['success' => 'Created successfully', 'data' => Salon::find($salon->id), 'salon_schedule' => $salon->schedule], 200);
+            $salonRespone = Salon::find($salon->id);
+            $salonRespone = $salonRespone->getAttributes();
+            $salonRespone['notify_about_appointments'] = explode(',',$salonRespone['notify_about_appointments']);
+            return response()->json(['success' => 'Created successfully', 'data' => $salonRespone, 'salon_schedule' => $salon->schedule], 200);
         }
         return response()->json(["error" => "any problem with storing data"], 400);
     }

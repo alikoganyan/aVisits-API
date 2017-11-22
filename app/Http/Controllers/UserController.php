@@ -62,13 +62,13 @@ class UserController extends Controller
         }
         if (count($where) > 0) {
             $user = User::with('chains')->select("id")->where($where)->first();
-            foreach ($user->chains as $key=>$value)  {
-                $aa=new \stdClass();
-                $aa->id=$user->chains[$key]['id'];
-                $aa->title=$user->chains[$key]['title'];
-                $user->chains[$key]=$aa;
-            }
             if ($user) {
+                foreach ($user->chains as $key=>$value)  {
+                    $chain = new \stdClass();
+                    $chain->id = $user->chains[$key]['id'];
+                    $chain->title = $user->chains[$key]['title'];
+                    $user->chains[$key] = $chain;
+                }
                 return response()->json(["data" => ["chains" => $user->chains], "status" => "OK"], 200);
             } else {
                 return response()->json(["data" => ["chains" => []], "status" => "USER NOT FOUND"], 404);

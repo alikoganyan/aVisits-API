@@ -447,7 +447,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *          "latitude": 0,
      *          "longitude": 0,
      *          "current_time": "2017-10-24T07:14:40.498Z",
-     *          "notify_about_appointments":"[]"
+     *          "notify_about_appointments":["1h11","2h11","3h11"]
      *     }
      *
      * @apiErrorExample {json} Error-Response:
@@ -474,8 +474,15 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      * @apiParam {String} latitude Latitude
      * @apiParam {String} longitude Longitude
      * @apiParam {String} current_time Current time
-     * @apiParam {String} notify_about_appointments Reminders of default notes(["key1":"0","key2":"1"])
-     * @apiParam {Array}  schedule "schedule" :[  {"num_of_day":"1","working_status" :"1","start": "18:27","end": "20:20"}]
+     * @apiParam {Array} notify_about_appointments Reminders of default notes. Available Values: ["1h11","2h11","3h11","1d19","1d12","2d12","3d12","7d12"]
+     * @apiParam {Array}  schedule [
+     *                                 {   "id":schedule_id,
+     *                                     "num_of_day":"1",
+     *                                     "working_status" :"1",
+     *                                     "start": "18:27",
+     *                                     "end": "20:20"
+     *                                 }
+     *                             ]
      *
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200
@@ -489,7 +496,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *          "latitude": 0,
      *          "longitude": 0,
      *          "current_time": "2017-10-24T07:14:40.498Z",
-     *          "notify_about_appointments": "[]"
+     *          "notify_about_appointments": ["1h11","2h11","3h11"]
      *     }
      *
      * @apiErrorExample {json} Error-Response:
@@ -517,9 +524,15 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      * @apiParam {String} latitude Latitude
      * @apiParam {String} longitude Longitude
      * @apiParam {String} current_time Current time
-     * @apiParam {String} notify_about_appointments Reminders of default notes(["key1":"0","key2":"1"])
-     * @apiParam  {Array}   schedule "schedule" :[  {"id":schedule_id,"num_of_day":"1","working_status" :"1","start": "18:27","end": "20:20"}]
-     *
+     * @apiParam {Array} notify_about_appointments Reminders of default notes. Available Values: ["1h11","2h11","3h11","1d19","1d12","2d12","3d12","7d12"]
+     * @apiParam {Array}  schedule [
+     *                                 {   "id":schedule_id,
+     *                                     "num_of_day":"1",
+     *                                     "working_status" :"1",
+     *                                     "start": "18:27",
+     *                                     "end": "20:20"
+     *                                 }
+     *                             ]
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200
      *     {
@@ -533,7 +546,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *          "longitude": 0,
      *          "schedule": "[]",
      *          "current_time": "2017-10-24T07:14:40.498Z",
-     *          "notify_about_appointments":"[]"
+     *          "notify_about_appointments":["1h11","2h11","3h11"]
      *     }
      *
      * @apiErrorExample {json} Error-Response:
