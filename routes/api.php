@@ -447,7 +447,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *          "latitude": 0,
      *          "longitude": 0,
      *          "current_time": "2017-10-24T07:14:40.498Z",
-     *          "notify_about_appointments":"string"
+     *          "notify_about_appointments":"[]"
      *     }
      *
      * @apiErrorExample {json} Error-Response:
@@ -474,7 +474,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      * @apiParam {String} latitude Latitude
      * @apiParam {String} longitude Longitude
      * @apiParam {String} current_time Current time
-     * @apiParam {Integer} notify_about_appointments Reminders of default notes
+     * @apiParam {String} notify_about_appointments Reminders of default notes(["0","1"])
      * @apiParam {Array}  schedule "schedule" :[  {"num_of_day":"1","working_status" :"1","start": "18:27","end": "20:20"}]
      *
      * @apiSuccessExample {json} Success-Response:
@@ -489,7 +489,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *          "latitude": 0,
      *          "longitude": 0,
      *          "current_time": "2017-10-24T07:14:40.498Z",
-     *          "notify_about_appointments": "string"
+     *          "notify_about_appointments": "[]"
      *     }
      *
      * @apiErrorExample {json} Error-Response:
@@ -517,7 +517,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      * @apiParam {String} latitude Latitude
      * @apiParam {String} longitude Longitude
      * @apiParam {String} current_time Current time
-     * @apiParam {Integer} notify_about_appointments Reminders of default notes
+     * @apiParam {String} notify_about_appointments Reminders of default notes(["0","1"])
      * @apiParam  {Array}   schedule "schedule" :[  {"id":schedule_id,"num_of_day":"1","working_status" :"1","start": "18:27","end": "20:20"}]
      *
      * @apiSuccessExample {json} Success-Response:
@@ -533,7 +533,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *          "longitude": 0,
      *          "schedule": "[]",
      *          "current_time": "2017-10-24T07:14:40.498Z",
-     *          "notify_about_appointments":"string"
+     *          "notify_about_appointments":"[]"
      *     }
      *
      * @apiErrorExample {json} Error-Response:
@@ -1475,7 +1475,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *                          "current_time": "2017-10-19 10:32:40",
      *                          "created_at": "2017-10-23 07:40:25",
      *                          "updated_at": "2017-10-23 07:41:27",
-     *                          "notify_about_appointment":"string",
+     *                          "notify_about_appointment":"[]",
      *                      }
      *                      ]
      *            },
