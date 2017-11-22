@@ -24,7 +24,13 @@ class SalonController extends Controller
         } else {
             $salons = Salon::getAll();
         }
-        return response()->json(["data" => $salons], 200);
+        $response = [];
+        foreach($salons as $salon){
+            $temp = $salon->getAttributes();
+            $temp['notify_about_appointments'] = explode(',',$temp['notify_about_appointments']);
+            array_push($response,$temp);
+        }
+        return response()->json(["data" => $response], 200);
     }
 
     public function create(Request $request)
