@@ -21,16 +21,11 @@ class SalonController extends Controller
     {
         if ($chainId) {
             $salons = Salon::getByChainId($chainId);
+            //dd($salons[0]->notify_about_appointments);
         } else {
             $salons = Salon::getAll();
         }
-        $response = [];
-        foreach($salons as $salon){
-            $temp = $salon->getAttributes();
-            $temp['notify_about_appointments'] = explode(',',$temp['notify_about_appointments']);
-            array_push($response,$temp);
-        }
-        return response()->json(["data" => $response], 200);
+        return response()->json(["data" => $salons], 200);
     }
 
     public function create(Request $request)
@@ -68,10 +63,7 @@ class SalonController extends Controller
                 SalonSchedule::insert($default_schedules);
             }
             $salon->refresh();
-            $salonRespone = Salon::find($salon->id);
-            $salonRespone = $salonRespone->getAttributes();
-            $salonRespone['notify_about_appointments'] = explode(',',$salonRespone['notify_about_appointments']);
-            return response()->json(['success' => 'Created successfully', 'data' => $salonRespone, 'salon_schedule' => $salon->schedule], 200);
+            return response()->json(['success' => 'Created successfully', 'data' => Salon::find($salon->id), 'salon_schedule' => $salon->schedule], 200);
         }
         return response()->json(["error" => "any problem with storing data"], 400);
     }

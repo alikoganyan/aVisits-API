@@ -66,7 +66,7 @@ class Salon extends Model
     }
 
     public function getNotifyAboutAppointmentsAttribute($value) {
-        return unserialize($value);
+        return explode(',',$value);
     }
 
     /**
