@@ -21,7 +21,6 @@ class SalonController extends Controller
     {
         if ($chainId) {
             $salons = Salon::getByChainId($chainId);
-            //dd($salons[0]->notify_about_appointments);
         } else {
             $salons = Salon::getAll();
         }

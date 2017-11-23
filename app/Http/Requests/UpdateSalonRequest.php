@@ -25,7 +25,7 @@ class UpdateSalonRequest extends FormRequest
     {
         return [
             'title' => 'max:255',
-//            "img" => "max:255",
+            "img" => "max:255",
             "city" => "max:255",
             "address" => "max:255",
             "latitude" => "between:0,99.99999999",
