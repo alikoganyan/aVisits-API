@@ -1577,7 +1577,9 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *     }
      */
     Route::put('employee-salon', 'EmployeeSalonController@edit');
+    Route::put('widget','WidgetController@update');
 });
+
 
 
 //Route::middleware(['auth.jwt'])->resource('salon', 'SalonController');

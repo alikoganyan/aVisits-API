@@ -23,6 +23,31 @@ class Chain extends Model
     ];
     protected $appends = ['salonsCount'];
 
+    public static function getStepsG(){
+        return array_merge(self::getStepsService(),self::getStepsEmployee());
+    }
+    public static function getStepsService(){
+        return [
+            "address,service,employee,time"=>"Адрес -> Услуги -> Сотрудники, Время",
+            "service,address,employee,time"=>"Услуги -> Адрес -> Сотрудники, Время",
+        ];
+    }
+
+    public static function getStepsEmployee(){
+        return [
+            "address,employee,service,time"=>"Адрес -> Сотрудники -> Услуги -> Время",
+            "employee,service,address,time"=>"Сотрудники -> Услуги -> Адрес -> Время",
+            "employee,address,service,time"=>"Сотрудники -> Адрес -> Услуги -> Время",
+            "address,service,time"=>"Адрес -> Услуги -> Время",
+        ];
+    }
+    public static function getContactSteps(){
+        return [
+            'at_first',
+            'after_address',
+            'at_the_end'
+        ];
+    }
     /**
      * Get chain by id
      *
