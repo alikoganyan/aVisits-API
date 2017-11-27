@@ -1597,9 +1597,9 @@ Route::group(['prefix' => '{chain}'], function () {
     });
 });
 
-Route::group(['prefix' => 'widget'], function () {
+Route::group(['prefix' => 'widget/{chain}'], function () {
     /**
-     * @api {get} /widget/cities Get Cities
+     * @api {get} /widget/{chain}/cities Get Cities
      * @apiName Get Cities
      * @apiHeaderExample {json} Header-Example:
      *     {
