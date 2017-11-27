@@ -1601,10 +1601,7 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
     /**
      * @api {get} /widget/{chain}/cities Get Cities
      * @apiName Get Cities
-     * @apiHeaderExample {json} Header-Example:
-     *     {
-     *       "Content-Type": "Application/json"
-     *     }
+     *
      * @apiGroup Widget
      *
      * @apiSuccessExample {json} Success-Response:
@@ -1615,6 +1612,40 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *          "Санкт-Петербург",
      *          "Сочи",
      *          "Ростов"
+     *      ]
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     *     {
+     *       "Invalid input"
+     *     }
+     */
+
+    /**
+     * @api {post} /widget/{chain}/salons Get Salons
+     * @apiName Get Salons
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Widget
+     *
+     * @apiParam {String{255}} [city] The city name for filtering salons
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *     "salons": [
+     *          {
+     *              "id": 2,
+     *              "title": "string",
+     *              "img": "/images/HONDB6edlaF2Ehx6.png",
+     *              "country": "Россия",
+     *              "city": "Москва",
+     *              "address": "string",
+     *              "street_number": "string",
+     *              "latitude": "0.00000000",
+     *              "longitude": "0.00000000"
+     *          }
      *      ]
      *
      * @apiErrorExample {json} Error-Response:
