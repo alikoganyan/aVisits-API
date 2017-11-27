@@ -48,4 +48,15 @@ class Employee extends Model
     {
         return $this->hasMany('App\Models\SalonHasEmployees', 'employee_id', 'id')->with('salon');
     }
+
+    public static function empolyees($chains,$filter = null)
+    {
+        $query = self::query();
+        $query->select(['id','first_name','last_name','fater_name','photo','photo_2','sex','birthday','email','phone','address',]);
+        if($filter !== null){
+            if(isset($filter['salon_id'])){
+
+            }
+        }
+    }
 }
