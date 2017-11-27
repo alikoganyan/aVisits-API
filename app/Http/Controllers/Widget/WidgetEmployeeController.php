@@ -5,7 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 
-class WidgetSalonController extends Controller
+class WidgetEmployeeController extends Controller
 {
     private $chain;
 
@@ -14,8 +14,11 @@ class WidgetSalonController extends Controller
         $this->chain = $request->route('chain');
     }
 
-    public function getEmployees(Request $request) {
+    public function employees(Request $request) {
         $filter = $request->post();
         $employees = Employee::empolyees($this->chain,$filter);
+
+        return response()->json(['data' => ['employees'=>$employees]], 200);
+
     }
 }

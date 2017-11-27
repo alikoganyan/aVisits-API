@@ -1656,4 +1656,5 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      */
     Route::get('cities','Widget\WidgetSalonController@salonsCities');
     Route::post('salons_address','Widget\WidgetSalonController@salons');
+    Route::post('employees','Widget\WidgetEmployeeController@employees');
 });
