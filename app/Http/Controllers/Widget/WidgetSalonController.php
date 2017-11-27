@@ -14,11 +14,17 @@ class WidgetSalonController extends Controller
 
     }
 
-    public function salonsCities(Request $request){
+    public function salonsCities(Request $request) {
         $cities = Salon::salonsCities($this->chain);
         $data = collect($cities)->map(function($x){
             return $x->city;
         });
         return response()->json(['data' => ['cities'=>$data]], 200);
+    }
+
+    public function salons(Request $request) {
+        $filter = $request->post();
+        $salons = Salon::salons($this->chain,$filter);
+        return response()->json(['data' => ['salons'=>$salons]], 200);
     }
 }

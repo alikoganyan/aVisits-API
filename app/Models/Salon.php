@@ -80,10 +80,22 @@ class Salon extends Model
     }
 
     public static function salonsCities($chain) {
-        return Salon::select(['city'])
+        return self::select(['city'])
             ->distinct()
             ->where(['chain_id'=>$chain])
             ->orderBy('city','asc')
             ->get();
+    }
+
+    public static function salons($chain,$filter = null){
+        $query = self::query();
+        $query->select(['id','title','img','country','city','address','street_number','latitude','longitude']);
+        $query->where('chain_id','=',$chain);
+        if($filter !== null){
+            if(isset($filter['city']) && !empty($filter['city'])){
+                $query->where('city','=',$filter['city']);
+            }
+        }
+        return $query->get();
     }
 }
