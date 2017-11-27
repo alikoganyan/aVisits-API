@@ -1597,6 +1597,31 @@ Route::group(['prefix' => '{chain}'], function () {
     });
 });
 
-Route::group(['prefix' => '{widget}'], function () {
+Route::group(['prefix' => 'widget'], function () {
+    /**
+     * @api {get} /widget/cities Get Cities
+     * @apiName Get Cities
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Widget
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *     "cities": [
+     *          "Краснодар",
+     *          "Москва",
+     *          "Санкт-Петербург",
+     *          "Сочи",
+     *          "Ростов"
+     *      ]
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     *     {
+     *       "Invalid input"
+     *     }
+     */
     Route::get('cities','Widget\WidgetSalonController@salonsCities');
 });
