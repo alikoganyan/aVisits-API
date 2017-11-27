@@ -78,4 +78,8 @@ class Salon extends Model
     {
         return $this->hasMany('App\Models\SalonSchedule', 'salon_id', 'id');
     }
+
+    public static function salonsCities() {
+        return Salon::select(['city'])->distinct()->orderBy('city','asc')->get();
+    }
 }

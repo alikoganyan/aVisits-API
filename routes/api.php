@@ -1596,3 +1596,7 @@ Route::group(['prefix' => '{chain}'], function () {
         Route::post('login', 'UserController@login');
     });
 });
+
+Route::group(['prefix' => '{widget}'], function () {
+    Route::get('cities','Widget\WidgetSalonController@salonsCities');
+});
