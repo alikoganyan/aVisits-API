@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
 
 class UpdateSalonRequest extends FormRequest
 {
@@ -32,5 +34,9 @@ class UpdateSalonRequest extends FormRequest
             "longitude" => "between:0,999.99999999",
             "chain_id" => "integer|max:10",
         ];
+    }
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json(['ValidationError' => $validator->messages()],422));
     }
 }

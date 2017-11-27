@@ -3,6 +3,9 @@
 namespace App\Http\Requests\ServicePrice;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
+
 
 class ServicePriceUpdateRequest extends FormRequest
 {
@@ -30,5 +33,10 @@ class ServicePriceUpdateRequest extends FormRequest
             "from"=>"date_format:Y-m-d",
             "inactive"=>"between:0,1"
         ];
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json(['ValidationError' => $validator->messages()],422));
     }
 }

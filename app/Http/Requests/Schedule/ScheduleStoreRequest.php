@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Schedule;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
 
 class ScheduleStoreRequest extends FormRequest
 {
@@ -31,5 +33,9 @@ class ScheduleStoreRequest extends FormRequest
             "day"=>"string",
             "working_status"=>"integer|max:1"
         ];
+    }
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json(['ValidationError' => $validator->messages()],422));
     }
 }

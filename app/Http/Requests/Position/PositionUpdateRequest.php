@@ -33,6 +33,6 @@ class PositionUpdateRequest extends FormRequest
 
     public function failedValidation(Validator $validator)
     {
-        throw new HttpResponseException(response()->json(['ValidationError' => $validator->messages()]));
+        throw new HttpResponseException(response()->json(['ValidationError' => $validator->messages()],422));
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
 
 class ScheduleRequest extends FormRequest
 {
@@ -25,5 +27,9 @@ class ScheduleRequest extends FormRequest
     {
         return [
         ];
+    }
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json(['ValidationError' => $validator->messages()],422));
     }
 }
