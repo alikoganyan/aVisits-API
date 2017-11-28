@@ -49,7 +49,7 @@ class SalonController extends Controller
         $salon->notify_about_appointments = implode(',',$request->input('notify_about_appointments'));
         $imgName = str_random('16') . '.png';
         if ($request->input('photo')) {
-            file_put_contents('files'.$ds.'salons'.$ds.'images'.$ds.'main'.$imgName, base64_decode($request->input('photo')));
+            file_put_contents('files'.$ds.'salons'.$ds.'images'.$ds.'main'.$ds.$imgName, base64_decode($request->input('photo')));
             chmod('images/'.$imgName,'0777');
         }
         $salon->img=$imgName;
