@@ -66,11 +66,11 @@ class Salon extends Model
         return 'files'.$ds.'salons'.$ds.'images'.$ds.'main'.$value;
     }
 
-    public function getLatitude($value) {
+    public function getLatitudeAttribute($value) {
         return (float)$value;
     }
 
-    public function getLongitude($value) {
+    public function getLongitudeAttribute($value) {
         return (float)$value;
     }
 
