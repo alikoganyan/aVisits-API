@@ -6,6 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Employee extends Model
 {
+    private $mainPhotoPath;
+
+    public function __construct(array $attributes = [])
+    {
+        $ds = DIRECTORY_SEPARATOR;
+        $this->mainPhotoPath =  "files".$ds."employee".$ds."images".$ds."photo".$ds;
+        parent::__construct($attributes);
+    }
+
     /**
      * Get employee by id
      *
@@ -40,6 +49,17 @@ class Employee extends Model
     ];
 
     /**
+     * @param $value
+     * @return string
+     */
+    public function getPhotoAttribute($value) {
+        if($value)
+            return $this->mainPhotoPath.$value;
+
+        return $value;
+    }
+
+    /**
      * Relationship for get salons
      *
      * @return $this
@@ -56,7 +76,8 @@ class Employee extends Model
     public static function employees($chain,$filter = null)
     {
         $query = self::query();
-        $query->select(['employees.id','first_name','last_name','father_name','photo','sex','birthday','position_id','public_position']);
+        $query->select(['employees.id','first_name','last_name','father_name','photo','sex','birthday','position_id','public_position'])
+            ->distinct();
         $query->with('position');
         $query->where('employees.chain_id','=',$chain);
 
