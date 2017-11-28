@@ -12,7 +12,6 @@ class WidgetSalonController extends Controller
     public function __construct(Request $request)
     {
         $this->chain = $request->route('chain');
-
     }
 
     public function salonsCities(Request $request) {

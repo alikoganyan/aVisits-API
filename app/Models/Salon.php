@@ -62,7 +62,16 @@ class Salon extends Model
     }
 
     public function getImgAttribute($value) {
-        return '/images/'.$value;
+        $ds = DIRECTORY_SEPARATOR;
+        return 'files'.$ds.'salons'.$ds.'images'.$ds.'main'.$value;
+    }
+
+    public function getLatitude($value) {
+        return (float)$value;
+    }
+
+    public function getLongitude($value) {
+        return (float)$value;
     }
 
     public function getNotifyAboutAppointmentsAttribute($value) {

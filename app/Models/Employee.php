@@ -53,12 +53,12 @@ class Employee extends Model
         return $this->hasOne('App\Models\Position', 'id', 'position_id');
     }
 
-    public static function empolyees($chain,$filter = null)
+    public static function employees($chain,$filter = null)
     {
         $query = self::query();
         $query->select(['employees.id','first_name','last_name','father_name','photo','sex','birthday','position_id','public_position']);
         $query->with('position');
-        $query->where('chain_id','=',$chain);
+        $query->where('employees.chain_id','=',$chain);
 
         if($filter !== null){
             /*when need to filter by ID of Salon*/
@@ -68,14 +68,27 @@ class Employee extends Model
                     $join->on('employees.id', '=', 'salon_has_employees.employee_id')
                         ->where('salon_has_employees.salon_id', '=', $salonId);
                 });
-                /*when need to filter by Address or By Latitide Longitude*/
-            }elseIf(isset($filter['address']) && !empty($filter['address'])) {
+                /*when need to filter by Latitude Longitude*/
+            }elseIf(isset($filter['location']) && !empty($filter['location'])) {
+                $location = $filter['location'];
+                if((isset($location['latitude']) && isset($location['longitude'])) && (!empty($location['longitude']) && !empty($location['latitude']))) {
+                    $query->join('salon_has_employees', function ($join) {
+                        $join->on('employees.id', '=', 'salon_has_employees.employee_id');
+                    });
+                    $query->join('salons', function ($join) use( $location ) {
+                        $join->on('salons.id', '=', 'salon_has_employees.salon_id');
+                        $join->where(['salons.longitude'=>$location['longitude'],'salons.latitude'=>$location['latitude']]);
+                    });
+                }
+            }
+            /*when need to filter by Address*/
+            elseIf(isset($filter['address']) && !empty($filter['address'])) {
                 $address = $filter['address'];
                 $query->join('salon_has_employees', function ($join) {
                     $join->on('employees.id', '=', 'salon_has_employees.employee_id');
                 });
                 $query->join('salons', function ($join) use( $address ) {
-                    $join->on('salons.id', '=', 'salons.salon_id');
+                    $join->on('salons.id', '=', 'salon_has_employees.salon_id');
                     if(isset($address['country']) && !empty($address['country'])) {
                         $join->where('salons.country','=',$address['country']);
                     }
@@ -87,12 +100,6 @@ class Employee extends Model
                     }
                     if(isset($address['street_number']) && !empty($address['street_number'])) {
                         $join->where('salons.street_number','=',$address['street_number']);
-                    }
-                    if((isset($address['latitude']) && isset($address['longitude'])) && (!empty($address['longitude']) && !empty($address['latitude']))) {
-                        $join->where([
-                            'salons.latitude'=>$address['latitude'],
-                            'salons.longitude'=>$address['longitude']
-                        ]);
                     }
                 });
             }

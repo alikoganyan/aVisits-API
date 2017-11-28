@@ -1622,7 +1622,7 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      */
 
     /**
-     * @api {post} /widget/{chain}/salons Get Salons
+     * @api {post} /widget/{chain}/salons_address Get Salons
      * @apiName Get Salons
      * @apiHeaderExample {json} Header-Example:
      *     {
