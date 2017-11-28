@@ -17,8 +17,6 @@ class WidgetEmployeeController extends Controller
     public function employees(Request $request) {
         $filter = $request->post();
         $employees = Employee::employees($this->chain,$filter);
-
         return response()->json(['data' => ['employees'=>$employees]], 200);
-
     }
 }

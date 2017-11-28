@@ -1692,9 +1692,7 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *                  "position": {
      *                      "id": 1,
      *                      "title": "PArikmaxer",
-     *                      "description": null,
-     *                      "created_at": null,
-     *                      "updated_at": null
+     *                      "description": null
      *                  }
      *              }
      *          ]
@@ -1708,4 +1706,5 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      */
     Route::post('salons_address','Widget\WidgetSalonController@salons');
     Route::post('employees','Widget\WidgetEmployeeController@employees');
+    Route::post('services','Widget\WidgetServiceController@services');
 });

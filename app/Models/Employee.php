@@ -55,7 +55,6 @@ class Employee extends Model
     public function getPhotoAttribute($value) {
         if($value)
             return $this->mainPhotoPath.$value;
-
         return $value;
     }
 
@@ -70,7 +69,7 @@ class Employee extends Model
     }
 
     public function position() {
-        return $this->hasOne('App\Models\Position', 'id', 'position_id');
+        return $this->hasOne('App\Models\Position', 'id', 'position_id')->select(['id','title','description']);
     }
 
     public static function employees($chain,$filter = null)
