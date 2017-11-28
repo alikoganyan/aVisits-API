@@ -1654,7 +1654,58 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *       "Invalid input"
      *     }
      */
+
     Route::get('cities','Widget\WidgetSalonController@salonsCities');
+    /**
+     * @api {post} /widget/{chain}/employees  Get Employees
+     * @apiName Get Employees
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Widget
+     *
+     * @apiParam {String{255}} [salon_id] The Id of salon for filtering Employees data
+     * @apiParam {Object} [address] The address of salons for filtering Employees data
+     * @apiParam {Object} [location] The location (latitude,longitude) of salons for filtering Employees data
+     *
+     * @apiParamExample {json} Request-Example:
+     *
+     * {"salon_id":1,
+     * "address": {"city": "Москва","country": "Россия","address": "string"},
+     * "location": {"latitude": "0.00000000","longitude": "0.00000000"}}
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *     {
+     *          "employees": [
+     *              {
+     *                  "id": 2,
+     *                  "first_name": "name",
+     *                  "last_name": "last name",
+     *                  "father_name": "father name",
+     *                  "photo": null,
+     *                  "sex": "male",
+     *                  "birthday": "2017-10-31",
+     *                  "position_id": 1,
+     *                  "public_position": "Parikmaxer",
+     *                  "position": {
+     *                      "id": 1,
+     *                      "title": "PArikmaxer",
+     *                      "description": null,
+     *                      "created_at": null,
+     *                      "updated_at": null
+     *                  }
+     *              }
+     *          ]
+     *     }
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     *     {
+     *       "Invalid input"
+     *     }
+     */
     Route::post('salons_address','Widget\WidgetSalonController@salons');
     Route::post('employees','Widget\WidgetEmployeeController@employees');
 });
