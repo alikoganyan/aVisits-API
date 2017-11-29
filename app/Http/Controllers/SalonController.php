@@ -50,7 +50,7 @@ class SalonController extends Controller
         $imgName = str_random('16') . '.png';
         if ($request->input('photo')) {
             file_put_contents('files'.$ds.'salons'.$ds.'images'.$ds.'main'.$ds.$imgName, base64_decode($request->input('photo')));
-            chmod('images/'.$imgName,'0777');
+            chmod('files'.$ds.'salons'.$ds.'images'.$ds.'main'.$ds.$imgName,'0777');
         }
         $salon->img=$imgName;
         if ($salon->save()) {
@@ -94,6 +94,7 @@ class SalonController extends Controller
      */
     public function update(UpdateSalonRequest $request)
     {
+        $ds = DIRECTORY_SEPARATOR;
         $salon = (integer)$request->route('salon');
         $model = Salon::find($salon);
         $model->fill($request->all());
@@ -102,8 +103,8 @@ class SalonController extends Controller
         $salon->notify_about_appointments = serialize($request->input('notify_about_appointments'));
         $imgName = str_random('16') . '.png';
         if ($request->input('photo')) {
-            file_put_contents('images/'.$imgName, base64_decode($request->input('photo')));
-            chmod('images/'.$imgName,'0777');
+            file_put_contents('files'.$ds.'salons'.$ds.'images'.$ds.'main'.$ds.$imgName, base64_decode($request->input('photo')));
+            chmod('files'.$ds.'salons'.$ds.'images'.$ds.'main'.$ds.$imgName,'0777');
         }
         $model->img=$imgName;
         $model->current_time = Carbon::parse($request->input('current_time'))->format('Y-m-d H:i:s');

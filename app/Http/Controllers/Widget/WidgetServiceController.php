@@ -13,6 +13,6 @@ class WidgetServiceController extends Controller
     public function services(Request $request){
         $filter = $request->post();
         $services = Service::getServices($filter);
-        return response()->json(['data' => ['test'=>$services]], 200);
+        return response()->json(['data' => $services], 200);
     }
 }
