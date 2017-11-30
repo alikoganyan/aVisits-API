@@ -1620,7 +1620,7 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *       "Invalid input"
      *     }
      */
-
+    Route::get('cities','Widget\WidgetSalonController@salonsCities');
     /**
      * @api {post} /widget/{chain}/salons_address Get Salons
      * @apiName Get Salons
@@ -1654,8 +1654,7 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *       "Invalid input"
      *     }
      */
-
-    Route::get('cities','Widget\WidgetSalonController@salonsCities');
+    Route::post('salons_address','Widget\WidgetSalonController@salons');
     /**
      * @api {post} /widget/{chain}/employees  Get Employees
      * @apiName Get Employees
@@ -1704,7 +1703,74 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *       "Invalid input"
      *     }
      */
-    Route::post('salons_address','Widget\WidgetSalonController@salons');
     Route::post('employees','Widget\WidgetEmployeeController@employees');
+
+    /**
+     * @api {post} /widget/{chain}/services  Get Services
+     * @apiName Get Services
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Widget
+     *
+     * @apiParam {String{255}} [salon_id] The Id of salon
+     * @apiParam {Array} [employees] The array of Employees Ids
+     *
+     * @apiParamExample {json} Request-Example:
+     *
+     * {
+     *  "salon_id":1,
+     *  "employees":["2"]
+     * }
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     * When filtered By Salon_id and  Employees
+     *     {
+     *          "employees": [{
+     *              "employee_id": 2,
+     *              "service_groups": [{
+     *                  "id": 2,
+     *                  "parent_id": 1,
+     *                  "title": "Strijka",
+     *                  "services": [{
+     *                      "price": "50.00",
+     *                      "duration": 30,
+     *                      "id": 2,
+     *                      "service_category_id": 2,
+     *                      "title": "aaaaaaaaaa",
+     *                      "default_duration": 100,
+     *                      "description": "aaasdasdasd",
+     *                      "available_for_online_recording": 1,
+     *                      "only_for_online_recording": 1
+     *                  }]
+     *              }]
+     *          }]
+     *     }
+     * When filtered only By Salon_id
+     * {
+     *      "service_groups": [{
+     *          "id": 2,
+     *          "parent_id": 1,
+     *          "title": "Strijka",
+     *          "services": [{
+     *              "id": 1,
+     *              "service_category_id": 2,
+     *              "title": "strijk goryachimi nojnicami",
+     *              "default_duration": 25,
+     *              "description": "desc",
+     *              "available_for_online_recording": 1,
+     *              "only_for_online_recording": 1
+     *          }]
+     *      }]
+     * }
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     *     {
+     *       "Invalid input"
+     *     }
+     */
     Route::post('services','Widget\WidgetServiceController@services');
 });
