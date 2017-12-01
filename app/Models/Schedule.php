@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Schedule extends Model
 {
@@ -129,5 +131,59 @@ class Schedule extends Model
     public function periods()
     {
         return $this->hasMany('App\Models\SchedulePeriod', 'schedule_id', 'id');
+    }
+
+    public static function getWorkingHours($filter = null)
+    {
+        $params = [];
+        $t = 0;
+        $dayOfWeek = 0;
+        if($filter !== null) {
+            if(isset($filter['date']) && !empty($filter['date'])) {
+                $params[] = $filter['date'];
+                $dayOfWeek = Carbon::parse($filter['date'])->dayOfWeek;
+                if($dayOfWeek === 0){
+                    $dayOfWeek = 7;
+                }
+                $t++;
+            }
+            if(isset($filter['salon_id']) && !empty($filter['salon_id'])) {
+                $params[] = $filter['salon_id'];
+                $t++;
+            }
+            if(isset($filter['employee_id']) && !empty($filter['employee_id'])) {
+                $params[] = $filter['employee_id'];
+                $t++;
+            }
+
+            if(count($params) !== $t ){
+                return [];
+            }
+        }
+        $query = self::query();
+        $query->from('schedules AS t1');
+        $query->select(["t1.id","t1.salon_id","t1.employee_id","t1.working_status","t1.type","t1.working_days","t1.weekend","t1.num_of_day","t1.date"]);
+        $query->join(DB::raw("(SELECT t2.salon_id,"
+            ."t2.employee_id, "
+            ."t2.type, "
+            ."t2.date AS maxdate "
+            ."FROM "
+            ."`schedules` t2 "
+            ."WHERE t2.date<=? "
+            ."AND t2.salon_id=? "
+            ."AND t2.employee_id=? "
+            ."ORDER BY t2.date DESC "
+            ."LIMIT 1) t3"),
+            function ($join) use($dayOfWeek){
+                $join->on("t1.salon_id","=","t3.salon_id")
+                    ->where("t1.employee_id","=",DB::raw("t3.employee_id"))
+                    ->where("t1.date","=",DB::raw("t3.maxdate"))
+                    ->whereRaw("CASE WHEN `t3`.`type`= 1 THEN  t1.num_of_day = ".(integer)($dayOfWeek)." ELSE `t1`.`type` =`t3`.`type` END");
+            })
+            ->addBinding($params);
+        $query->with(['periods'=>function($q){
+            $q->select(['id','schedule_id','start','end'])->orderBy('start','asc');
+        }]);
+        return $query->first();
     }
 }

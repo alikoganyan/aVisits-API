@@ -1714,7 +1714,7 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *     }
      * @apiGroup Widget
      *
-     * @apiParam {String{255}} [salon_id] The Id of salon
+     * @apiParam {String{255}} salon_id The Id of salon
      * @apiParam {Array} [employees] The array of Employees Ids
      *
      * @apiParamExample {json} Request-Example:
@@ -1773,4 +1773,5 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *     }
      */
     Route::post('services','Widget\WidgetServiceController@services');
+    Route::post('free_times','Widget\WidgetSchedulesController@freeTimes');
 });
