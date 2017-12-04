@@ -74,13 +74,13 @@ class WidgetSchedulesController extends Controller
                 foreach ($schedulesArray['periods'] as &$sh) {
                     $start =  $this->getTimeToInteger($sh['start']);
                     $end =  $this->getTimeToInteger($sh['end']);
-                    /*esli nachalo zapisi vnutri perioda*/
+                    /*если начало записи внутри периода*/
                     if( $start <= $from_time && $from_time <= $end) {
-                        /*esli konec zapisi toje vnutri perioda*/
+                        /*если конец записи тоже внутри периода*/
                         if($start <= $to_time && $to_time <= $end) {
-                            /*esli nachalo sovpadaet s nachalom perioda*/
+                            /*если начало совпадает с началом периода*/
                             if($from_time == $start ) {
-                                /*esli konec toje sovpadaet s koncom perioda*/
+                                /*Если конец тоже совпадает с концом периода*/
                                 if($to_time == $end){
                                     $sh['removed'] = 1;
                                     continue;
@@ -90,11 +90,11 @@ class WidgetSchedulesController extends Controller
                                 }
                             }
                             else{
-                                /*esli konec sovpadaet s koncom perioda*/
+                                /*Если начало записи не совпадает с началом периода, но конец совпадает с концом периода */
                                 if($to_time == $end) {
                                     $sh['end'] = $appointment['from_time'];
                                 }
-                                /* from_time i end time vnutri Perioda*/
+                                /*from_time i end time  внутри периода и не совпадают с началом и концом периода*/
                                 else {
                                     $tEnd = $sh['end'];
                                     $sh['end'] = $appointment['from_time'];
