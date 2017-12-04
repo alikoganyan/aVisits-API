@@ -6,6 +6,7 @@ use App\Models\Appointment;
 use App\Models\Schedule;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use function PHPSTORM_META\type;
 
 class WidgetSchedulesController extends Controller
 {
@@ -22,6 +23,22 @@ class WidgetSchedulesController extends Controller
         });
         return ($times[0]*60) + $times[0];
     }
+    public function getWorkingStatus($employeeSchedule,$date) {
+        if($employeeSchedule['type'] == 1){
+            return $employeeSchedule['working_status'];
+        }
+        if($employeeSchedule['type'] == 2){
+            $days = Carbon::parse($date)->diffInDays(Carbon::parse($employeeSchedule['date'])) +1;
+            $sumOfDays = (integer)$employeeSchedule['working_days'] + (integer)$employeeSchedule['weekend'];
+            $nowIs = $days%$sumOfDays;
+            if($nowIs > $employeeSchedule['working_days'] || $nowIs == 0){
+                return 0;
+            }
+            else{
+                return 1;
+            }
+        }
+    }
 
     public function freeTimes(Request $request) {
         $filter = $request->post();
@@ -31,8 +48,9 @@ class WidgetSchedulesController extends Controller
         $appointments = Appointment::getAppointments($filter);
         $schedules = Schedule::getWorkingHours($filter);
         $schedulesArray = $schedules->toArray();
-        $freePeriods = [];
-        if(count($appointments) > 0) {
+        $workingStatus = $this->getWorkingStatus($schedulesArray,$filter['date']);
+        $schedulesArray['working_status'] = $workingStatus;
+        if(count($appointments) > 0 && $workingStatus == 1) {
             foreach ($appointments as $appointment) {
                 $from_time = $this->getTimeToInteger($appointment['from_time']);
                 $to_time = $this->getTimeToInteger($appointment['to_time']);
@@ -61,16 +79,22 @@ class WidgetSchedulesController extends Controller
                                 }
                                 /* from_time i end time vnutri Perioda*/
                                 else {
-                                    $tEnd = clone $sh['end'];
+                                    $tEnd = $sh['end'];
                                     $sh['end'] = $appointment['from_time'];
 
                                     $schedulesArray['periods'][] = [
+                                        "schedule_id"=>$sh['schedule_id'],
                                         "start"=>$appointment['to_time'],
                                         "end"=>$tEnd];
                                 }
                             }
                         }
                     }
+                }
+            }
+            foreach ($schedulesArray['periods'] as $key=>$period){
+                if(isset($period['removed']) && $period['removed'] == 1){
+                    array_splice($schedulesArray['periods'],$key,1);
                 }
             }
         }
