@@ -41,10 +41,27 @@ class WidgetSchedulesController extends Controller
     }
 
     public function freeTimes(Request $request) {
-        $filter = $request->post();
-        if(Carbon::today()->gt(Carbon::parse($filter['date']))) {
+        $filters = $request->post();
+        if(Carbon::today()->gt(Carbon::parse($filters['date']))) {
             return response()->json(["message"=>"Invalid recording date" , "status"=>"ERROR"],400);
         }
+        $filter = [];
+        $filter['salon_id'] = $filters['salon_id'];
+        $filter['date'] = $filters['date'];
+        $response = [];
+        foreach ($filters['employees'] as $employee) {
+            $filter['employee_id'] = $employee;
+            array_push($response,[
+                "employee_id"=>$employee,
+                "schedules"=>$this->freeTimeOfEmployee($filter)
+            ]);
+        }
+
+
+        return response()->json(["data"=>["employees"=>$response]],200);
+    }
+
+    private function freeTimeOfEmployee($filter) {
         $appointments = Appointment::getAppointments($filter);
         $schedules = Schedule::getWorkingHours($filter);
         $schedulesArray = $schedules->toArray();
@@ -98,8 +115,7 @@ class WidgetSchedulesController extends Controller
                 }
             }
         }
-
-        return response()->json(["data"=>["schedules"=>$schedulesArray]],200);
+        return $schedulesArray;
     }
 
 }
