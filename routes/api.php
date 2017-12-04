@@ -1687,10 +1687,10 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *                  "sex": "male",
      *                  "birthday": "2017-10-31",
      *                  "position_id": 1,
-     *                  "public_position": "Parikmaxer",
+     *                  "public_position": "public position",
      *                  "position": {
      *                      "id": 1,
-     *                      "title": "PArikmaxer",
+     *                      "title": "position",
      *                      "description": null
      *                  }
      *              }
@@ -1733,15 +1733,15 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *              "service_groups": [{
      *                  "id": 2,
      *                  "parent_id": 1,
-     *                  "title": "Strijka",
+     *                  "title": "title",
      *                  "services": [{
      *                      "price": "50.00",
      *                      "duration": 30,
      *                      "id": 2,
      *                      "service_category_id": 2,
-     *                      "title": "aaaaaaaaaa",
+     *                      "title": "title",
      *                      "default_duration": 100,
-     *                      "description": "aaasdasdasd",
+     *                      "description": "title",
      *                      "available_for_online_recording": 1,
      *                      "only_for_online_recording": 1
      *                  }]
@@ -1753,11 +1753,11 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *      "service_groups": [{
      *          "id": 2,
      *          "parent_id": 1,
-     *          "title": "Strijka",
+     *          "title": "title",
      *          "services": [{
      *              "id": 1,
      *              "service_category_id": 2,
-     *              "title": "strijk goryachimi nojnicami",
+     *              "title": "title",
      *              "default_duration": 25,
      *              "description": "desc",
      *              "available_for_online_recording": 1,
@@ -1783,14 +1783,14 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      * @apiGroup Widget
      *
      * @apiParam {Number} salon_id The Id of salon
-     * @apiParam {Number} employee_id The Id of Employee
+     * @apiParam {Array} The Ides of Employees
      * @apiParam {String} date The day for filtering free working times.
      *
      * @apiParamExample {json} Request-Example:
      *
      * {
      *      "salon_id":3,
-     *      "employee_id":2,
+     *      "employees":["2","3"],
      *      "date": "2018-12-02"
      * }
      *
@@ -1855,7 +1855,7 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *      "last_name":"user",
      *      "father_name":"user",
      *      "email":"user@avisits.ru",
-     *      "phone":"+3749xxxxxxx",
+     *      "phone":"+7909xxxxxxx",
      *      "comment":"text"
      *  }
      *
@@ -1871,7 +1871,7 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *          "sex": "male",
      *          "birthday": "29-12-1999",
      *          "email": "user@avisits.ru",
-     *          "phone": "+3749xxxxxxx",
+     *          "phone": "+7909xxxxxxx",
      *          "comment": "text"
      *      }
      *  }
@@ -1909,7 +1909,7 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *      "last_name":"user",
      *      "father_name":"user",
      *      "email":"user@avisits.ru",
-     *      "phone":"+3749xxxxxxx",
+     *      "phone":"+7909xxxxxxx",
      *      "comment":"text"
      *  }
      *
@@ -1925,7 +1925,7 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *          "sex": "male",
      *          "birthday": "29-12-1999",
      *          "email": "user@avisits.ru",
-     *          "phone": "+3749xxxxxxx",
+     *          "phone": "+7909xxxxxxx",
      *          "comment": "text"
      *      }
      *  }
