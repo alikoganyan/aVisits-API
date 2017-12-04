@@ -1784,7 +1784,7 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *
      * @apiParam {Number} salon_id The Id of salon
      * @apiParam {Number} employee_id The Id of Employee
-     * @apiParam {String} The day for filtering free working times.
+     * @apiParam {String} date The day for filtering free working times.
      *
      * @apiParamExample {json} Request-Example:
      *
@@ -1827,4 +1827,142 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *     }
      */
     Route::post('times','Widget\WidgetSchedulesController@freeTimes');
+
+    /**
+     * @api {post} /widget/{chain}/client Client: new Client
+     * @apiName new client
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Widget
+     *
+     * @apiParam {String} first_name
+     * @apiParam {String} last_name
+     * @apiParam {String} father_name
+     * @apiParam {string="male","female"} sex
+     * @apiParam {Date} birthday format: d-m-Y , Example: 29-12-1999
+     * @apiParam {String} email
+     * @apiParam {Number} phone
+     * @apiParam {Number{12}} card_number
+     * @apiParam {Number{12}} card_number_optional
+     * @apiParam {String} comment
+     *
+     * @apiParamExample {json} Request-Example:
+     *
+     *  {
+     *      "first_name":"user",
+     *      "last_name":"user",
+     *      "father_name":"user",
+     *      "email":"user@avisits.ru",
+     *      "phone":"+3749xxxxxxx",
+     *      "comment":"text"
+     *  }
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *
+     *  {
+     *      "client": {
+     *          "id": 5,
+     *          "first_name": "user",
+     *          "last_name": "user",
+     *          "father_name": "user",
+     *          "sex": "male",
+     *          "birthday": "29-12-1999",
+     *          "email": "user@avisits.ru",
+     *          "phone": "+3749xxxxxxx",
+     *          "comment": "text"
+     *      }
+     *  }
+     *
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     */
+
+    /**
+     * @api {put} /widget/{chain}/client/{client} Client: edit Client
+     *
+     * @apiName edit client
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Widget
+     *
+     * @apiParam {String} first_name
+     * @apiParam {String} last_name
+     * @apiParam {String} father_name
+     * @apiParam {string="male","female"} sex
+     * @apiParam {Date} birthday format: d-m-Y , Example: 29-12-1999
+     * @apiParam {String} email
+     * @apiParam {Number} phone
+     * @apiParam {Number{12}} card_number
+     * @apiParam {Number{12}} card_number_optional
+     * @apiParam {String} comment
+     *
+     * @apiParamExample {json} Request-Example:
+     *
+     *  {
+     *      "first_name":"user",
+     *      "last_name":"user",
+     *      "father_name":"user",
+     *      "email":"user@avisits.ru",
+     *      "phone":"+3749xxxxxxx",
+     *      "comment":"text"
+     *  }
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *
+     *  {
+     *      "client": {
+     *          "id": 5,
+     *          "first_name": "user",
+     *          "last_name": "user",
+     *          "father_name": "user",
+     *          "sex": "male",
+     *          "birthday": "29-12-1999",
+     *          "email": "user@avisits.ru",
+     *          "phone": "+3749xxxxxxx",
+     *          "comment": "text"
+     *      }
+     *  }
+     *
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     */
+
+    /**
+     * @api {get} /widget/{chain}/client/{email|phone} Client: get Client
+     *
+     * @apiName get Client
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Widget
+     *
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *
+     *  {
+     *      "client": {
+     *          "id": 1,
+     *          "first_name": "user",
+     *          "last_name": "user",
+     *          "email": "user@avisits.ru",
+     *          "phone": "+37494xxxxxx",
+     *          "comment": "text"
+     *      }
+     *  }
+     *
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     */
+    Route::resource('client','Widget\WidgetClientController');
 });
