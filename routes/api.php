@@ -1773,5 +1773,58 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *     }
      */
     Route::post('services','Widget\WidgetServiceController@services');
-    Route::post('free_times','Widget\WidgetSchedulesController@freeTimes');
+    /**
+     * @api {post} /widget/{chain}/times Get Times
+     * @apiName Get Times
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Widget
+     *
+     * @apiParam {Number} salon_id The Id of salon
+     * @apiParam {Number} employee_id The Id of Employee
+     * @apiParam {String} The day for filtering free working times.
+     *
+     * @apiParamExample {json} Request-Example:
+     *
+     * {
+     *      "salon_id":3,
+     *      "employee_id":2,
+     *      "date": "2018-12-02"
+     * }
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *
+     * {
+     *      "schedules": {
+     *          "id": 9,
+     *          "salon_id": 3,
+     *          "employee_id": 2,
+     *          "working_status": 1,
+     *          "type": "2",
+     *          "working_days": 4,
+     *          "weekend": 2,
+     *          "num_of_day": null,
+     *          "date": "2018-01-03",
+     *          "periods": [{
+     *              "id": 8,
+     *              "schedule_id": 9,
+     *              "start": "10:00",
+     *              "end": "18:00"
+     *              }]
+     *      }
+     * }
+     *
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     *     Invalid recording date.
+     *     {
+     *       "message":"Invalid recording date",
+     *       "status":"ERROR"
+     *     }
+     */
+    Route::post('times','Widget\WidgetSchedulesController@freeTimes');
 });
