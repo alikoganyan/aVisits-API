@@ -53,7 +53,7 @@ class WidgetSchedulesController extends Controller
             $filter['employee_id'] = $employee;
             array_push($response,[
                 "employee_id"=>$employee,
-                "schedules"=>$this->freeTimeOfEmployee($filter)
+                "schedule"=>$this->freeTimeOfEmployee($filter)
             ]);
         }
 

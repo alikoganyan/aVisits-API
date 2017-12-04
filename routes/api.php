@@ -1798,23 +1798,26 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *     HTTP/1.1 200
      *
      * {
-     *      "schedules": {
-     *          "id": 9,
-     *          "salon_id": 3,
-     *          "employee_id": 2,
-     *          "working_status": 1,
-     *          "type": "2",
-     *          "working_days": 4,
-     *          "weekend": 2,
-     *          "num_of_day": null,
-     *          "date": "2018-01-03",
-     *          "periods": [{
-     *              "id": 8,
-     *              "schedule_id": 9,
-     *              "start": "10:00",
-     *              "end": "18:00"
+     *      "employees":[
+     *          "employee_id": "2",
+     *          "schedule": {
+     *              "id": 9,
+     *              "salon_id": 3,
+     *              "employee_id": 2,
+     *              "working_status": 1,
+     *              "type": "2",
+     *              "working_days": 4,
+     *              "weekend": 2,
+     *              "num_of_day": null,
+     *              "date": "2018-01-03",
+     *              "periods": [{
+     *                  "id": 8,
+     *                  "schedule_id": 9,
+     *                  "start": "10:00",
+     *                  "end": "18:00"
      *              }]
-     *      }
+     *          }
+     *      ]
      * }
      *
      *
