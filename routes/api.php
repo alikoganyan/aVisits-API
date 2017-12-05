@@ -1783,7 +1783,7 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      * @apiGroup Widget
      *
      * @apiParam {Number} salon_id The Id of salon
-     * @apiParam {Array} The Ides of Employees
+     * @apiParam {Array}  employees The Ides of Employees
      * @apiParam {String} date The day for filtering free working times.
      *
      * @apiParamExample {json} Request-Example:
@@ -1969,5 +1969,45 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      */
     Route::resource('client','Widget\WidgetClientController');
 
+    /**
+     * @api {post} /widget/{chain}/appointment Appointment: create new appointment
+     * @apiName create new appointment
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Widget
+     *
+     * @apiParam {Array} Array The array of  Employees
+     *
+     * @apiParamExample {json} Request-Example:
+     *
+     * [{
+     *      "salon_id":3,
+     *      "employee_id":"2",
+     *      "from_time" : "11:00",
+     *      "to_time":"13:00",
+     *      "day" : "2018-12-02",
+     *      "client_id":"5",
+     *      "services":[1,2,3]
+     * }]
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *
+     * {
+     *      "status": "OK",
+     *      "message": "The appointment have been successfuly "
+     * }
+     *
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     *
+     *     {
+     *       "message":"error message",
+     *       "status":"ERROR"
+     *     }
+     */
     Route::post('appointment','Widget\WidgetAppointmentController@store');
 });
