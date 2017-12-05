@@ -13,8 +13,6 @@ class Appointment extends Model
      * @var array
      */
     protected $fillable = [
-        'first_name',
-        'last_name',
         'salon_id',
         'employee_id',
         'price',
@@ -23,6 +21,7 @@ class Appointment extends Model
         'day',
         'email',
         'phone',
+        'client_id',
         'created_at',
         'updated_at'
     ];

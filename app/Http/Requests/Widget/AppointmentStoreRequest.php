@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests\Widget;
 
-
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class ClientStoreRequest extends FormRequest
+class AppointmentStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,21 +26,16 @@ class ClientStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'string|max:255',
-            'father_name' => 'string|max:255',
-            'sex' => 'in:male,female',
-            'birthday' => 'date_format:Y-m-d',
-            'email' => 'required_without:phone|string|email|max:255|unique:clients',
-            'phone' => 'required_without:email|string|max:255|unique:clients',
-            'card_number' => 'numeric|digits_between:12,12',
-            'card_number_optional' => 'numeric|digits_between:12,12',
-            'comment'=>'string',
-            /*'deposit'=>'numeric|between:0,99999999.99',
-            'bonuses'=>'numeric|between:0,99999999.99',
-            'invoice_sum'=>'numeric|between:0,99999999.99'*/
+            "salon_id"=>"required|exists:salons,id",
+            "employee_id"=>"required|exists:employees,id",
+            "from_time"=>"required|date_format:H:i",
+            "to_time"=>"required|date_format:H:i",
+            "day"=>"required|date_format:Y-m-d",
+            "client_id"=>"required|exists:clients,id",
+            "services"=>"required:array|min:1"
         ];
     }
+
     /**
      * @return array
      */

@@ -1968,4 +1968,6 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *     HTTP/1.1 400
      */
     Route::resource('client','Widget\WidgetClientController');
+
+    Route::post('appointment','Widget\WidgetAppointmentController@store');
 });

@@ -33,7 +33,7 @@ class ClientUpdateRequest extends FormRequest
             'last_name' => 'string|max:255',
             'father_name' => 'string|max:255',
             'sex' => 'in:male,female',
-            'birthday' => 'date_format:d-m-Y',
+            'birthday' => 'date_format:Y-m-d',
             'email' => 'string|email|max:255|'.Rule::unique('clients')->ignore($client,'id'),
             'phone' =>'string|max:255|'.Rule::unique('clients')->ignore($client,'id'),
             'card_number' => 'numeric|digits_between:12,12',

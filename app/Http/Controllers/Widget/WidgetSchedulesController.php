@@ -64,6 +64,9 @@ class WidgetSchedulesController extends Controller
     private function freeTimeOfEmployee($filter) {
         $appointments = Appointment::getAppointments($filter);
         $schedules = Schedule::getWorkingHours($filter);
+        if(!$schedules){
+            return [];
+        }
         $schedulesArray = $schedules->toArray();
         $workingStatus = $this->getWorkingStatus($schedulesArray,$filter['date']);
         $schedulesArray['working_status'] = $workingStatus;
