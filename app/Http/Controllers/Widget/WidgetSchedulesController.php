@@ -65,7 +65,7 @@ class WidgetSchedulesController extends Controller
         $appointments = Appointment::getAppointments($filter);
         $schedules = Schedule::getWorkingHours($filter);
         if(!$schedules){
-            return [];
+            return null;
         }
         $schedulesArray = $schedules->toArray();
         $workingStatus = $this->getWorkingStatus($schedulesArray,$filter['date']);
