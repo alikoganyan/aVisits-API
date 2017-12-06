@@ -68,13 +68,14 @@ class WidgetSchedulesController extends Controller
             return null;
         }
         $schedulesArray = $schedules->toArray();
+        $schedulesArray['free_periods'] = $schedulesArray['periods'];
         $workingStatus = $this->getWorkingStatus($schedulesArray,$filter['date']);
         $schedulesArray['working_status'] = $workingStatus;
         if(count($appointments) > 0 && $workingStatus == 1) {
             foreach ($appointments as $appointment) {
                 $from_time = $this->getTimeToInteger($appointment['from_time']);
                 $to_time = $this->getTimeToInteger($appointment['to_time']);
-                foreach ($schedulesArray['periods'] as &$sh) {
+                foreach ($schedulesArray['free_periods'] as &$sh) {
                     $start =  $this->getTimeToInteger($sh['start']);
                     $end =  $this->getTimeToInteger($sh['end']);
                     /*если начало записи внутри периода*/
@@ -102,7 +103,7 @@ class WidgetSchedulesController extends Controller
                                     $tEnd = $sh['end'];
                                     $sh['end'] = $appointment['from_time'];
 
-                                    $schedulesArray['periods'][] = [
+                                    $schedulesArray['free_periods'][] = [
                                         "schedule_id"=>$sh['schedule_id'],
                                         "start"=>$appointment['to_time'],
                                         "end"=>$tEnd];
@@ -112,9 +113,9 @@ class WidgetSchedulesController extends Controller
                     }
                 }
             }
-            foreach ($schedulesArray['periods'] as $key=>$period){
+            foreach ($schedulesArray['free_periods'] as $key=>$period){
                 if(isset($period['removed']) && $period['removed'] == 1){
-                    array_splice($schedulesArray['periods'],$key,1);
+                    array_splice($schedulesArray['free_periods'],$key,1);
                 }
             }
         }
