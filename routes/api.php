@@ -260,6 +260,7 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      *              "chain": {
      *                  "id": 0,
      *                  "title": "string",
+     *                  "img": "files\\chains\\images\\main\\1512576242_fda16d333d5b2083e2ca780d465a6f89.jpg",
      *                  "phone_number": "string",
      *                  "created_at": "2017-10-25 11:16:52",
      *                  "updated_at": "2017-10-25 11:16:52",
@@ -305,6 +306,7 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      *              "chain": {
      *                  "id": 0,
      *                  "title": "string",
+     *                  "img": "files\\chains\\images\\main\\1512576242_fda16d333d5b2083e2ca780d465a6f89.jpg",
      *                  "phone_number": "string",
      *                  "created_at": "2017-10-25 11:16:52",
      *                  "updated_at": "2017-10-25 11:16:52",
@@ -351,6 +353,7 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      *              "chain": {
      *                  "id": 0,
      *                  "title": "string",
+     *                  "img": "files\\chains\\images\\main\\1512576242_fda16d333d5b2083e2ca780d465a6f89.jpg",
      *                  "phone_number": "string",
      *                  "created_at": "2017-10-25 11:16:52",
      *                  "updated_at": "2017-10-25 11:16:52",
