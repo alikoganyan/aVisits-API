@@ -53,9 +53,10 @@ class Service extends Model
     }
 
     public function service_category(){
-        return $this->hasOne('App\Models\ServiceCategory','id','service_category_id')->select(['id','parent_id','title']);
+        return $this->hasOne('App\Models\ServiceCategory','id','service_category_id')
+            ->select(['id','parent_id','title']);
     }
-    public static function getServices($filter = null){
+    public static function getServices($chain_id,$filter = null) {
         $data = [];
         $response = [];
         if($filter !== null) {
@@ -143,8 +144,42 @@ class Service extends Model
                     }
                     $response['employees'] = $employees;
                 }
-                else{
-                    $query = self::query();
+                else {
+                    $query = ServiceCategory::query()->from("service_categories as Q1")
+                        ->select([
+                        'Q1.id',
+                        'Q1.parent_id',
+                        'Q1.title'
+                    ]);
+                    $query->distinct();
+                    $query->whereNull('Q1.parent_id');
+                    $query->where(['Q1.chain_id'=>$chain_id]);
+                    $query->join('service_categories as Q2', function ($join) use($chain_id) {
+                        $join->on('Q2.parent_id','=','Q1.id');
+                    });
+                    $query->join('services', function ($join) use($chain_id) {
+                        $join->on('Q2.id','=','services.service_category_id')->whereNotNull("Q2.parent_id");
+                    });
+                    $query->join('salon_has_services as SHS', function ($join) use($salonId) {
+                        $join->on('SHS.service_id','=','services.id')->where(["salon_id"=>$salonId]);
+                    });
+                    $query->with(['groups'=>function($g) use($salonId) {
+                        $g->with(['services'=>function($s) use($salonId) {
+                            $s->join('salon_has_services as SHS2', function ($join) use($salonId) {
+                                $join->on('SHS2.service_id','=','services.id')->where(["salon_id"=>$salonId]);
+                            });
+                        }])->whereIn("service_categories.id",function($subQ) use($salonId){
+                            $subQ->select("service_category_id")
+                                ->from("services as S1")
+                                ->join('salon_has_services as SHS2', function ($join) use($salonId) {
+                                    $join->on('S1.id','=','SHS2.service_id')
+                                        ->where(['salon_id'=>$salonId]);
+                                });
+                        });
+                    }]);
+                    $response = ["service_groups"=>$query->get()];
+                    dd($query->get()->toArray());
+                    /*$query = self::query();
                     $select = [
                         'services.id',
                         'services.service_category_id',
@@ -160,14 +195,15 @@ class Service extends Model
                         $join->on('services.id','=','salon_has_services.service_id')
                             ->where('salon_has_services.salon_id','=',$salonId);
                     });
-                    $query->with('service_category');
+                    $query->with(['service_category'=>function($q){
+                        $q->with('category');
+                    }]);
                     $data = $temp = $query->get();
                     $services = [];
                     foreach ($data as $item) {
-//                        dd($item->service_category->id);
                         if(!array_key_exists($item->service_category->id, $services)) {
                             $services[$item->service_category->id] = $item->service_category->getAttributes();
-                            $services[$item->service_category->id]['services']= [];
+                            $services[$item->service_category->id]['services'] = [];
                         }
                         $temp = clone $item;
                         unset($temp->service_category);
@@ -175,11 +211,10 @@ class Service extends Model
                         $services[$item->service_category->id]['services'][] = $temp;
                     };
                     $services = array_values($services);
-                    $response = ["service_groups"=>$services];
+                    $response = ["service_groups"=>$services];*/
                 }
             }
         }
-
         return $response;
     }
 }

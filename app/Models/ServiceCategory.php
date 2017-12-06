@@ -35,7 +35,9 @@ class ServiceCategory extends Model
      */
     public static function getById($id)
     {
-        $serviceCategory = self::query()->with(['groups'])->find($id);
+        $serviceCategory = self::query()->with(['groups'=>function($query){
+            $query->with('services');
+        }])->find($id);
         return $serviceCategory;
     }
 
@@ -69,5 +71,10 @@ class ServiceCategory extends Model
     public function services()
     {
         return $this->hasMany(Service::class, 'service_category_id', 'id');
+    }
+
+    public function category()
+    {
+        return $this->hasMany(self::class, 'id','parent_id');
     }
 }

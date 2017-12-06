@@ -7,12 +7,14 @@ use Illuminate\Http\Request;
 
 class WidgetServiceController extends Controller
 {
-    public function __construct(){
-
+    public function __construct(Request $request)
+    {
+        $this->chain = $request->route('chain');
     }
+
     public function services(Request $request){
         $filter = $request->post();
-        $services = Service::getServices($filter);
+        $services = Service::getServices($this->chain,$filter);
         return response()->json(['data' => $services], 200);
     }
 }

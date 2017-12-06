@@ -20,7 +20,9 @@ class ServiceCategoryController extends Controller
         $chain = $request->route('chain');
         $categories = ServiceCategory::where(["chain_id" => $chain])
             ->whereNull('parent_id')
-            ->with('groups')
+            ->with(['groups'=>function($query){
+                $query->with('services');
+            }])
             ->get();
         return response()->json(["data" => ["categories" => $categories]], 200);
     }
@@ -29,7 +31,9 @@ class ServiceCategoryController extends Controller
     {
         $chain = $request->route('chain');
         $categories = ServiceCategory::where(["chain_id" => $chain])
-            ->with('groups')
+            ->with(['groups'=>function($query){
+                $query->with('services');
+            }])
             ->whereNull('parent_id')
             ->get();
         return response()->json(["data" => ["categories" => $categories]], 200);
