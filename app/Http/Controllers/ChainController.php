@@ -8,6 +8,7 @@ use App\Models\ChainPriceLevel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Chain;
+use File;
 
 Class ChainController extends Controller
 {
@@ -21,11 +22,22 @@ Class ChainController extends Controller
     {
         $chain = new Chain($request->all());
         $chain->user_id = Auth::id();
-        if ($chain->save()) {
-            foreach ($request->input('levels') as $key => $value) {
-                $level = ChainPriceLevel::add($value['level'], $chain->id);
+        if ($request->hasFile('img')) {
+            $file = $this->upload($request);
+            if ($file) {
+                $chain->img = $file['fileName'];
             }
-            $chain=Chain::getById($chain->id);
+        }
+        if ($chain->save()) {
+            if($request->input('levels')){
+                foreach ($request->input('levels') as $key => $value) {
+                    $level = ChainPriceLevel::add($value['level'], $chain->id);
+                }
+            }
+            else{
+                ChainPriceLevel::add("Уровен 1", $chain->id);
+            }
+            $chain = Chain::getById($chain->id);
             $data = [];
             $data['chain'] = $chain;
             $data['status'] = 'OK';
@@ -40,6 +52,12 @@ Class ChainController extends Controller
         $chain = Chain::where(["id" => $params['chain'], "user_id" => Auth::id()])->first();
         if ($chain) {
             $chain->fill($request->all());
+            if ($request->hasFile('img')) {
+                $file = $this->upload($request);
+                if ($file) {
+                    $chain->img = $file['fileName'];
+                }
+            }
             if ($chain->save()) {
                 $levelIds = [];
                 foreach ($request->input('levels') as $key => $value) {
@@ -101,5 +119,25 @@ Class ChainController extends Controller
             return $chain;
         }
         return [];
+    }
+
+    public function upload(Request $request)
+    {
+        $ds = DIRECTORY_SEPARATOR;
+        $file = $request->file('img');
+        $path = public_path("files" . $ds . "chains" . $ds . "images" . $ds . "main");
+        $fileName = time() . "_" . md5($file->getClientOriginalName()) . "." . $file->getClientOriginalExtension();
+        if (!File::exists($path)) {
+            File::makeDirectory($path, $mode = 0777, true, true);
+        }
+        if ($file->move($path, $fileName)) {
+            return [
+                "fileName" => $fileName,
+                "path" => $path
+            ];
+        } else {
+            return false;
+        }
+
     }
 }

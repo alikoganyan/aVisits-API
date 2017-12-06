@@ -13,8 +13,8 @@ class Chain extends Model
      */
     protected $fillable = [
         'title',
+        'img',
         'phone_number',
-        'description',
         'created_at',
         'updated_at'
     ];
@@ -56,7 +56,14 @@ class Chain extends Model
      */
     public static function getById($id)
     {
-        $chain = self::query()->with(['levels'])->find($id);
+        $chain = self::query()->select([
+            'id',
+            'title',
+            'img',
+            'phone_number',
+            'created_at',
+            'updated_at'
+        ])->with(['levels'])->find($id);
         return $chain;
     }
 
@@ -88,5 +95,18 @@ class Chain extends Model
     public function levels()
     {
         return $this->hasMany('App\Models\ChainPriceLevel', 'chain_id', 'id');
+    }
+
+    /**
+     * @param $value
+     * @return string
+     *
+     */
+    public function getImgAttribute($value) {
+        if(!$value){
+            return null;
+        }
+        $ds = DIRECTORY_SEPARATOR;
+        return 'files'.$ds.'chains'.$ds.'images'.$ds.'main'.$ds.$value;
     }
 }

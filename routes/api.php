@@ -288,14 +288,15 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      * @apiName Create chain
      * @apiHeaderExample {json} Header-Example:
      *     {
-     *       "Content-Type": "Application/json"
+     *       "Content-Type": undefined
      *     }
      * @apiGroup Chain
      *
      * @apiParam {String} title Title
+     * @apiParam {File}   img The file of Chain
      * @apiParam {String} phone_number Phone number
      * @apiParam {String} description Description
-     * @apiParam {Object} levels [{"level":"1"}]
+     * @apiParam {Object} levels [{"level":"level 1"}]
      *
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200
@@ -329,15 +330,16 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      */
 
     /**
-     * @api {put} /chain/{chain}?token=:token Update chain
+     * @api {post} /chain/{chain}?token=:token&_method=put Update chain
      * @apiName Update chain
      * @apiHeaderExample {json} Header-Example:
      *     {
-     *       "Content-Type": "Application/json"
+     *       "Content-Type": undefined
      *     }
      * @apiGroup Chain
      *
      * @apiParam {String} title Title
+     * @apiParam {File}   img The file of Chain
      * @apiParam {String} phone_number Phone number
      * @apiParam {String} description Description
      * @apiParam {Object} levels [{"id":"0","level":"1"}]
