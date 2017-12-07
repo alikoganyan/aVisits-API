@@ -1268,29 +1268,26 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
     /**
      * @api {get} /{chain}/position?token=:token Get position
      * @apiName Get position
-     * @apiHeaderExample {json} Header-Example:
-     *     {
-     *       "Content-Type": "Application/json"
-     *     }
+     *
      * @apiGroup Position
      *
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200
-     *     [
+     * {
+     *      "positions":[
      *          {
-     *              "id": 0,
+     *              "id": 1,
      *              "title": "string",
      *              "description": "string",
      *              "create_at": "string",
      *              "updated_at": "string"
      *          }
      *     ]
+     * }
      *
      * @apiErrorExample {json} Error-Response:
      *     HTTP/1.1 400
-     *     {
-     *       "Invalid input"
-     *     }
+     *
      */
 
     /**
