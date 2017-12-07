@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 class PositionController extends Controller
 {
     public function index(Request $request) {
+        $chainId = $request->route('chain');
+        $positions = Position::where(['chain_id'=>$chainId])->get();
+        return response()->json(["data"=>$positions],200);
+    }
+    public function index_grid(Request $request) {
         $data = $request->all();
         $datatable = isset($data['datatable']) ? $data['datatable'] : null;
         $positions = Position::getAll($request->route('chain') , $datatable);

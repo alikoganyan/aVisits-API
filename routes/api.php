@@ -611,7 +611,36 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *       "Invalid input"
      *     }
      */
+
+    /**
+     * @api {post} /salon_img?token=:token Upload the Salons`s img
+     * @apiName Salon img
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": ""
+     *     }
+     * @apiGroup Salon
+     *
+     * @apiParam {File}   img The File(img) which will be uploaded
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *  {
+     *      "data": {
+     *          "fileName": "1512656015_07f6911d5242b0774dfb15fe1cab99db.png",
+     *          "path": "files\\salons\\images\\main\\1512656015_07f6911d5242b0774dfb15fe1cab99db.png"
+     *      },
+     *      "status":"OK"
+     *  }
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     *     {
+     *       "Invalid input"
+     *     }
+     */
     Route::put('salon/{salon}', 'SalonController@update')->middleware(['own.salon']);
+    Route::post('salon_img', 'SalonController@upload');
     Route::resource('salon', 'SalonController')->except('update');
 
     /**
@@ -1346,8 +1375,8 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *       "Invalid input"
      *     }
      */
-    Route::resource('position', 'PositionController')->except('index');
-    Route::post('position_index', 'PositionController@index');
+    Route::resource('position', 'PositionController');
+    Route::post('position_index', 'PositionController@index_grid');
     Route::resource('schedule', 'ScheduleController');
 
     /**

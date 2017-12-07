@@ -108,12 +108,6 @@ class SalonController extends Controller
         }
         $model->img=$imgName;
         $model->current_time = Carbon::parse($request->input('current_time'))->format('Y-m-d H:i:s');
-        if ($request->hasFile('img')) {
-            $file = $this->upload($request);
-            if ($file) {
-                $model->img = $file['fileName'];
-            }
-        }
         if ($model->save()) {
             foreach ($request->input('schedule') as $key => $value) {
                 if (isset($value['id'])) {
@@ -129,6 +123,12 @@ class SalonController extends Controller
 
     public function upload(Request $request)
     {
+        if (!$request->hasFile('img')) {
+            return response()->json(["data"=>[
+                "fileName" => null,
+                "path" => null
+            ],"status"=>"OK"],200);
+        }
         $ds = DIRECTORY_SEPARATOR;
         $file = $request->file('img');
         $path = public_path("files" . $ds . "salons" . $ds . "images" . $ds . "main");
@@ -137,12 +137,12 @@ class SalonController extends Controller
             File::makeDirectory($path, $mode = 0777, true, true);
         }
         if ($file->move($path, $fileName)) {
-            return [
+            return response()->json(["data"=>[
                 "fileName" => $fileName,
                 "path" => $path
-            ];
+            ],"status"=>"OK"],200);
         } else {
-            return false;
+            return response()->json(["data"=>"","status"=>"ERROR","message"=>"File upload failed!"],400);
         }
 
     }
