@@ -1755,21 +1755,32 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *     }
      * When filtered only By Salon_id
      * {
-     *      "service_groups": [{
-     *          "id": 2,
-     *          "parent_id": 1,
-     *          "title": "title",
-     *          "services": [{
+     *      "categories": [
+     *          {
      *              "id": 1,
-     *              "service_category_id": 2,
-     *              "title": "title",
-     *              "default_duration": 25,
-     *              "description": "desc",
-     *              "available_for_online_recording": 1,
-     *              "only_for_online_recording": 1
-     *          }]
-     *      }]
-     * }
+     *              "parent_id": null,
+     *              "title": "parent",
+     *              "groups": [
+     *                  {
+     *                      "id": 2,
+     *                      "parent_id": 1,
+     *                      "title": "Title of Groups",
+     *                      "services": [
+     *                          {
+     *                              "id": 1,
+     *                              "service_category_id": 2,
+     *                              "title": "Title of the service",
+     *                              "description": "description",
+     *                              "default_duration": 25,
+     *                              "available_for_online_recording": 1,
+     *                              "only_for_online_recording": 1
+     *                          }
+     *                      ]
+     *                  }
+     *              ]
+     *          }
+     *      ]
+     *  }
      *
      * @apiErrorExample {json} Error-Response:
      *     HTTP/1.1 400

@@ -164,8 +164,16 @@ class Service extends Model
                         $join->on('SHS.service_id','=','services.id')->where(["salon_id"=>$salonId]);
                     });
                     $query->with(['groups'=>function($g) use($salonId) {
-                        $g->with(['services'=>function($s) use($salonId) {
-                            $s->join('salon_has_services as SHS2', function ($join) use($salonId) {
+                        $g->select(["id","parent_id","title"])
+                            ->with(['services'=>function($s) use($salonId) {
+                            $s->select(['services.id',
+                                'services.service_category_id',
+                                'services.title',
+                                'services.duration as default_duration',
+                                'services.description',
+                                'services.available_for_online_recording',
+                                'services.only_for_online_recording'])
+                                ->join('salon_has_services as SHS2', function ($join) use($salonId) {
                                 $join->on('SHS2.service_id','=','services.id')->where(["salon_id"=>$salonId]);
                             });
                         }])->whereIn("service_categories.id",function($subQ) use($salonId){
@@ -177,8 +185,8 @@ class Service extends Model
                                 });
                         });
                     }]);
-                    $response = ["service_groups"=>$query->get()];
-                    dd($query->get()->toArray());
+                    $response = ["categories"=>$query->get()];
+//                    dd($query->get()->toArray());
                     /*$query = self::query();
                     $select = [
                         'services.id',

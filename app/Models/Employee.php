@@ -80,7 +80,7 @@ class Employee extends Model
         $query->with('position');
         $query->where('employees.chain_id','=',$chain);
 
-        if($filter !== null){
+        if($filter !== null) {
             /*when need to filter by ID of Salon*/
             if(isset($filter['salon_id']) && !empty($filter['salon_id'])) {
                 $salonId = $filter['salon_id'];
@@ -123,8 +123,16 @@ class Employee extends Model
                     }
                 });
             }
+            if(isset($filter['services']) && count($filter['services']) > 0) {
+                $fServices = collect($filter['services'])->map(function($item){
+                    return (integer)$item;
+                });
+                $query->join('salon_employee_services',function($join) use ($fServices) {
+                    $join->on("salon_has_employees.id","=","salon_employee_services.shm_id")
+                        ->whereIn("salon_employee_services.service_id",$fServices);
+                });
+            }
         }
-
         $query->where('dismissed','=',0);
         return $query->get();
     }
