@@ -133,7 +133,7 @@ Class ChainController extends Controller
         if ($file->move($path, $fileName)) {
             return response()->json(["data"=>[
                 "fileName" => $fileName,
-                "path" => $path
+                "path" => 'files'.$ds.'chains'.$ds.'images'.$ds.'main'.$ds.$fileName
             ]],200);
         } else {
             return response()->json(["data"=>"","status"=>"ERROR","message"=>"File upload failed!"],400);
