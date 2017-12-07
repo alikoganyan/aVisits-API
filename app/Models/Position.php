@@ -18,7 +18,7 @@ class Position extends Model
         return $this->fillable;
     }
 
-    public static function getAll($chainId,$filter = null){
+    public static function getAll($chainId,$filter = null) {
         $query = Position::where(['chain_id'=>$chainId]);
         $total = $query->count();
         if($filter!== null){
@@ -43,6 +43,7 @@ class Position extends Model
                 }
             }
             if(isset($filter['query']) && !empty($filter['sort'])){
+                dd();
                 $fQuery = $filter['query'];
                 if(isset($fQuery['generalSearch']) && !empty($fQuery['generalSearch'])){
                    $query->where(function($query) use ($fQuery){

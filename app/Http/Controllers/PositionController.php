@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class PositionController extends Controller
 {
-    public function index(Request $request){
+    public function index(Request $request) {
         $data = $request->all();
         $datatable = isset($data['datatable']) ? $data['datatable'] : null;
         $positions = Position::getAll($request->route('chain') , $datatable);

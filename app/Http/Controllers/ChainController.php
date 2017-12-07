@@ -22,12 +22,12 @@ Class ChainController extends Controller
     {
         $chain = new Chain($request->all());
         $chain->user_id = Auth::id();
-        if ($request->hasFile('img')) {
+        /*if ($request->hasFile('img')) {
             $file = $this->upload($request);
             if ($file) {
                 $chain->img = $file['fileName'];
             }
-        }
+        }*/
         if ($chain->save()) {
             if($request->input('levels')){
                 foreach ($request->input('levels') as $key => $value) {
@@ -52,12 +52,6 @@ Class ChainController extends Controller
         $chain = Chain::where(["id" => $params['chain'], "user_id" => Auth::id()])->first();
         if ($chain) {
             $chain->fill($request->all());
-            if ($request->hasFile('img')) {
-                $file = $this->upload($request);
-                if ($file) {
-                    $chain->img = $file['fileName'];
-                }
-            }
             if ($chain->save()) {
                 $levelIds = [];
                 foreach ($request->input('levels') as $key => $value) {
@@ -123,6 +117,12 @@ Class ChainController extends Controller
 
     public function upload(Request $request)
     {
+        if (!$request->hasFile('img')) {
+            return response()->json(["data"=>[
+                "fileName" => null,
+                "path" => null
+            ]],200);
+        }
         $ds = DIRECTORY_SEPARATOR;
         $file = $request->file('img');
         $path = public_path("files" . $ds . "chains" . $ds . "images" . $ds . "main");
@@ -131,12 +131,12 @@ Class ChainController extends Controller
             File::makeDirectory($path, $mode = 0777, true, true);
         }
         if ($file->move($path, $fileName)) {
-            return [
+            return response()->json(["data"=>[
                 "fileName" => $fileName,
                 "path" => $path
-            ];
+            ]],200);
         } else {
-            return false;
+            return response()->json(["data"=>"","status"=>"ERROR","message"=>"File upload failed!"],400);
         }
 
     }

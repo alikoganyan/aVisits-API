@@ -294,7 +294,7 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      * @apiGroup Chain
      *
      * @apiParam {String} title Title
-     * @apiParam {File}   img The file of Chain
+     * @apiParam {File}   img The name of file
      * @apiParam {String} phone_number Phone number
      * @apiParam {String} description Description
      * @apiParam {Object} levels [{"level":"level 1"}]
@@ -332,7 +332,7 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      */
 
     /**
-     * @api {post} /chain/{chain}?token=:token&_method=put Update chain
+     * @api {put} /chain/{chain}?token=:token Update chain
      * @apiName Update chain
      * @apiHeaderExample {json} Header-Example:
      *     {
@@ -400,6 +400,7 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      *     }
      */
     Route::resource('chain', 'ChainController');
+    Route::post('chain_img', 'ChainController@upload');
 });
 
 Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'], function () {
