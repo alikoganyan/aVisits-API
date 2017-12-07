@@ -289,12 +289,12 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      * @apiName Create chain
      * @apiHeaderExample {json} Header-Example:
      *     {
-     *       "Content-Type": undefined
+     *       "Content-Type": "Application/json"
      *     }
      * @apiGroup Chain
      *
      * @apiParam {String} title Title
-     * @apiParam {File}   img The name of file
+     * @apiParam {String} img The name of file
      * @apiParam {String} phone_number Phone number
      * @apiParam {String} description Description
      * @apiParam {Object} levels [{"level":"level 1"}]
@@ -336,12 +336,12 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      * @apiName Update chain
      * @apiHeaderExample {json} Header-Example:
      *     {
-     *       "Content-Type": undefined
+     *       "Content-Type": "Application/json"
      *     }
      * @apiGroup Chain
      *
      * @apiParam {String} title Title
-     * @apiParam {File}   img The file of Chain
+     * @apiParam {String} img The name of file
      * @apiParam {String} phone_number Phone number
      * @apiParam {String} description Description
      * @apiParam {Object} levels [{"id":"0","level":"1"}]
@@ -400,6 +400,34 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      *     }
      */
     Route::resource('chain', 'ChainController');
+
+    /**
+     * @api {post} /chain_img?token=:token Upload the chains`s img
+     * @apiName chain img
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": ""
+     *     }
+     * @apiGroup Chain
+     *
+     * @apiParam {File}   img The File(img) which will be uploaded
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *  {
+     *      "data": {
+     *          "fileName": "1512656015_07f6911d5242b0774dfb15fe1cab99db.png",
+     *          "path": "files\\chains\\images\\main\\1512656015_07f6911d5242b0774dfb15fe1cab99db.png"
+     *      },
+     *      "status":"OK"
+     *  }
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     *     {
+     *       "Invalid input"
+     *     }
+     */
     Route::post('chain_img', 'ChainController@upload');
 });
 
