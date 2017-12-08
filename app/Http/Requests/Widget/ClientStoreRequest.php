@@ -28,15 +28,15 @@ class ClientStoreRequest extends FormRequest
     {
         return [
             'first_name' => 'required|string|max:255',
-            'last_name' => 'string|max:255',
-            'father_name' => 'string|max:255',
-            'sex' => 'in:male,female',
-            'birthday' => 'date_format:Y-m-d',
+            'last_name' => 'nullable|string|max:255',
+            'father_name' => 'nullable|string|max:255',
+            'sex' => 'nullable|in:male,female',
+            'birthday' => 'nullable|date_format:Y-m-d',
             'email' => 'required_without:phone|string|email|max:255|unique:clients',
             'phone' => 'required_without:email|string|max:255|unique:clients',
-            'card_number' => 'numeric|digits_between:12,12',
-            'card_number_optional' => 'numeric|digits_between:12,12',
-            'comment'=>'string',
+            'card_number' => 'nullable|numeric|digits_between:12,12',
+            'card_number_optional' => 'nullable|numeric|digits_between:12,12',
+            'comment'=>'nullable|string',
             /*'deposit'=>'numeric|between:0,99999999.99',
             'bonuses'=>'numeric|between:0,99999999.99',
             'invoice_sum'=>'numeric|between:0,99999999.99'*/
