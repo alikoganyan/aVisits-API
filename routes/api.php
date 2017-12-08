@@ -681,7 +681,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      */
 
     /**
-     * @api {post} /salon_img?token=:token Upload the Salons`s img
+     * @api {post} /{chain}/salon_img?token=:token Upload the Salons`s img
      * @apiName Salon img
      *
      * @apiGroup Salon
