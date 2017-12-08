@@ -1319,7 +1319,6 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *       "Invalid input"
      *     }
      */
-
     /**
      * @api {put} /{chain}/position/{position}?token=:token Update position
      * @apiName Update position
@@ -1329,10 +1328,8 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *     }
      * @apiGroup Position
      *
-     * @apiParam {String} title Title
-     * @apiParam {String} description Description
-     * @apiParam {String} created_at Created At
-     * @apiParam {String} updated_at Updated At
+     * @apiParam {String} [title] Title
+     * @apiParam {String} [description] Description
      *
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200
@@ -1350,6 +1347,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *       "Invalid input"
      *     }
      */
+
 
     /**
      * @api {delete} /{chain}/position/{position}?token=:token Delete position

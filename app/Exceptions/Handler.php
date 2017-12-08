@@ -46,9 +46,25 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $exception
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $exception)
+    public function render($request, Exception $e)
     {
-        return response()->json(["ExceptionHandler"=>$exception->getMessage()],400);
+        if($this->isHttpException($e))
+        {
+            switch ($e->getStatusCode())
+            {
+                case 400:
+                    return response()->json(["status"=>"ERROR","message"=>"Bad Request","message"=>"The path info doesn't have the right format, or a parameter or request body value doesn't have the right format, or a required parameter is missing, or values have the right format but are invalid in some way"],400);
+                case 404:
+                    return response()->json(["status"=>"ERROR","message"=>"Not Found","description"=>"The object referenced by the path does not exist."],404);
+                case 405:
+                    return response()->json(["status"=>"ERROR","message"=>"Method Not Allowed", "description"=>"Method '".$request->method()."' not allowed on path '".$request->path()."'."],405);
+                case 500:
+                    return response()->json(["status"=>"ERROR","message"=>"Internal Server Error", "description"=>"The execution of the service failed in some way."],405);
+                default:
+                    return response()->json(["ExceptionHandler"=>"unhandled error"],400);
+            }
+        }
+        return response()->json(["ExceptionHandler"=>$e->getMessage()],400);
         return parent::render($request, $exception);
     }
 }
