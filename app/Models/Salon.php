@@ -63,7 +63,10 @@ class Salon extends Model
 
     public function getImgAttribute($value) {
         $ds = DIRECTORY_SEPARATOR;
-        return 'files'.$ds.'salons'.$ds.'images'.$ds.'main'.$ds.$value;
+        return [
+            "fileName"=>$value,
+            "path"=>'files'.$ds.'salons'.$ds.'images'.$ds.'main'.$ds.$value
+        ];
     }
 
     public function getLatitudeAttribute($value) {

@@ -260,7 +260,10 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      *              "chain": {
      *                  "id": 0,
      *                  "title": "string",
-     *                  "img": "files\\chains\\images\\main\\1512576242_fda16d333d5b2083e2ca780d465a6f89.jpg",
+     *                  "img": {
+     *                      "fileName": "777_1512647742_07f6911d5242b0774dfb15fe1cab99db.png",
+     *                      "path": "files\\chains\\images\\main\\777_1512647742_07f6911d5242b0774dfb15fe1cab99db.png"
+     *                  },
      *                  "phone_number": "string",
      *                  "created_at": "2017-10-25 11:16:52",
      *                  "updated_at": "2017-10-25 11:16:52",
@@ -306,7 +309,10 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      *              "chain": {
      *                  "id": 0,
      *                  "title": "string",
-     *                  "img": "files\\chains\\images\\main\\1512576242_fda16d333d5b2083e2ca780d465a6f89.jpg",
+     *                  "img": {
+     *                      "fileName": "777_1512647742_07f6911d5242b0774dfb15fe1cab99db.png",
+     *                      "path": "files\\chains\\images\\main\\777_1512647742_07f6911d5242b0774dfb15fe1cab99db.png"
+     *                  },
      *                  "phone_number": "string",
      *                  "created_at": "2017-10-25 11:16:52",
      *                  "updated_at": "2017-10-25 11:16:52",
@@ -353,7 +359,10 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      *              "chain": {
      *                  "id": 0,
      *                  "title": "string",
-     *                  "img": "files\\chains\\images\\main\\1512576242_fda16d333d5b2083e2ca780d465a6f89.jpg",
+     *                  "img": {
+     *                      "fileName": "777_1512647742_07f6911d5242b0774dfb15fe1cab99db.png",
+     *                      "path": "files\\chains\\images\\main\\777_1512647742_07f6911d5242b0774dfb15fe1cab99db.png"
+     *                  },
      *                  "phone_number": "string",
      *                  "created_at": "2017-10-25 11:16:52",
      *                  "updated_at": "2017-10-25 11:16:52",
@@ -445,13 +454,28 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *     HTTP/1.1 200
      *     [
      *          {
+     *              "id": 1,
      *              "title": "string",
+     *              "img": {
+     *                  "fileName": "Y53HaeFOERr5Cwtz.png",
+     *                  "path": "files\\salons\\images\\main\\Y53HaeFOERr5Cwtz.png"
+     *              },
      *              "country": "string",
      *              "city": "string",
      *              "address": "string",
+     *              "street_number": "string",
      *              "latitude": 0,
      *              "longitude": 0,
-     *              "current_time": "2017-10-24T07:14:40.498Z"
+     *              "user_id": 1,
+     *              "chain_id": 1,
+     *              "current_time": "2017-10-24 07:14:40",
+     *              "created_at": "2017-11-22 15:39:56",
+     *              "updated_at": "2017-11-22 15:39:56",
+     *              "notify_about_appointments": [
+     *                  "1h11",
+     *                  "2h11",
+     *                  "3h11"
+     *              ]
      *          }
      *      ]
      *
@@ -474,15 +498,31 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200
      *     {
-     *          "title": "string",
-     *          "country": "string",
-     *          "city": "string",
-     *          "address": "string",
-     *          "latitude": 0,
-     *          "longitude": 0,
-     *          "current_time": "2017-10-24T07:14:40.498Z",
-     *          "notify_about_appointments":["1h11","2h11","3h11"]
-     *     }
+     *          "salon":{
+     *              "id": 1,
+     *              "title": "string",
+     *              "img": {
+     *                  "fileName": "Y53HaeFOERr5Cwtz.png",
+     *                  "path": "files\\salons\\images\\main\\Y53HaeFOERr5Cwtz.png"
+     *              },
+     *              "country": "string",
+     *              "city": "string",
+     *              "address": "string",
+     *              "street_number": "string",
+     *              "latitude": 0,
+     *              "longitude": 0,
+     *              "user_id": 1,
+     *              "chain_id": 1,
+     *              "current_time": "2017-10-24 07:14:40",
+     *              "created_at": "2017-11-22 15:39:56",
+     *              "updated_at": "2017-11-22 15:39:56",
+     *              "notify_about_appointments": [
+     *                  "1h11",
+     *                  "2h11",
+     *                  "3h11"
+     *              ]
+     *          }
+     *      }
      *
      * @apiErrorExample {json} Error-Response:
      *     HTTP/1.1 400
@@ -501,6 +541,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      * @apiGroup Salon
      *
      * @apiParam {String} title Title
+     * @apiParam {String} img The title of image
      * @apiParam {String} country Country
      * @apiParam {String} city City
      * @apiParam {String} street_number City
@@ -508,7 +549,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      * @apiParam {String} latitude Latitude
      * @apiParam {String} longitude Longitude
      * @apiParam {String} current_time Current time
-     * @apiParam {Array} notify_about_appointments Reminders of default notes. Available Values: ["1h11","2h11","3h11","1d19","1d12","2d12","3d12","7d12"]
+     * @apiParam {Array}  notify_about_appointments Reminders of default notes. Available Values: ["1h11","2h11","3h11","1d19","1d12","2d12","3d12","7d12"]
      * @apiParam {Array}  schedule [
      *                                 {   "id":schedule_id,
      *                                     "num_of_day":"1",
@@ -521,17 +562,31 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200
      *     {
-     *          "title": "string",
-     *          "country": "string",
-     *          "city": "string",
-     *          "street_number": "string",
-     *          "address": "string",
-     *          "schedule": "[]",
-     *          "latitude": 0,
-     *          "longitude": 0,
-     *          "current_time": "2017-10-24T07:14:40.498Z",
-     *          "notify_about_appointments": ["1h11","2h11","3h11"]
-     *     }
+     *          "salon":{
+     *              "id": 1,
+     *              "title": "string",
+     *              "img": {
+     *                  "fileName": "Y53HaeFOERr5Cwtz.png",
+     *                  "path": "files\\salons\\images\\main\\Y53HaeFOERr5Cwtz.png"
+     *              },
+     *              "country": "string",
+     *              "city": "string",
+     *              "address": "string",
+     *              "street_number": "string",
+     *              "latitude": 0,
+     *              "longitude": 0,
+     *              "user_id": 1,
+     *              "chain_id": 1,
+     *              "current_time": "2017-10-24 07:14:40",
+     *              "created_at": "2017-11-22 15:39:56",
+     *              "updated_at": "2017-11-22 15:39:56",
+     *              "notify_about_appointments": [
+     *                  "1h11",
+     *                  "2h11",
+     *                  "3h11"
+     *              ]
+     *          }
+     *      }
      *
      * @apiErrorExample {json} Error-Response:
      *     HTTP/1.1 400
@@ -550,15 +605,15 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      * @apiGroup Salon
      *
      * @apiParam {String} title Title
+     * @apiParam {String} img The title of image
      * @apiParam {String} country Country
-     * @apiParam {String} image Image
      * @apiParam {String} city City
      * @apiParam {String} street_number Street Number
      * @apiParam {String} address Address
      * @apiParam {String} latitude Latitude
      * @apiParam {String} longitude Longitude
      * @apiParam {String} current_time Current time
-     * @apiParam {Array} notify_about_appointments Reminders of default notes. Available Values: ["1h11","2h11","3h11","1d19","1d12","2d12","3d12","7d12"]
+     * @apiParam {Array}  notify_about_appointments Reminders of default notes. Available Values: ["1h11","2h11","3h11","1d19","1d12","2d12","3d12","7d12"]
      * @apiParam {Array}  schedule [
      *                                 {   "id":schedule_id,
      *                                     "num_of_day":"1",
@@ -570,18 +625,31 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200
      *     {
-     *          "title": "string",
-     *          "img": "string",
-     *          "country": "string",
-     *          "city": "string",
-     *          "address": "string",
-     *          "street_number": "string",
-     *          "latitude": 0,
-     *          "longitude": 0,
-     *          "schedule": "[]",
-     *          "current_time": "2017-10-24T07:14:40.498Z",
-     *          "notify_about_appointments":["1h11","2h11","3h11"]
-     *     }
+     *          "salon":{
+     *              "id": 1,
+     *              "title": "string",
+     *              "img": {
+     *                  "fileName": "Y53HaeFOERr5Cwtz.png",
+     *                  "path": "files\\salons\\images\\main\\Y53HaeFOERr5Cwtz.png"
+     *              },
+     *              "country": "string",
+     *              "city": "string",
+     *              "address": "string",
+     *              "street_number": "string",
+     *              "latitude": 0,
+     *              "longitude": 0,
+     *              "user_id": 1,
+     *              "chain_id": 1,
+     *              "current_time": "2017-10-24 07:14:40",
+     *              "created_at": "2017-11-22 15:39:56",
+     *              "updated_at": "2017-11-22 15:39:56",
+     *              "notify_about_appointments": [
+     *                  "1h11",
+     *                  "2h11",
+     *                  "3h11"
+     *              ]
+     *          }
+     *      }
      *
      * @apiErrorExample {json} Error-Response:
      *     HTTP/1.1 400
@@ -615,10 +683,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
     /**
      * @api {post} /salon_img?token=:token Upload the Salons`s img
      * @apiName Salon img
-     * @apiHeaderExample {json} Header-Example:
-     *     {
-     *       "Content-Type": ""
-     *     }
+     *
      * @apiGroup Salon
      *
      * @apiParam {File}   img The File(img) which will be uploaded
@@ -1333,13 +1398,15 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200
-     *     {
+     * {
+     *      "position":{
      *          "id": 0,
      *          "title": "string",
      *          "description": "string",
      *          "create_at": "string",
      *          "updated_at": "string"
      *     }
+     * }
      *
      * @apiErrorExample {json} Error-Response:
      *     HTTP/1.1 400

@@ -24,6 +24,7 @@ class SalonController extends Controller
         } else {
             $salons = Salon::getAll();
         }
+        dd($salons);
         return response()->json(["data" => $salons], 200);
     }
 
@@ -47,12 +48,6 @@ class SalonController extends Controller
         $salon->chain_id = $request->route('chain');
         $salon->current_time = Carbon::parse($request->input('current_time'))->format('Y-m-d H:i:s');
         $salon->notify_about_appointments = implode(',',$request->input('notify_about_appointments'));
-        $imgName = str_random('16') . '.png';
-        if ($request->input('photo')) {
-            file_put_contents('files'.$ds.'salons'.$ds.'images'.$ds.'main'.$ds.$imgName, base64_decode($request->input('photo')));
-            chmod('files'.$ds.'salons'.$ds.'images'.$ds.'main'.$ds.$imgName,'0777');
-        }
-        $salon->img=$imgName;
         if ($salon->save()) {
             if($request->input('schedule')) {
                 foreach ($request->input('schedule') as $key => $value) {
@@ -98,15 +93,8 @@ class SalonController extends Controller
         $salon = (integer)$request->route('salon');
         $model = Salon::find($salon);
         $model->fill($request->all());
-        $model->img = null;
         $model->user_id = Auth::id();
         $salon->notify_about_appointments = serialize($request->input('notify_about_appointments'));
-        $imgName = str_random('16') . '.png';
-        if ($request->input('photo')) {
-            file_put_contents('files'.$ds.'salons'.$ds.'images'.$ds.'main'.$ds.$imgName, base64_decode($request->input('photo')));
-            chmod('files'.$ds.'salons'.$ds.'images'.$ds.'main'.$ds.$imgName,'0777');
-        }
-        $model->img=$imgName;
         $model->current_time = Carbon::parse($request->input('current_time'))->format('Y-m-d H:i:s');
         if ($model->save()) {
             foreach ($request->input('schedule') as $key => $value) {
@@ -139,7 +127,7 @@ class SalonController extends Controller
         if ($file->move($path, $fileName)) {
             return response()->json(["data"=>[
                 "fileName" => $fileName,
-                "path" => $path
+                "path" => "files" . $ds . "salons" . $ds . "images" . $ds . "main". $ds . $fileName
             ],"status"=>"OK"],200);
         } else {
             return response()->json(["data"=>"","status"=>"ERROR","message"=>"File upload failed!"],400);
