@@ -30,15 +30,15 @@ class ClientUpdateRequest extends FormRequest
         $client = $request->route('client');
         return [
             'first_name' => 'string|max:255',
-            'last_name' => 'string|max:255',
-            'father_name' => 'string|max:255',
-            'sex' => 'in:male,female',
-            'birthday' => 'date_format:Y-m-d',
+            'last_name' => 'nullable|string|max:255',
+            'father_name' => 'nullable|string|max:255',
+            'sex' => 'nullable|in:male,female',
+            'birthday' => 'nullable|date_format:Y-m-d',
             'email' => 'string|email|max:255|'.Rule::unique('clients')->ignore($client,'id'),
             'phone' =>'string|max:255|'.Rule::unique('clients')->ignore($client,'id'),
-            'card_number' => 'numeric|digits_between:12,12',
-            'card_number_optional' => 'numeric|digits_between:12,12',
-            'comment'=>'string',
+            'card_number' => 'nullable|numeric|digits_between:12,12',
+            'card_number_optional' => 'nullable|numeric|digits_between:12,12',
+            'comment'=>'nullable|string',
             /*'deposit'=>'numeric|between:0,99999999.99',
             'bonuses'=>'numeric|between:0,99999999.99',
             'invoice_sum'=>'numeric|between:0,99999999.99'*/

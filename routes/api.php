@@ -544,7 +544,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      * @apiParam {String} img The title of image
      * @apiParam {String} country Country
      * @apiParam {String} city City
-     * @apiParam {String} street_number City
+     * @apiParam {String} street_number Street
      * @apiParam {String} address Address
      * @apiParam {String} latitude Latitude
      * @apiParam {String} longitude Longitude
@@ -608,7 +608,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      * @apiParam {String} img The title of image
      * @apiParam {String} country Country
      * @apiParam {String} city City
-     * @apiParam {String} street_number Street Number
+     * @apiParam {String} street_number Street
      * @apiParam {String} address Address
      * @apiParam {String} latitude Latitude
      * @apiParam {String} longitude Longitude
