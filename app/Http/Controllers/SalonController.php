@@ -113,8 +113,7 @@ class SalonController extends Controller
     {
         if (!$request->hasFile('img')) {
             return response()->json(["data"=>[
-                "fileName" => null,
-                "path" => null
+                "img" => null
             ],"status"=>"OK"],200);
         }
         $ds = DIRECTORY_SEPARATOR;
@@ -126,8 +125,7 @@ class SalonController extends Controller
         }
         if ($file->move($path, $fileName)) {
             return response()->json(["data"=>[
-                "fileName" => $fileName,
-                "path" => "files" . $ds . "salons" . $ds . "images" . $ds . "main". $ds . $fileName
+                "img" => "files" . $ds . "salons" . $ds . "images" . $ds . "main". $ds . $fileName
             ],"status"=>"OK"],200);
         } else {
             return response()->json(["data"=>"","status"=>"ERROR","message"=>"File upload failed!"],400);

@@ -260,10 +260,7 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      *              "chain": {
      *                  "id": 0,
      *                  "title": "string",
-     *                  "img": {
-     *                      "fileName": "777_1512647742_07f6911d5242b0774dfb15fe1cab99db.png",
-     *                      "path": "files\\chains\\images\\main\\777_1512647742_07f6911d5242b0774dfb15fe1cab99db.png"
-     *                  },
+     *                  "img": "files\\chains\\images\\main\\777_1512647742_07f6911d5242b0774dfb15fe1cab99db.png",
      *                  "phone_number": "string",
      *                  "created_at": "2017-10-25 11:16:52",
      *                  "updated_at": "2017-10-25 11:16:52",
@@ -309,10 +306,7 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      *              "chain": {
      *                  "id": 0,
      *                  "title": "string",
-     *                  "img": {
-     *                      "fileName": "777_1512647742_07f6911d5242b0774dfb15fe1cab99db.png",
-     *                      "path": "files\\chains\\images\\main\\777_1512647742_07f6911d5242b0774dfb15fe1cab99db.png"
-     *                  },
+     *                  "img":"files\\chains\\images\\main\\777_1512647742_07f6911d5242b0774dfb15fe1cab99db.png",
      *                  "phone_number": "string",
      *                  "created_at": "2017-10-25 11:16:52",
      *                  "updated_at": "2017-10-25 11:16:52",
@@ -359,10 +353,7 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      *              "chain": {
      *                  "id": 0,
      *                  "title": "string",
-     *                  "img": {
-     *                      "fileName": "777_1512647742_07f6911d5242b0774dfb15fe1cab99db.png",
-     *                      "path": "files\\chains\\images\\main\\777_1512647742_07f6911d5242b0774dfb15fe1cab99db.png"
-     *                  },
+     *                  "img":"files\\chains\\images\\main\\777_1512647742_07f6911d5242b0774dfb15fe1cab99db.png",
      *                  "phone_number": "string",
      *                  "created_at": "2017-10-25 11:16:52",
      *                  "updated_at": "2017-10-25 11:16:52",
@@ -425,8 +416,7 @@ Route::group(['middleware' => ['auth.jwt']], function () {
      *     HTTP/1.1 200
      *  {
      *      "data": {
-     *          "fileName": "1512656015_07f6911d5242b0774dfb15fe1cab99db.png",
-     *          "path": "files\\chains\\images\\main\\1512656015_07f6911d5242b0774dfb15fe1cab99db.png"
+     *          "img": "files\\chains\\images\\main\\1512656015_07f6911d5242b0774dfb15fe1cab99db.png"
      *      },
      *      "status":"OK"
      *  }
@@ -456,10 +446,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *          {
      *              "id": 1,
      *              "title": "string",
-     *              "img": {
-     *                  "fileName": "Y53HaeFOERr5Cwtz.png",
-     *                  "path": "files\\salons\\images\\main\\Y53HaeFOERr5Cwtz.png"
-     *              },
+     *              "img": "files\\salons\\images\\main\\Y53HaeFOERr5Cwtz.png",
      *              "country": "string",
      *              "city": "string",
      *              "address": "string",
@@ -501,10 +488,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *          "salon":{
      *              "id": 1,
      *              "title": "string",
-     *              "img": {
-     *                  "fileName": "Y53HaeFOERr5Cwtz.png",
-     *                  "path": "files\\salons\\images\\main\\Y53HaeFOERr5Cwtz.png"
-     *              },
+     *              "img": "files\\salons\\images\\main\\Y53HaeFOERr5Cwtz.png",
      *              "country": "string",
      *              "city": "string",
      *              "address": "string",
@@ -565,10 +549,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *          "salon":{
      *              "id": 1,
      *              "title": "string",
-     *              "img": {
-     *                  "fileName": "Y53HaeFOERr5Cwtz.png",
-     *                  "path": "files\\salons\\images\\main\\Y53HaeFOERr5Cwtz.png"
-     *              },
+     *              "img": "files\\salons\\images\\main\\Y53HaeFOERr5Cwtz.png",
      *              "country": "string",
      *              "city": "string",
      *              "address": "string",
@@ -628,10 +609,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *          "salon":{
      *              "id": 1,
      *              "title": "string",
-     *              "img": {
-     *                  "fileName": "Y53HaeFOERr5Cwtz.png",
-     *                  "path": "files\\salons\\images\\main\\Y53HaeFOERr5Cwtz.png"
-     *              },
+     *              "img": "files\\salons\\images\\main\\Y53HaeFOERr5Cwtz.png",
      *              "country": "string",
      *              "city": "string",
      *              "address": "string",
@@ -692,8 +670,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *     HTTP/1.1 200
      *  {
      *      "data": {
-     *          "fileName": "1512656015_07f6911d5242b0774dfb15fe1cab99db.png",
-     *          "path": "files\\salons\\images\\main\\1512656015_07f6911d5242b0774dfb15fe1cab99db.png"
+     *          "img": "files\\salons\\images\\main\\1512656015_07f6911d5242b0774dfb15fe1cab99db.png"
      *      },
      *      "status":"OK"
      *  }

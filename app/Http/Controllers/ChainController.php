@@ -119,8 +119,7 @@ Class ChainController extends Controller
     {
         if (!$request->hasFile('img')) {
             return response()->json(["data"=>[
-                "fileName" => null,
-                "path" => null
+                "img" => null
             ]],200);
         }
         $ds = DIRECTORY_SEPARATOR;
@@ -132,8 +131,7 @@ Class ChainController extends Controller
         }
         if ($file->move($path, $fileName)) {
             return response()->json(["data"=>[
-                "fileName" => $fileName,
-                "path" => 'files'.$ds.'chains'.$ds.'images'.$ds.'main'.$ds.$fileName
+                "img" => 'files'.$ds.'chains'.$ds.'images'.$ds.'main'.$ds.$fileName
             ],
                 "status"=>"OK"],200);
         } else {

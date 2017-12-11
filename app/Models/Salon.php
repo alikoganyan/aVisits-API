@@ -57,16 +57,13 @@ class Salon extends Model
      * @return mixed
      */
     public static function getByChainId($chainId) {
-        $salons=self::where('chain_id',$chainId)->get();
+        $salons = self::where('chain_id',$chainId)->get();
         return $salons;
     }
 
     public function getImgAttribute($value) {
         $ds = DIRECTORY_SEPARATOR;
-        return [
-            "fileName"=>$value,
-            "path"=>'files'.$ds.'salons'.$ds.'images'.$ds.'main'.$ds.$value
-        ];
+        return 'files'.$ds.'salons'.$ds.'images'.$ds.'main'.$ds.$value;
     }
 
     public function getLatitudeAttribute($value) {

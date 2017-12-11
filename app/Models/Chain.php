@@ -107,9 +107,6 @@ class Chain extends Model
             return null;
         }
         $ds = DIRECTORY_SEPARATOR;
-        return [
-            "fileName"=>$value,
-            "path"=>'files'.$ds.'chains'.$ds.'images'.$ds.'main'.$ds.$value
-        ];
+        return 'files'.$ds.'chains'.$ds.'images'.$ds.'main'.$ds.$value;
     }
 }
