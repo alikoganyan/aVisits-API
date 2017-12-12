@@ -2302,4 +2302,5 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *     }
      */
     Route::post('appointment','Widget\WidgetAppointmentController@store');
+    Route::get('settings','Widget\WidgetSettingsController@index');
 });
