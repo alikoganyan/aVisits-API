@@ -34,7 +34,7 @@ class ServiceController extends Controller
         $service->service_category_id = $data['service_category_id'];
         $service->chain_id = $chain_id;
         if ($service->save()) {
-            return response()->json(["data" => $service], 200);
+            return response()->json(["data" =>["service"=>$service] ], 200);
         }
         return response()->json(["error" => "save error"], 400);
     }

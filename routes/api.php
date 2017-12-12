@@ -901,6 +901,141 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
     Route::get('service_categories', 'ServiceCategoryController@categories');
     Route::get('service_groups', 'ServiceCategoryController@groups');
     Route::get('service_categories/{category_id}', 'ServiceCategoryController@groupsByCategory');
+
+    /**
+     * @api {get} /{chain}/service?token=:token Get Service
+     * @apiName get services
+     *
+     * @apiGroup Service
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *  [
+     *      {
+     *          "id": 3,
+     *          "service_category_id": 5,
+     *          "title": "new service",
+     *          "description": "description",
+     *          "duration": 100,
+     *          "created_at": "2017-11-29 16:02:18",
+     *          "updated_at": "2017-11-29 16:02:22",
+     *          "available_for_online_recording": 1,
+     *          "only_for_online_recording": 1,
+     *          "service_price": [
+     *              {
+     *                  "id": 1,
+     *                  "price_level_id": 1,
+     *                  "service_id": 3,
+     *                  "price": "1500.00",
+     *                  "max_price": 2000,
+     *                  "inactive": 0,
+     *                  "from": "2017-12-11",
+     *                  "created_at": "2017-12-11 18:34:11",
+     *                  "updated_at": "2017-12-11 18:34:15",
+     *                  "level": {
+     *                      "id": 1,
+     *                      "level": "level1",
+     *                      "chain_id": 3,
+     *                      "created_at": "2017-12-06 15:39:53",
+     *                      "updated_at": "2017-12-06 15:39:53"
+     *                  }
+     *              }
+     *          ]
+     *      }
+     *  ]
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     */
+
+    /**
+     * @api {post} /{chain}/service?token=:token Create Service
+     * @apiName Create Service
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Service
+     *
+     * @apiParam {String} service_category_id The Id of Service Category (Group)
+     * @apiParam {String} title The title of new service
+     * @apiParam {String} description Description
+     * @apiParam {String} duration Duration
+     * @apiParam {integer} available_for_online_recording Available for online recording (0/1)
+     * @apiParam {integer} only_for_online_recording Only for online_recording (0/1)
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *  {
+     *      "service": {
+     *          "service_category_id": 2,
+     *          "title": "new service",
+     *          "description": "desc",
+     *          "duration": 50,
+     *          "updated_at": "2017-12-12 07:36:49",
+     *          "created_at": "2017-12-12 07:36:49",
+     *          "id": 6
+     *      }
+     *  }
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     */
+
+    /**
+     * @api {put} /{chain}/service/{service}?token=:token Update Service
+     * @apiName Update Service
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Service
+     *
+     * @apiParam {String} [service_category_id] The Id of Service Category (Group)
+     * @apiParam {String} [title] The title of new service
+     * @apiParam {String} [description] Description
+     * @apiParam {String} [duration] Duration
+     * @apiParam {integer} [available_for_online_recording] Available for online recording (0/1)
+     * @apiParam {integer} [only_for_online_recording] Only for online_recording (0/1)
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *  {
+     *      "service": {
+     *          "service_category_id": 2,
+     *          "title": "new service",
+     *          "description": "desc",
+     *          "duration": 50,
+     *          "updated_at": "2017-12-12 07:36:49",
+     *          "created_at": "2017-12-12 07:36:49",
+     *          "available_for_online_recording": null,
+     *          "only_for_online_recording": null
+     *          "id": 6
+     *      }
+     *  }
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     */
+
+    /**
+     * @api {delete} /{chain}/service/{service}?token=:token Delete Service
+     * @apiName Delete Service
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Service
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *     {
+     *          "success": 1
+     *      }
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     */
     Route::resource('service', 'ServiceController');
     Route::get('salon_schedule/{salon}/salon', 'SalonScheduleController@salon_schedule');
     Route::resource('salon_schedule', 'SalonScheduleController');

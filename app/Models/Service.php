@@ -17,7 +17,8 @@ class Service extends Model
         'title',
         'description',
         'duration',
-        'price',
+        'available_for_online_recording',
+        'only_for_online_recording',
         'created_at',
         'updated_at'
     ];
