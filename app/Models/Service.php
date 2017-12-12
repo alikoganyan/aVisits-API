@@ -13,12 +13,14 @@ class Service extends Model
      * @var array
      */
     protected $fillable = [
+        'id',
         'service_category_id',
         'title',
         'description',
         'duration',
         'available_for_online_recording',
         'only_for_online_recording',
+        'order',
         'created_at',
         'updated_at'
     ];
@@ -39,7 +41,10 @@ class Service extends Model
      */
     public static function getById($id)
     {
-        $service = self::query()->with(['servicePrice'])->find($id);
+        $service = self::query()
+            ->orderBy('order','desc')
+            ->with(['servicePrice'])
+            ->find($id);
         return $service;
     }
 
@@ -55,6 +60,7 @@ class Service extends Model
 
     public function service_category(){
         return $this->hasOne('App\Models\ServiceCategory','id','service_category_id')
+            ->orderBy('order','desc')
             ->select(['id','parent_id','title']);
     }
     public static function getServices($chain_id,$filter = null) {
@@ -137,6 +143,9 @@ class Service extends Model
                         $temp = clone $item;
                         unset($temp->service_category);
                         unset($temp->employee_id);
+                        $tempServiceModel = new Service($temp->toArray());
+//                        dd($tempServiceModel->servicePrice()->get());
+                        $temp['service_price'] = $tempServiceModel->servicePrice()->get();
                         array_push($employees[$item->employee_id]['service_groups'][$item->service_category->id]->services,$temp);
                     };
                     $employees = array_values($employees);
@@ -174,6 +183,7 @@ class Service extends Model
                                 'services.description',
                                 'services.available_for_online_recording',
                                 'services.only_for_online_recording'])
+                                ->with('servicePrice')
                                 ->join('salon_has_services as SHS2', function ($join) use($salonId) {
                                 $join->on('SHS2.service_id','=','services.id')->where(["salon_id"=>$salonId]);
                             });

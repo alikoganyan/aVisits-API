@@ -13,8 +13,11 @@ class ServiceController extends Controller
     public function index(Request $request)
     {
         $params = $request->route()->parameters();
-        $services = Service::where(["chain_id" => $params['chain']])->with(['servicePrice'])->orderBy('id', 'desc')->get();
-        return response()->json(["data" => $services], 200);
+        $services = Service::where(["chain_id" => $params['chain']])
+            ->with(['servicePrice'])
+            ->orderBy('order', 'desc')
+            ->get();
+        return response()->json(["data" =>["services"=>$services] ], 200);
     }
 
     public function create()
@@ -59,7 +62,7 @@ class ServiceController extends Controller
         $model->fill($request->all());
         $model->chain_id = $params['chain'];
         if ($model->save()) {
-            return response()->json(["data" => $model], 200);
+            return response()->json(["data" =>["service"=>$model] ], 200);
         }
         return response()->json(["error" => "update error"], 400);
     }

@@ -910,39 +910,41 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200
-     *  [
-     *      {
-     *          "id": 3,
-     *          "service_category_id": 5,
-     *          "title": "new service",
-     *          "description": "description",
-     *          "duration": 100,
-     *          "created_at": "2017-11-29 16:02:18",
-     *          "updated_at": "2017-11-29 16:02:22",
-     *          "available_for_online_recording": 1,
-     *          "only_for_online_recording": 1,
-     *          "service_price": [
-     *              {
-     *                  "id": 1,
-     *                  "price_level_id": 1,
-     *                  "service_id": 3,
-     *                  "price": "1500.00",
-     *                  "max_price": 2000,
-     *                  "inactive": 0,
-     *                  "from": "2017-12-11",
-     *                  "created_at": "2017-12-11 18:34:11",
-     *                  "updated_at": "2017-12-11 18:34:15",
-     *                  "level": {
-     *                      "id": 1,
-     *                      "level": "level1",
-     *                      "chain_id": 3,
-     *                      "created_at": "2017-12-06 15:39:53",
-     *                      "updated_at": "2017-12-06 15:39:53"
-     *                  }
-     *              }
-     *          ]
-     *      }
-     *  ]
+     *  {
+     *      "services":[
+     *           {
+     *               "id": 3,
+     *               "service_category_id": 5,
+     *               "title": "new service",
+     *               "description": "description",
+     *               "duration": 100,
+     *               "created_at": "2017-11-29 16:02:18",
+     *               "updated_at": "2017-11-29 16:02:22",
+     *               "available_for_online_recording": 1,
+     *               "only_for_online_recording": 1,
+     *               "service_price": [
+     *                   {
+     *                       "id": 1,
+     *                       "price_level_id": 1,
+     *                       "service_id": 3,
+     *                       "price": "1500.00",
+     *                       "max_price": 2000,
+     *                       "inactive": 0,
+     *                       "from": "2017-12-11",
+     *                       "created_at": "2017-12-11 18:34:11",
+     *                       "updated_at": "2017-12-11 18:34:15",
+     *                       "level": {
+     *                           "id": 1,
+     *                           "level": "level1",
+     *                           "chain_id": 3,
+     *                           "created_at": "2017-12-06 15:39:53",
+     *                           "updated_at": "2017-12-06 15:39:53"
+     *                       }
+     *                   }
+     *               ]
+     *           }
+     *       ]
+     *  }
      *
      * @apiErrorExample {json} Error-Response:
      *     HTTP/1.1 400
@@ -1817,6 +1819,8 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
     Route::put('widget','WidgetController@update');
 });
 
+Route::get('clients','ClientController@index');
+
 
 
 //Route::middleware(['auth.jwt'])->resource('salon', 'SalonController');
@@ -1972,15 +1976,35 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *                  "parent_id": 1,
      *                  "title": "title",
      *                  "services": [{
+     *                      "id": 2,
      *                      "price": "50.00",
      *                      "duration": 30,
-     *                      "id": 2,
      *                      "service_category_id": 2,
      *                      "title": "title",
      *                      "default_duration": 100,
      *                      "description": "title",
      *                      "available_for_online_recording": 1,
-     *                      "only_for_online_recording": 1
+     *                      "only_for_online_recording": 1,
+     *                      "service_price": [
+     *                          {
+     *                              "id": 1,
+     *                              "price_level_id": 1,
+     *                              "service_id": 2,
+     *                              "price": "1500.00",
+     *                              "max_price": 2000,
+     *                              "inactive": 0,
+     *                              "from": "2017-12-11",
+     *                              "created_at": "2017-12-11 18:34:11",
+     *                              "updated_at": "2017-12-11 18:34:15",
+     *                              "level": {
+     *                                  "id": 1,
+     *                                  "level": "level1",
+     *                                  "chain_id": 3,
+     *                                  "created_at": "2017-12-06 15:39:53",
+     *                                  "updated_at": "2017-12-06 15:39:53"
+     *                              }
+     *                          }
+     *                      ]
      *                  }]
      *              }]
      *          }]
@@ -2005,7 +2029,27 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *                              "description": "description",
      *                              "default_duration": 25,
      *                              "available_for_online_recording": 1,
-     *                              "only_for_online_recording": 1
+     *                              "only_for_online_recording": 1,
+     *                              "service_price": [
+     *                                  {
+     *                                      "id": 1,
+     *                                      "price_level_id": 1,
+     *                                      "service_id": 2,
+     *                                      "price": "1500.00",
+     *                                      "max_price": 2000,
+     *                                      "inactive": 0,
+     *                                      "from": "2017-12-11",
+     *                                      "created_at": "2017-12-11 18:34:11",
+     *                                      "updated_at": "2017-12-11 18:34:15",
+     *                                      "level": {
+     *                                          "id": 1,
+     *                                          "level": "level1",
+     *                                          "chain_id": 3,
+     *                                          "created_at": "2017-12-06 15:39:53",
+     *                                          "updated_at": "2017-12-06 15:39:53"
+     *                                      }
+     *                                  }
+     *                              ]
      *                          }
      *                      ]
      *                  }

@@ -13,8 +13,9 @@ class ServiceCategory extends Model
      * @var array
      */
     protected $fillable = [
-        'title',
         'parent_id',
+        'title',
+        'order',
         'created_at',
         'updated_at'
     ];
@@ -35,9 +36,11 @@ class ServiceCategory extends Model
      */
     public static function getById($id)
     {
-        $serviceCategory = self::query()->with(['groups'=>function($query){
-            $query->with('services');
-        }])->find($id);
+        $serviceCategory = self::query()
+            ->orderBy('order','desc')
+            ->with(['groups'=>function($query){
+                $query->with('services');
+            }])->find($id);
         return $serviceCategory;
     }
 
@@ -48,7 +51,10 @@ class ServiceCategory extends Model
      * @return $this
      */
     public static function getByParentId($parent_id) {
-        $serviceCategories=self::query()->where('parent_id',$parent_id)->get();
+        $serviceCategories = self::query()
+            ->where('parent_id',$parent_id)
+            ->orderBy('order','desc')
+            ->get();
         return $serviceCategories;
     }
 
