@@ -15,5 +15,4 @@ Class WidgetController extends Controller
     public function show(){
 
     }
-
 }

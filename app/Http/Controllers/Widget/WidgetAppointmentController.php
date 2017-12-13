@@ -11,9 +11,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Widget\ClientStoreRequest;
 use App\Http\Requests\Widget\ClientUpdateRequest;
 use Illuminate\Validation\ValidationException;
-use Mockery\Exception;
 use Validator;
 use Illuminate\Support\Facades\DB;
+use App;
 
 class WidgetAppointmentController extends Controller
 {
@@ -23,8 +23,11 @@ class WidgetAppointmentController extends Controller
 
     public function store(Request $request)
     {
+        if(empty($request->all())){
+            App::abort(400);
+        }
         foreach ($request->all() as $data) {
-            $this->validateStoreData($data);
+            return $this->validateStoreData($data);
         }
         $postData = $request->all();
         try {
@@ -58,7 +61,6 @@ class WidgetAppointmentController extends Controller
         } catch (ValidationException $exception) {
             $appointmentRequest->failedValidation($exception->validator);
         }
-
         return response()->json(["data" => ["appointment"]], 200);
     }
 }

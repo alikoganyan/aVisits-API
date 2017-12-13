@@ -32,7 +32,17 @@ class WidgetSettings extends Model
         "updated_at",
     ];
 
-    public static function getStepsG()
+    public function allSteps()
+    {
+        return [
+            "address"=>"Адрес",
+            "service"=>"Услуги",
+            "employee"=>"Сотрудники",
+            "employee_time"=>"Сотрудники, Время",
+            "time"=>"Время",
+        ];
+    }
+    public static function getStepsGeneral()
     {
         return array_merge(self::getStepsService(), self::getStepsEmployee());
     }
@@ -54,9 +64,14 @@ class WidgetSettings extends Model
             "address,service,time" => "Адрес -> Услуги -> Время",
         ];
     }
-    
-    public function getSalonsCountAttribute()
+
+    public function getWStepsServiceAttribute($value)
     {
-        return count($this->salons);
+        return explode(',',$value);
+    }
+
+    public function getWStepsEmployeeAttribute($value)
+    {
+        return explode(',',$value);
     }
 }
