@@ -27,7 +27,7 @@ class WidgetAppointmentController extends Controller
             App::abort(400);
         }
         foreach ($request->all() as $data) {
-            return $this->validateStoreData($data);
+            $this->validateStoreData($data);
         }
         $postData = $request->all();
         try {
@@ -61,6 +61,5 @@ class WidgetAppointmentController extends Controller
         } catch (ValidationException $exception) {
             $appointmentRequest->failedValidation($exception->validator);
         }
-        return response()->json(["data" => ["appointment"]], 200);
     }
 }

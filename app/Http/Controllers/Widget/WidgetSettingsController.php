@@ -22,6 +22,9 @@ class WidgetSettingsController extends Controller
         $settings = WidgetSettings::find($this->chain);
         if($settings->w_let_check_steps) {
             unset($settings->w_steps_g);
+            if (isset($params["w_color"]) && !empty($params["w_color"])){
+                $settings->w_color = $params["w_color"];
+            }
             $status = 200;
             $responseBody["data"]["settings"] = $settings;
         }else{
@@ -41,7 +44,7 @@ class WidgetSettingsController extends Controller
         }
         return response()->json($responseBody,$status);
     }
-    public function validateParams($params)
+    public function issetAndValidParams($params)
     {
         if(isset($params['w_steps_service']) && !empty($params['w_steps_service'])){
 
