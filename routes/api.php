@@ -2302,5 +2302,57 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *     }
      */
     Route::post('appointment','Widget\WidgetAppointmentController@store');
+
+    /**
+     * @api {get} /widget/{chain}/settings Get Settings
+     * @apiName get settings
+     * @apiGroup Widget
+     *
+     * @apiParam {String} [w_steps_employee] sequence for Employee First
+     * @apiParam {String} [w_steps_service] sequence for Service First
+     * @apiParam {String} [w_color] color of widget
+     *
+     * @apiParamExample {json} Request-Example:
+     *  w_steps_service=service,address,employee_time
+     *  w_steps_employee=employee,service,address,time
+     *  w_color=%23d3d3d3 (the value is url encoded)
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *
+     *  {
+     *      "settings": {
+     *          "id": 3,
+     *          "w_color": "#78978",
+     *          "w_group_by_category": 0,
+     *          "w_show_any_employee": 0,
+     *          "w_step_display": 15,
+     *          "w_step_search": 0,
+     *          "w_let_check_steps": 1,
+     *          "w_steps_service": [
+     *              "address",
+     *              "service",
+     *              "employee_time"
+     *          ],
+     *          "w_steps_employee": [
+     *              "employee",
+     *              "service",
+     *              "address",
+     *              "time"
+     *          ],
+     *          "w_contact_step": "at_the_end",
+     *          "w_to_group_category": 0
+     *      }
+     *  }
+     *
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     *
+     *     {
+     *       "message":"error message",
+     *       "status":"ERROR"
+     *     }
+     */
     Route::get('settings','Widget\WidgetSettingsController@index');
 });

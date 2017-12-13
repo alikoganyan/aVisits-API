@@ -22,8 +22,33 @@ class WidgetSettingsController extends Controller
         $settings = WidgetSettings::find($this->chain);
         if($settings->w_let_check_steps) {
             unset($settings->w_steps_g);
-            if (isset($params["w_color"]) && !empty($params["w_color"])){
+            if (isset($params["w_color"]) && !empty($params["w_color"])) {
                 $settings->w_color = $params["w_color"];
+            }
+            if(isset($params['w_steps_service']) && !empty($params['w_steps_service'])){
+                if(key_exists($params['w_steps_service'],WidgetSettings::getStepsService())) {
+                    $settings->w_steps_service = $params['w_steps_service'];
+                }
+                else{
+                    $status = 400;
+                    $responseBody["data"] = [];
+                    $responseBody["status"] = "ERROR";
+                    $responseBody["message"] = "checkSteps";
+                    $responseBody["description"] = "Incorrect sequence of the Service steps!";
+                    return response()->json($responseBody,$status);
+                }
+            }
+            if(isset($params['w_steps_employee']) && !empty($params['w_steps_employee'])){
+                if(key_exists($params['w_steps_employee'],WidgetSettings::getStepsEmployee())) {
+                    $settings->w_steps_employee = $params['w_steps_employee'];
+                }else{
+                    $status = 400;
+                    $responseBody["data"] = [];
+                    $responseBody["status"] = "ERROR";
+                    $responseBody["message"] = "checkSteps";
+                    $responseBody["description"] = "Incorrect sequence of the Employee steps!";
+                    return response()->json($responseBody,$status);
+                }
             }
             $status = 200;
             $responseBody["data"]["settings"] = $settings;
@@ -35,7 +60,7 @@ class WidgetSettingsController extends Controller
                 $status = 400;
                 $responseBody["data"] = [];
                 $responseBody["status"] = "ERROR";
-                $responseBody["message"] = "selectSteps";
+                $responseBody["message"] = "checkSteps";
                 $responseBody["description"] = "You do not have the right to change the sequence of steps!";
             }elseif (isset($params["w_color"]) && !empty($params["w_color"])){
                 $status = 200;
@@ -44,18 +69,7 @@ class WidgetSettingsController extends Controller
         }
         return response()->json($responseBody,$status);
     }
-    public function issetAndValidParams($params)
-    {
-        if(isset($params['w_steps_service']) && !empty($params['w_steps_service'])){
 
-        }
-        if(isset($params['w_steps_employee']) && !empty($params['w_steps_employee'])){
-
-        }
-        if(isset($params['w_steps_employee']) && !empty($params['w_steps_employee'])){
-
-        }
-    }
     public function filterRequestData($params, $keys)
     {
         $params = collect($params)->filter(function ($item,$key) use ($keys) {
