@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Widget;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Widget\CalendarFilterRequest;
 use App\Models\Appointment;
 use App\Models\Schedule;
 use Carbon\Carbon;
@@ -15,29 +16,32 @@ class WidgetSchedulesController extends Controller
         $this->chain = $request->route('chain');
     }
 
-    public function getTimeToInteger($value)
-    {
-        $times = explode(':',$value);
-        $times = collect($times)->map(function($item){
-            return (integer)$item;
-        });
-        return ($times[0]*60) + $times[0];
-    }
-    public function getWorkingStatus($employeeSchedule,$date) {
-        if($employeeSchedule['type'] == 1){
-            return $employeeSchedule['working_status'];
+    public function workingStatusOfEmployees(CalendarFilterRequest $request) {
+        $filters = $request->all();
+        $filter['salon_id'] = $filters['salon_id'];
+        $from = Carbon::parse($filters['from']);
+        $to = Carbon::parse($filters['to']);
+        $dates = [];
+        while($from->lessThanOrEqualTo($to)) {
+            array_push($dates,$from->format("Y-m-d"));
+            $from = $from->addDay(1);
         }
-        if($employeeSchedule['type'] == 2){
-            $days = Carbon::parse($date)->diffInDays(Carbon::parse($employeeSchedule['date'])) +1;
-            $sumOfDays = (integer)$employeeSchedule['working_days'] + (integer)$employeeSchedule['weekend'];
-            $nowIs = $days%$sumOfDays;
-            if($nowIs > $employeeSchedule['working_days'] || $nowIs == 0){
-                return 0;
+        $response = [];
+        foreach ($dates as $date) {
+            $item = ["date"=>$date,"working_status"=>0];
+            $filter['date'] = $date;
+            foreach ($filters['employees'] as $employee){
+                $filter['employee_id'] = $employee;
+                $temp = $this->status($filter);
+                $temp['working_status'] = $this->getWorkingStatus($temp,$date);
+                if($temp['working_status'] === 1){
+                    $item['working_status'] = 1;
+                    break;
+                }
             }
-            else{
-                return 1;
-            }
+            array_push($response,$item);
         }
+        return response()->json(["data"=>["calendar"=>$response]],200);
     }
 
     public function freeTimes(Request $request) {
@@ -56,11 +60,50 @@ class WidgetSchedulesController extends Controller
                 "schedule"=>$this->freeTimeOfEmployee($filter)
             ]);
         }
-
-
         return response()->json(["data"=>["employees"=>$response]],200);
     }
 
+    private function status($filter) {
+        $dayOfWeek = null;
+        $dayOfWeek = Carbon::parse($filter['date'])->dayOfWeek;
+        if($dayOfWeek === 0){
+            $dayOfWeek = 7;
+        }
+        $query =Schedule::query();
+        $query->select(["working_status","date","type","working_days","weekend"])
+            ->where(["salon_id"=>$filter['salon_id'],"employee_id"=>$filter['employee_id']])
+            ->where("date","<=",$filter["date"])
+            ->where(function($where) use($dayOfWeek){
+                $where->where("num_of_day","=",$dayOfWeek)->orWhereNull("num_of_day")->orWhere("num_of_day","=",0);
+            })->orderBy('date','desc');
+        return $query->first()->toArray();
+    }
+
+    private function getTimeToInteger($value)
+    {
+        $times = explode(':',$value);
+        $times = collect($times)->map(function($item){
+            return (integer)$item;
+        });
+        return ($times[0]*60) + $times[0];
+    }
+
+    private function getWorkingStatus($employeeSchedule,$date) {
+        if($employeeSchedule['type'] == 1) {
+            return $employeeSchedule['working_status'];
+        }
+        if($employeeSchedule['type'] == 2) {
+            $days = Carbon::parse($date)->diffInDays(Carbon::parse($employeeSchedule['date'])) +1;
+            $sumOfDays = (integer)$employeeSchedule['working_days'] + (integer)$employeeSchedule['weekend'];
+            $nowIs = $days%$sumOfDays;
+            if($nowIs > $employeeSchedule['working_days'] || $nowIs == 0) {
+                return 0;
+            }
+            else{
+                return 1;
+            }
+        }
+    }
     private function freeTimeOfEmployee($filter) {
         $appointments = Appointment::getAppointments($filter);
         $schedules = Schedule::getWorkingHours($filter);

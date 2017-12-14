@@ -2325,4 +2325,6 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *     }
      */
     Route::get('settings','Widget\WidgetSettingsController@index');
+
+    Route::post('employee_calendar','Widget\WidgetSchedulesController@workingStatusOfEmployees');
 });
