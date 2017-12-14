@@ -55,7 +55,12 @@ class Service extends Model
      */
     public function servicePrice()
     {
-        return $this->hasMany('App\Models\ServicePrice', 'service_id', 'id')->with(['level']);
+        return $this->hasMany('App\Models\ServicePrice', 'service_id', 'id');
+    }
+
+    public function minMaxPrices () {
+        return $this->hasOne('App\Models\ServicePrice', 'service_id', 'id')
+            ->select(DB::raw("MIN(price) as min_price,MAX(max_price) as max_price , service_id"))->groupBy('service_id');
     }
 
     public function service_category(){
@@ -144,8 +149,8 @@ class Service extends Model
                         unset($temp->service_category);
                         unset($temp->employee_id);
                         $tempServiceModel = new Service($temp->toArray());
-//                        dd($tempServiceModel->servicePrice()->get());
-                        $temp['service_price'] = $tempServiceModel->servicePrice()->get();
+                        $temp['min_max_prices'] = $tempServiceModel->minMaxPrices()
+                            ->first();
                         array_push($employees[$item->employee_id]['service_groups'][$item->service_category->id]->services,$temp);
                     };
                     $employees = array_values($employees);
@@ -183,7 +188,7 @@ class Service extends Model
                                 'services.description',
                                 'services.available_for_online_recording',
                                 'services.only_for_online_recording'])
-                                ->with('servicePrice')
+                                ->with("minMaxPrices")
                                 ->join('salon_has_services as SHS2', function ($join) use($salonId) {
                                 $join->on('SHS2.service_id','=','services.id')->where(["salon_id"=>$salonId]);
                             });
@@ -196,6 +201,7 @@ class Service extends Model
                                 });
                         });
                     }]);
+                    //dd($query->toSql());
                     $response = ["categories"=>$query->get()];
 //                    dd($query->get()->toArray());
                     /*$query = self::query();

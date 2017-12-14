@@ -1985,26 +1985,11 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *                      "description": "title",
      *                      "available_for_online_recording": 1,
      *                      "only_for_online_recording": 1,
-     *                      "service_price": [
-     *                          {
-     *                              "id": 1,
-     *                              "price_level_id": 1,
-     *                              "service_id": 2,
-     *                              "price": "1500.00",
-     *                              "max_price": 2000,
-     *                              "inactive": 0,
-     *                              "from": "2017-12-11",
-     *                              "created_at": "2017-12-11 18:34:11",
-     *                              "updated_at": "2017-12-11 18:34:15",
-     *                              "level": {
-     *                                  "id": 1,
-     *                                  "level": "level1",
-     *                                  "chain_id": 3,
-     *                                  "created_at": "2017-12-06 15:39:53",
-     *                                  "updated_at": "2017-12-06 15:39:53"
-     *                              }
-     *                          }
-     *                      ]
+     *                      "min_max_prices": {
+     *                          "min_price": "2500.00",
+     *                          "max_price": 3000,
+     *                          "service_id": 2
+     *                      }
      *                  }]
      *              }]
      *          }]
@@ -2030,26 +2015,11 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *                              "default_duration": 25,
      *                              "available_for_online_recording": 1,
      *                              "only_for_online_recording": 1,
-     *                              "service_price": [
-     *                                  {
-     *                                      "id": 1,
-     *                                      "price_level_id": 1,
-     *                                      "service_id": 2,
-     *                                      "price": "1500.00",
-     *                                      "max_price": 2000,
-     *                                      "inactive": 0,
-     *                                      "from": "2017-12-11",
-     *                                      "created_at": "2017-12-11 18:34:11",
-     *                                      "updated_at": "2017-12-11 18:34:15",
-     *                                      "level": {
-     *                                          "id": 1,
-     *                                          "level": "level1",
-     *                                          "chain_id": 3,
-     *                                          "created_at": "2017-12-06 15:39:53",
-     *                                          "updated_at": "2017-12-06 15:39:53"
-     *                                      }
-     *                                  }
-     *                              ]
+     *                              "min_max_prices": {
+     *                                  "min_price": "2500.00",
+     *                                  "max_price": "3000.00",
+     *                                  "service_id": 2
+     *                              }
      *                          }
      *                      ]
      *                  }

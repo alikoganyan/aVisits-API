@@ -14,7 +14,9 @@ class ServiceController extends Controller
     {
         $params = $request->route()->parameters();
         $services = Service::where(["chain_id" => $params['chain']])
-            ->with(['servicePrice'])
+            ->with(['servicePrice'=>function($with){
+                $with->with('level');
+            }])
             ->orderBy('order', 'desc')
             ->get();
         return response()->json(["data" =>["services"=>$services] ], 200);
