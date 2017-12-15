@@ -33,6 +33,9 @@ class WidgetSchedulesController extends Controller
             foreach ($filters['employees'] as $employee){
                 $filter['employee_id'] = $employee;
                 $temp = $this->status($filter);
+                if(count($temp) <= 0) {
+                    continue;
+                }
                 $temp['working_status'] = $this->getWorkingStatus($temp,$date);
                 if($temp['working_status'] === 1){
                     $item['working_status'] = 1;
@@ -69,14 +72,17 @@ class WidgetSchedulesController extends Controller
         if($dayOfWeek === 0){
             $dayOfWeek = 7;
         }
-        $query =Schedule::query();
+        $query = Schedule::query();
         $query->select(["working_status","date","type","working_days","weekend"])
             ->where(["salon_id"=>$filter['salon_id'],"employee_id"=>$filter['employee_id']])
             ->where("date","<=",$filter["date"])
             ->where(function($where) use($dayOfWeek){
                 $where->where("num_of_day","=",$dayOfWeek)->orWhereNull("num_of_day")->orWhere("num_of_day","=",0);
             })->orderBy('date','desc');
-        return $query->first()->toArray();
+        $schedule = $query->first();
+        if($schedule)
+            return $schedule->toArray();
+        return [];
     }
 
     private function getTimeToInteger($value)

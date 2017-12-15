@@ -2326,5 +2326,65 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      */
     Route::get('settings','Widget\WidgetSettingsController@index');
 
+    /**
+     * @api {post} /widget/{chain}/employee_calendar Get working status of days
+     * @apiName employee calendar
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Widget
+     *
+     * @apiParam {Integer}  salon_id The id of Salon
+     * @apiParam {Array}    employees The array of employee_id
+     * @apiParam {Date}     from format: Y-m-d , Example: 2018-01-03
+     * @apiParam {Date}     to format: Y-m-d , Example: 2018-01-31
+     *
+     * @apiParamExample {json} Request-Example:
+     *
+     *  {
+     *      "salon_id":3,
+     *      "employees":[2],
+     *      "from":"2018-01-03",
+     *      "to":"2018-01-07"
+     *  }
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *
+     * {
+     *      "status": "OK",
+     *      "message": "The appointment have been successfully "
+     * }
+     *
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     *
+     *  {
+     *      "calendar": [
+     *          {
+     *              "date": "2018-01-03",
+     *              "working_status": 0
+     *          },
+     *          {
+     *              "date": "2018-01-04",
+     *              "working_status": 0
+     *          },
+     *          {
+     *              "date": "2018-01-05",
+     *              "working_status": 1
+     *          },
+     *          {
+     *              "date": "2018-01-06",
+     *              "working_status": 1
+     *          },
+     *          {
+     *              "date": "2018-01-07",
+     *              "working_status": 1
+     *          }
+     *      ]
+     *  }
+     */
     Route::post('employee_calendar','Widget\WidgetSchedulesController@workingStatusOfEmployees');
 });
