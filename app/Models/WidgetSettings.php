@@ -65,6 +65,11 @@ class WidgetSettings extends Model
         ];
     }
 
+    public function getWStepsG($value)
+    {
+        return explode(',',$value);
+    }
+
     public function getWStepsServiceAttribute($value)
     {
         return explode(',',$value);

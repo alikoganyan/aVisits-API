@@ -174,4 +174,14 @@ class SalonSchedule extends Model
         }
         return 0;
     }
+
+    public static function getScheduleByDate($salonId,$date) {
+        $dayOfWeek = Carbon::parse($date)->dayOfWeek ?: 7;
+        $query = self::query();
+        $query->select(["id","salon_id","start","end","working_status","num_of_day"]);
+        $query->where(["salon_id"=>$salonId,"num_of_day"=>$dayOfWeek]);
+        $query->orderBy("id","desc");
+        $query->first();
+        dd();
+    }
 }
