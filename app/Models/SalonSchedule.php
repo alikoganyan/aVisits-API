@@ -162,4 +162,16 @@ class SalonSchedule extends Model
             ->where(['salons.chain_id' => $filters['chain'], 'user_id' => Auth::id()])
             ->get();
     }
+
+    public static function getStatusByDate($salonId,$date)
+    {
+        $dayOfWeek = Carbon::parse($date)->dayOfWeek ?: 7;
+        $query = self::query();
+        $query->select("working_status")->where(["num_of_day"=>$dayOfWeek,"salon_id"=>$salonId]);
+        $schedule = $query->first();
+        if($schedule){
+            return $schedule->working_status;
+        }
+        return 0;
+    }
 }

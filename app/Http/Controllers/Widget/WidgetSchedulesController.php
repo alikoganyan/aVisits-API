@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Widget;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Widget\CalendarFilterRequest;
 use App\Models\Appointment;
+use App\Models\SalonSchedule;
 use App\Models\Schedule;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class WidgetSchedulesController extends Controller
         $this->chain = $request->route('chain');
     }
 
-    public function workingStatusOfEmployees(CalendarFilterRequest $request) {
+    public function employeeCalendar(CalendarFilterRequest $request) {
         $filters = $request->all();
         $filter['salon_id'] = $filters['salon_id'];
         $from = Carbon::parse($filters['from']);
@@ -30,21 +31,44 @@ class WidgetSchedulesController extends Controller
         foreach ($dates as $date) {
             $item = ["date"=>$date,"working_status"=>0];
             $filter['date'] = $date;
-            foreach ($filters['employees'] as $employee){
-                $filter['employee_id'] = $employee;
-                $temp = $this->status($filter);
-                if(count($temp) <= 0) {
-                    continue;
-                }
-                $temp['working_status'] = $this->getWorkingStatus($temp,$date);
-                if($temp['working_status'] === 1){
-                    $item['working_status'] = 1;
-                    break;
+            $salon_employee = SalonSchedule::getStatusByDate($filter['salon_id'],$date);
+            if($salon_employee === 1){
+                foreach ($filters['employees'] as $employee){
+                    $filter['employee_id'] = $employee;
+                    $employee_schedule = $this->status($filter);
+                    if(count($employee_schedule) <= 0) {
+                        continue;
+                    }
+                    $employee_schedule['working_status'] = $this->getWorkingStatus($employee_schedule,$date);
+                    if($employee_schedule['working_status'] === 1){
+                        $item['working_status'] = 1;
+                        break;
+                    }
                 }
             }
             array_push($response,$item);
         }
         return response()->json(["data"=>["calendar"=>$response]],200);
+    }
+
+    public function freeTimesTest(Request $request) {
+        $filters = $request->post();
+        if(Carbon::today()->gt(Carbon::parse($filters['date']))) {
+            return response()->json(["message"=>"Invalid recording date" , "status"=>"ERROR"],400);
+        }
+        $filter = [];
+        $filter['salon_id'] = $filters['salon_id'];
+        $filter['date'] = $filters['date'];
+        $response = [];
+        $salonSchedule = SalonSchedule::where()->first();
+        foreach ($filters['employees'] as $employee) {
+            $filter['employee_id'] = $employee;
+            array_push($response,[
+                "employee_id"=>$employee,
+                "schedule"=>$this->freeTimeOfEmployee($filter)
+            ]);
+        }
+        return response()->json(["data"=>["employees"=>$response]],200);
     }
 
     public function freeTimes(Request $request) {
@@ -110,6 +134,7 @@ class WidgetSchedulesController extends Controller
             }
         }
     }
+
     private function freeTimeOfEmployee($filter) {
         $appointments = Appointment::getAppointments($filter);
         $schedules = Schedule::getWorkingHours($filter);

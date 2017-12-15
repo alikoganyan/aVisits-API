@@ -2092,6 +2092,7 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *     }
      */
     Route::post('times','Widget\WidgetSchedulesController@freeTimes');
+    Route::post('times_test','Widget\WidgetSchedulesController@freeTimesTest');
 
     /**
      * @api {post} /widget/{chain}/client Client: new Client
@@ -2386,5 +2387,5 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *      ]
      *  }
      */
-    Route::post('employee_calendar','Widget\WidgetSchedulesController@workingStatusOfEmployees');
+    Route::post('employee_calendar','Widget\WidgetSchedulesController@employeeCalendar');
 });
