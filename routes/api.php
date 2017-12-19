@@ -2089,10 +2089,12 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *                  "employee_id": 3,
      *                  "periods": []
      *              }
-     *          ]
+     *          ],
+     *          "salon_id": 3,
+     *          "date": "2017-12-19",
+     *          "working_status": 1
      *      }
      *  }
-     *
      *
      * @apiErrorExample {json} Error-Response:
      *     HTTP/1.1 400

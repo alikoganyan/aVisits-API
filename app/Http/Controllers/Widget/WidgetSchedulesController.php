@@ -66,7 +66,7 @@ class WidgetSchedulesController extends Controller
         $response = [];
         $salonSchedule = SalonSchedule::getScheduleByDate($filter['salon_id'],$filter['date']);
         if(!$salonSchedule || $salonSchedule->working_status != 1){
-            return response()->json(["data"=>["schedule"=>["salon_id"=>$filter['salon_id'],"date"=>$filter['date'],"working_status"=>0]]],200);
+            return response()->json(["data"=>["schedule"=>[],"salon_id"=>$filter['salon_id'],"date"=>$filter['date'],"working_status"=>0]],200);
         }
         $settings = WidgetSettings::select(["w_step_display","w_step_search"])->find($this->chain);
         $salonScheduleSequenceDef = $this->dropPeriod($salonSchedule->start,$salonSchedule->end,$settings);
@@ -137,7 +137,7 @@ class WidgetSchedulesController extends Controller
             $data["periods"] = $salonScheduleSequence;
             $response[] = $data;
         }
-        return response()->json(["data"=>["employees"=>$response]],200);
+        return response()->json(["data"=>["schedule"=>$response,"salon_id"=>$filter['salon_id'],"date"=>$filter['date'],"working_status"=>1]],200);
     }
 
     public function freeTimes(Request $request) {
