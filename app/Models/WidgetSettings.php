@@ -44,7 +44,11 @@ class WidgetSettings extends Model
     }
     public static function getStepsGeneral()
     {
-        return array_merge(self::getStepsService(), self::getStepsEmployee());
+        $general = [
+            "address,service,time" => "Адрес -> Услуги -> Время",
+            "service,address,time" => "Услуги -> Адрес -> Время",
+        ];
+        return array_merge(self::getStepsService(), self::getStepsEmployee(),$general);
     }
 
     public static function getStepsService()
@@ -61,7 +65,6 @@ class WidgetSettings extends Model
             "address,employee,service,time" => "Адрес -> Сотрудники -> Услуги -> Время",
             "employee,service,address,time" => "Сотрудники -> Услуги -> Адрес -> Время",
             "employee,address,service,time" => "Сотрудники -> Адрес -> Услуги -> Время",
-            "address,service,time" => "Адрес -> Услуги -> Время",
         ];
     }
 

@@ -3,9 +3,13 @@ namespace App\Http\Controllers\Widget;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Widget\CalendarFilterRequest;
+use App\Http\Services\SalonScheduleService;
+use App\Http\Services\Widget\WidgetEmployeeSchedule as EmployeeScheduleService;
 use App\Models\Appointment;
+use App\Models\SalonEmployeeHasServices;
 use App\Models\SalonSchedule;
 use App\Models\Schedule;
+use App\Models\WidgetSettings;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use function PHPSTORM_META\type;
@@ -61,13 +65,77 @@ class WidgetSchedulesController extends Controller
         $filter['date'] = $filters['date'];
         $response = [];
         $salonSchedule = SalonSchedule::getScheduleByDate($filter['salon_id'],$filter['date']);
-        dd($salonSchedule);
+        if(!$salonSchedule || $salonSchedule->working_status != 1){
+            return response()->json(["data"=>["schedule"=>["salon_id"=>$filter['salon_id'],"date"=>$filter['date'],"working_status"=>0]]],200);
+        }
+        $settings = WidgetSettings::select(["w_step_display","w_step_search"])->find($this->chain);
+        $salonScheduleSequenceDef = $this->dropPeriod($salonSchedule->start,$salonSchedule->end,$settings);
         foreach ($filters['employees'] as $employee) {
-            $filter['employee_id'] = $employee;
-            array_push($response,[
-                "employee_id"=>$employee,
-                "schedule"=>$this->freeTimeOfEmployee($filter)
-            ]);
+            $salonScheduleSequence = $salonScheduleSequenceDef;
+            $durationsSum = SalonEmployeeHasServices::getSumOfDuration($filter['salon_id'],$employee["employee_id"],$employee["services"]);
+            $newTime = EmployeeScheduleService::newAvailableTime($salonSchedule->start,$settings->w_step_search);
+            if($newTime){
+                $salonScheduleSequence[0] = $newTime;
+                $newTime = null;
+            }
+            $newTime = EmployeeScheduleService::newAvailableTime($salonSchedule->end,$settings->w_step_search,$durationsSum);
+            if($newTime){
+                $salonScheduleSequence[count($salonScheduleSequence)-1] = $newTime;
+                $newTime = null;
+            }
+            $filter["employee_id"] = $employee["employee_id"];
+            $appointments = Appointment::getAppointments($filter);
+            if($appointments) {
+                foreach ($appointments->toArray() as $appointment) {
+                    $newTime =  EmployeeScheduleService::newAvailableTime($appointment['from_time'],$settings->w_step_search,$durationsSum);
+                    if($newTime){
+                        array_push($salonScheduleSequence,$newTime);
+                        $newTime = null;
+                    }
+                    $newTime = EmployeeScheduleService::newAvailableTime($appointment['to_time'],$settings->w_step_search);
+                    if($newTime){
+                        array_push($salonScheduleSequence,$newTime);
+                        $newTime = null;
+                    }
+                }
+            }
+            $employeeSchedules = Schedule::getWorkingHours($filter);
+            if(!$employeeSchedules){
+                $data = [];
+                $data["employee_id"] = $filter["employee_id"];
+                $data["periods"] = [];
+                $response[] = $data;
+                continue;
+            }
+            $employeeSchedulesArray = $employeeSchedules->toArray();
+            $employeeSchedulesArray['working_status'] = $this->getWorkingStatus($employeeSchedulesArray,$filter['date']);
+            if($employeeSchedulesArray['working_status'] !== 1 || count($employeeSchedulesArray['periods']) > 1){
+                $data = [];
+                $data["employee_id"] = $filter["employee_id"];
+                $data["periods"] = [];
+                $response[] = $data;
+                continue;
+            }
+            foreach ($employeeSchedulesArray['periods'] as $period){
+                $newTime = EmployeeScheduleService::newAvailableTime($period['start'],$settings->w_step_search);
+                if($newTime){
+                    array_push($salonScheduleSequence,$newTime);
+                    $newTime = null;
+                }
+                $newTime = EmployeeScheduleService::newAvailableTime($period['end'],$settings->w_step_search,$settings->w_step_search);
+                if($newTime){
+                    array_push($salonScheduleSequence,$newTime);
+                    $newTime = null;
+                }
+            }
+            $salonScheduleSequence = array_unique($salonScheduleSequence);
+            $salonScheduleSequence = EmployeeScheduleService::removeOffHours($salonScheduleSequence,$employeeSchedulesArray['periods'],$durationsSum);
+            $salonScheduleSequence = EmployeeScheduleService::removeBusyTime($salonScheduleSequence,$appointments->toArray(),$durationsSum);
+            sort($salonScheduleSequence);
+            $data = [];
+            $data["employee_id"] = $filter["employee_id"];
+            $data["periods"] = $salonScheduleSequence;
+            $response[] = $data;
         }
         return response()->json(["data"=>["employees"=>$response]],200);
     }
@@ -91,6 +159,17 @@ class WidgetSchedulesController extends Controller
         return response()->json(["data"=>["employees"=>$response]],200);
     }
 
+    private function dropPeriod($start,$end,$divider)
+    {
+        $startInteger = $this->getTimeToInteger($start);
+        $end = $this->getTimeToInteger($end);
+        $sequence = [];
+        while($startInteger <= $end) {
+            array_push($sequence,$startInteger);
+            $startInteger += 30;
+        }
+        return $sequence;
+    }
     private function status($filter) {
         $dayOfWeek = null;
         $dayOfWeek = Carbon::parse($filter['date'])->dayOfWeek;

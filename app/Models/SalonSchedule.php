@@ -181,7 +181,6 @@ class SalonSchedule extends Model
         $query->select(["id","salon_id","start","end","working_status","num_of_day"]);
         $query->where(["salon_id"=>$salonId,"num_of_day"=>$dayOfWeek]);
         $query->orderBy("id","desc");
-        $query->first();
-        dd();
+        return $query->first();
     }
 }
