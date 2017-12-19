@@ -70,4 +70,12 @@ class WidgetEmployeeSchedule
         return $salonScheduleSeq;
     }
 
+    public static function parseSequenceOfIntToTime($sequence)
+    {
+        $sequenceOfTimes = [];
+        foreach ($sequence as $item) {
+            $sequenceOfTimes[] = self::integerToTime($item);
+        }
+        return $sequenceOfTimes;
+    }
 }

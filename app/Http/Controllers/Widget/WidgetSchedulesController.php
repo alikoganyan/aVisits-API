@@ -132,6 +132,7 @@ class WidgetSchedulesController extends Controller
             $salonScheduleSequence = EmployeeScheduleService::removeOffHours($salonScheduleSequence,$employeeSchedulesArray['periods'],$durationsSum);
             $salonScheduleSequence = EmployeeScheduleService::removeBusyTime($salonScheduleSequence,$appointments->toArray(),$durationsSum);
             sort($salonScheduleSequence);
+            $salonScheduleSequence = EmployeeScheduleService::parseSequenceOfIntToTime($salonScheduleSequence);
             $data = [];
             $data["employee_id"] = $filter["employee_id"];
             $data["periods"] = $salonScheduleSequence;
