@@ -123,17 +123,27 @@ class Employee extends Model
                     }
                 });
             }
+            /*filter by services*/
             if(isset($filter['services']) && count($filter['services']) > 0) {
+                $count = count($filter['services']);
                 $fServices = collect($filter['services'])->map(function($item){
                     return (integer)$item;
                 });
+                $innerInsert = "";
                 $query->join('salon_employee_services',function($join) use ($fServices) {
                     $join->on("salon_has_employees.id","=","salon_employee_services.shm_id")
-                        ->whereIn("salon_employee_services.service_id",$fServices);
+                        ->whereIn("salon_employee_services.service_id",$fServices)
+                        ->groupBy(["salon_employee_services.shm_id"]);
+                        /*->groupBy("salon_employee_services.shm_id")
+                        ->havingRaw("COUNT(salon_employee_services.shm_id) = "."2")*/;
+//                        ->havingRaw("count(salon_employee_services.shm_id) = ".$count);
                 });
+                /*$query->groupBy(["salon_employee_services.shm_id"])
+                    ->havingRaw("COUNT(salon_employee_services.shm_id) = ".$count);*/
             }
         }
         $query->where('dismissed','=',0);
+        //dd($query->toSql());
         return $query->get();
     }
 }

@@ -12,14 +12,16 @@ class WidgetEmployeeSchedule
         $times = collect($times)->map(function ($item) {
             return (integer)$item;
         });
-        return ($times[0] * 60) + $times[0];
+        return ($times[0] * 60) + $times[1];
     }
 
     public static function integerToTime($value)
     {
         $HH = (int)$value / 60;
         $mm = $value % 60;
-        return (int)$HH . ":" . (int)$mm;
+        $HH = (int)$HH < 10 ? "0".$HH : (int)$HH;
+        $mm = (int)$mm < 10 ? "0".$mm : (int)$mm;
+        return $HH . ":" . $mm;
     }
 
     public static function newAvailableTime($time, $search, $duration = null)

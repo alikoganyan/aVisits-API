@@ -69,7 +69,7 @@ class WidgetSchedulesController extends Controller
             return response()->json(["data"=>["schedule"=>[],"salon_id"=>$filter['salon_id'],"date"=>$filter['date'],"working_status"=>0]],200);
         }
         $settings = WidgetSettings::select(["w_step_display","w_step_search"])->find($this->chain);
-        $salonScheduleSequenceDef = $this->dropPeriod($salonSchedule->start,$salonSchedule->end,$settings);
+        $salonScheduleSequenceDef = $this->dropPeriod($salonSchedule->start,$salonSchedule->end,$settings->w_step_display);
         foreach ($filters['employees'] as $employee) {
             $salonScheduleSequence = $salonScheduleSequenceDef;
             $durationsSum = SalonEmployeeHasServices::getSumOfDuration($filter['salon_id'],$employee["employee_id"],$employee["services"]);
@@ -109,7 +109,7 @@ class WidgetSchedulesController extends Controller
             }
             $employeeSchedulesArray = $employeeSchedules->toArray();
             $employeeSchedulesArray['working_status'] = $this->getWorkingStatus($employeeSchedulesArray,$filter['date']);
-            if($employeeSchedulesArray['working_status'] !== 1 || count($employeeSchedulesArray['periods']) > 1){
+            if($employeeSchedulesArray['working_status'] !== 1 || count($employeeSchedulesArray['periods']) < 1){
                 $data = [];
                 $data["employee_id"] = $filter["employee_id"];
                 $data["periods"] = [];
@@ -160,14 +160,14 @@ class WidgetSchedulesController extends Controller
         return response()->json(["data"=>["employees"=>$response]],200);
     }
 
-    private function dropPeriod($start,$end,$divider)
+    private function dropPeriod($start,$end,$divider = 15)
     {
         $startInteger = $this->getTimeToInteger($start);
         $end = $this->getTimeToInteger($end);
         $sequence = [];
         while($startInteger <= $end) {
             array_push($sequence,$startInteger);
-            $startInteger += 30;
+            $startInteger += $divider;
         }
         return $sequence;
     }
@@ -196,7 +196,7 @@ class WidgetSchedulesController extends Controller
         $times = collect($times)->map(function($item){
             return (integer)$item;
         });
-        return ($times[0]*60) + $times[0];
+        return ($times[0]*60) + $times[1];
     }
 
     private function getWorkingStatus($employeeSchedule,$date) {
