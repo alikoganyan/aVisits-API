@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class CalendarFilterRequest extends FormRequest
+class EmployeeTimesFilterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,9 +27,9 @@ class CalendarFilterRequest extends FormRequest
     {
         return [
             "salon_id" => "required|exists:salons,id",
-            "employees" => "required|array",
-            "from" => "required|date_format:Y-m-d",
-            "to" => "required|date_format:Y-m-d"
+            "services" => "required|array",
+            "services.*" => "exists:services,id",
+            "date" => "required|date_format:Y-m-d"
         ];
     }
 

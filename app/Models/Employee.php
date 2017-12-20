@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class Employee extends Model
 {
@@ -129,21 +130,19 @@ class Employee extends Model
                 $fServices = collect($filter['services'])->map(function($item){
                     return (integer)$item;
                 });
-                $innerInsert = "";
-                $query->join('salon_employee_services',function($join) use ($fServices) {
+                $query->join('salon_employee_services',function($join) use ($fServices,$count) {
                     $join->on("salon_has_employees.id","=","salon_employee_services.shm_id")
-                        ->whereIn("salon_employee_services.service_id",$fServices)
-                        ->groupBy(["salon_employee_services.shm_id"]);
-                        /*->groupBy("salon_employee_services.shm_id")
-                        ->havingRaw("COUNT(salon_employee_services.shm_id) = "."2")*/;
-//                        ->havingRaw("count(salon_employee_services.shm_id) = ".$count);
+                        ->whereIn("salon_employee_services.id",function($innerQuery) use($fServices,$count){
+                            $innerQuery->select(DB::raw("DISTINCT(Q1.id)"))
+                                ->from("salon_employee_services as Q1")
+                                ->whereIn("Q1.service_id",$fServices)
+                                ->havingRaw("count(Q1.shm_id) = ".$count)
+                                ->groupBy("Q1.shm_id");
+                        });
                 });
-                /*$query->groupBy(["salon_employee_services.shm_id"])
-                    ->havingRaw("COUNT(salon_employee_services.shm_id) = ".$count);*/
             }
         }
         $query->where('dismissed','=',0);
-        //dd($query->toSql());
         return $query->get();
     }
 }

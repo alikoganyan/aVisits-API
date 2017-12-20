@@ -1945,6 +1945,76 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *     }
      */
     Route::post('employees','Widget\WidgetEmployeeController@employees');
+    /**
+     * @api {post} /widget/{chain}/employee_times  Get Employees,Times
+     * @apiName Get employees_times
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Widget
+     *
+     * @apiParam {Number} salon_id The Id of salon
+     * @apiParam {Array}  services The Array of Service's ides
+     * @apiParam {Date} date The day for calculating free working times of Employees. format:Y-m-d, Example: "2017-12-19".
+     *
+     * @apiParamExample {json} Request-Example:
+     *
+     *  {
+     *      "salon_id": 3,
+     *      "services":[1,2],
+     *      "date":"2017-12-20"
+     *  }
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *  {
+     *      "data": {
+     *          "employees": [
+     *              {
+     *                  "id": 2,
+     *                  "first_name": "vvv",
+     *                  "last_name": "cccc",
+     *                  "father_name": "dddd",
+     *                  "photo": "files\\employee\\images\\photo\\abc.jpg",
+     *                  "sex": "male",
+     *                  "birthday": "2017-10-31",
+     *                  "position_id": 1,
+     *                  "public_position": "Parikmaxer",
+     *                  "position": {
+     *                      "id": 1,
+     *                      "title": "PArikmaxer",
+     *                      "description": null
+     *                  },
+     *                  "periods": [
+     *                      "10:00",
+     *                      "10:30",
+     *                      "11:00",
+     *                      "11:30",
+     *                      "12:00",
+     *                      "12:30",
+     *                      "13:00",
+     *                      "13:30",
+     *                      "14:00",
+     *                      "14:30",
+     *                      "15:00",
+     *                      "15:30",
+     *                      "16:00",
+     *                      "16:30"
+     *                  ]
+     *              }
+     *          ]
+     *      }
+     *  }
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     *     {
+     *       "Invalid input"
+     *     }
+     */
+
+    Route::post('employee_times','Widget\WidgetEmployeeController@employee_times');
 
     /**
      * @api {post} /widget/{chain}/services  Get Services
