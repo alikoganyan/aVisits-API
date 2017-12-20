@@ -2106,7 +2106,7 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      */
     Route::post('services','Widget\WidgetServiceController@services');
 
-    Route::post('times_old','Widget\WidgetSchedulesController@freeTimes');
+    Route::post('times_old','Widget\WidgetSchedulesController@freeTimesOld');
     /**
      * @api {post} /widget/{chain}/times Get Times
      * @apiName Get Times
@@ -2174,7 +2174,7 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *       "status":"ERROR"
      *     }
      */
-    Route::post('times','Widget\WidgetSchedulesController@freeTimesTest');
+    Route::post('times','Widget\WidgetSchedulesController@freeTimes');
 
     /**
      * @api {post} /widget/{chain}/client Client: new Client

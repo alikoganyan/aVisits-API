@@ -57,7 +57,7 @@ class WidgetSchedulesController extends Controller
         return response()->json(["data" => ["calendar" => $response]], 200);
     }
 
-    public function freeTimesTest(Request $request)
+    public function freeTimes(Request $request)
     {
         $filters = $request->post();
         if (Carbon::today()->gt(Carbon::parse($filters['date']))) {
@@ -152,7 +152,7 @@ class WidgetSchedulesController extends Controller
         return $response;
     }
 
-    public function freeTimes(Request $request)
+    public function freeTimesOld(Request $request)
     {
         $filters = $request->post();
         if (Carbon::today()->gt(Carbon::parse($filters['date']))) {
