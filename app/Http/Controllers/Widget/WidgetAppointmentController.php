@@ -14,6 +14,8 @@ use Illuminate\Validation\ValidationException;
 use Validator;
 use Illuminate\Support\Facades\DB;
 use App;
+use App\Http\Services\AppointmentService;
+use App\Models\SalonEmployeeHasServices;
 
 class WidgetAppointmentController extends Controller
 {
@@ -35,6 +37,9 @@ class WidgetAppointmentController extends Controller
                 foreach ($postData as $item) {
                     $appointment = new Appointment();
                     $appointment->fill($item);
+                    $durationsSum = SalonEmployeeHasServices::getSumOfDuration($item['salon_id'], $item["employee_id"], $item["services"]);
+                    $end = AppointmentService::calculateEndOfAppointment($item["from_time"],$durationsSum);
+                    $appointment->setAttribute("to_time",$end);
                     if ($appointment->save()) {
                         foreach ($item['services'] as $service) {
                             $appointmentHasService = new AppointmentHasServices();

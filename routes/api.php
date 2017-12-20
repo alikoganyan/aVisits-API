@@ -2331,7 +2331,6 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *      "salon_id":3,
      *      "employee_id":2,
      *      "from_time" : "11:00",
-     *      "to_time":"13:00",
      *      "day" : "2018-12-02",
      *      "client_id":5,
      *      "services":[1,2,3]
