@@ -723,7 +723,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      * @apiGroup Category
      *
      * @apiParam {String} title Title
-     * @apiParam {Integer} parent_id Parent ID
+     * @apiParam {Number} parent_id Parent ID
      *
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200
@@ -752,7 +752,7 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      * @apiGroup Category
      *
      * @apiParam {String} title Title
-     * @apiParam {Integer} parent_id Parent ID
+     * @apiParam {Number} parent_id Parent ID
      *
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200
@@ -963,8 +963,8 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      * @apiParam {String} title The title of new service
      * @apiParam {String} description Description
      * @apiParam {String} duration Duration
-     * @apiParam {integer} available_for_online_recording Available for online recording (0/1)
-     * @apiParam {integer} only_for_online_recording Only for online_recording (0/1)
+     * @apiParam {Number} available_for_online_recording Available for online recording (0/1)
+     * @apiParam {Number} only_for_online_recording Only for online_recording (0/1)
      *
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200
@@ -997,8 +997,8 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      * @apiParam {String} [title] The title of new service
      * @apiParam {String} [description] Description
      * @apiParam {String} [duration] Duration
-     * @apiParam {integer} [available_for_online_recording] Available for online recording (0/1)
-     * @apiParam {integer} [only_for_online_recording] Only for online_recording (0/1)
+     * @apiParam {Number} [available_for_online_recording] Available for online recording (0/1)
+     * @apiParam {Number} [only_for_online_recording] Only for online_recording (0/1)
      *
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200
@@ -1871,7 +1871,7 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *     }
      * @apiGroup Widget
      *
-     * @apiParam {Integer{11}} city The city name for filtering salons
+     * @apiParam {Number{11}} city The city name for filtering salons
      * @apiParam {Array}       [services] The array of services ides
      *
      * @apiParamExample {json} Request-Example:
@@ -2035,14 +2035,18 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *     }
      * @apiGroup Widget
      *
-     * @apiParam {String{255}} salon_id The Id of salon
-     * @apiParam {Array} [employees] The array of Employees Ids
+     * @apiParam {Number{11}}   [salon_id] The Id of salon
+     * @apiParam {Array}        [employees] The array of Employees Ids
+     * @apiParam {Object}       [address] The selected Address
      *
      * @apiParamExample {json} Request-Example:
      *
      * {
      *  "salon_id":1,
-     *  "employees":["2"]
+     *  "address":{
+     *      "city":"Москва"
+     *  },
+     *  "employees":[1,2]
      * }
      *
      * @apiSuccessExample {json} Success-Response:
@@ -2427,7 +2431,7 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *     }
      * @apiGroup Widget
      *
-     * @apiParam {Integer}  salon_id The id of Salon
+     * @apiParam {Number}  salon_id The id of Salon
      * @apiParam {Array}    [employees] The array of employee_id
      * @apiParam {Date}     from format: Y-m-d , Example: 2018-01-03
      * @apiParam {Date}     to format: Y-m-d , Example: 2018-01-31
