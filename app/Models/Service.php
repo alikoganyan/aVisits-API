@@ -89,14 +89,6 @@ class Service extends Model
                         'services.only_for_online_recording'
                     ];
                     $query->select($select);
-                    /*$query->selectRaw("GROUP_CONCAT('{\"id\": ',services.id,','"
-                        .",'\"service_category_id\": ',services.service_category_id,','"
-                        .",'\"title\": ','\"',services.title,'\"',','"
-                        .",'\"duration\": ','\"',services.duration,'\"',','"
-                        .",'\"description\": ','\"',services.description,'\"',','"
-                        .",'\"available_for_online_recording\": ','\"',services.available_for_online_recording,'\"',','"
-                        .",'\"only_for_online_recording\": ','\"',services.only_for_online_recording,'\"',"
-                        ."'}') as services");*/
                     $query->selectRaw("GROUP_CONCAT(DISTINCT CONCAT('{\"id\": ',service_categories.id,',','\"parent_id\": ',COALESCE(service_categories.parent_id,'null'),',','\"title\": ','\"',service_categories.title,'\"','}')) as service_category");
                     $query->distinct();
                     $query->groupBy([
@@ -128,8 +120,6 @@ class Service extends Model
                     });
                     $result = $temp = $query->get();
                     $data = collect($result)->map(function($item){
-                        /*$item->services = rtrim($item->services,",");
-                        $item->services = \GuzzleHttp\json_decode("[".$item->services."]");*/
                         $item->service_category = \GuzzleHttp\json_decode($item->service_category);
                         return $item;
                     });
@@ -201,42 +191,7 @@ class Service extends Model
                                 });
                         });
                     }]);
-                    //dd($query->toSql());
                     $response = ["categories"=>$query->get()];
-//                    dd($query->get()->toArray());
-                    /*$query = self::query();
-                    $select = [
-                        'services.id',
-                        'services.service_category_id',
-                        'services.title',
-                        'services.duration as default_duration',
-                        'services.description',
-                        'services.available_for_online_recording',
-                        'services.only_for_online_recording',
-                    ];
-                    $query->select($select);
-                    $query->distinct();
-                    $query->join('salon_has_services',function($join) use($salonId) {
-                        $join->on('services.id','=','salon_has_services.service_id')
-                            ->where('salon_has_services.salon_id','=',$salonId);
-                    });
-                    $query->with(['service_category'=>function($q){
-                        $q->with('category');
-                    }]);
-                    $data = $temp = $query->get();
-                    $services = [];
-                    foreach ($data as $item) {
-                        if(!array_key_exists($item->service_category->id, $services)) {
-                            $services[$item->service_category->id] = $item->service_category->getAttributes();
-                            $services[$item->service_category->id]['services'] = [];
-                        }
-                        $temp = clone $item;
-                        unset($temp->service_category);
-                        unset($temp->employee_id);
-                        $services[$item->service_category->id]['services'][] = $temp;
-                    };
-                    $services = array_values($services);
-                    $response = ["service_groups"=>$services];*/
                 }
             }
         }

@@ -113,7 +113,7 @@ class WidgetSchedulesController extends Controller
                 $data = [];
                 $data["employee_id"] = $filter["employee_id"];
                 $data["periods"] = [];
-                $response[] = $data;
+                $response["schedule"][] = $data;
                 continue;
             }
             $employeeSchedulesArray = $employeeSchedules->toArray();
@@ -122,7 +122,7 @@ class WidgetSchedulesController extends Controller
                 $data = [];
                 $data["employee_id"] = $filter["employee_id"];
                 $data["periods"] = [];
-                $response[] = $data;
+                $response["schedule"][] = $data;
                 continue;
             }
             foreach ($employeeSchedulesArray['periods'] as $period) {
@@ -145,9 +145,9 @@ class WidgetSchedulesController extends Controller
             $data = [];
             $data["employee_id"] = $filter["employee_id"];
             $data["periods"] = $salonScheduleSequence;
-            $data["working_status"] = 1;
-            $data["date"] = $filters['date'];
-            $response[] = $data;
+            $response["working_status"] = 1;
+            $response["date"] = $filters['date'];
+            $response["schedule"][] = $data;
         }
         return $response;
     }

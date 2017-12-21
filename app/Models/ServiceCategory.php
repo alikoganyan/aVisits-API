@@ -65,8 +65,8 @@ class ServiceCategory extends Model
      */
     public function groups()
     {
-        return $this->hasMany(self::class, 'parent_id', 'id')
-            ->with('services');
+        return $this->hasMany(self::class, 'parent_id', 'id');
+//            ->with('services');
     }
 
     /**

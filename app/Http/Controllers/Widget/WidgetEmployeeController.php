@@ -41,7 +41,7 @@ class WidgetEmployeeController extends Controller
         }
         $schedules = app('App\Http\Controllers\Widget\WidgetSchedulesController')->calculateAvailableTimes($filterForTimes);
         foreach ($employeesToArray as &$employee) {
-            foreach ($schedules as $schedule) {
+            foreach ($schedules["schedule"] as $schedule) {
                 if ($employee['id'] == $schedule["employee_id"]) {
                     $employee["periods"] = $schedule["periods"];
                     continue;
