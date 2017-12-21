@@ -1871,7 +1871,15 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *     }
      * @apiGroup Widget
      *
-     * @apiParam {String{255}} [city] The city name for filtering salons
+     * @apiParam {Integer{11}} city The city name for filtering salons
+     * @apiParam {Array}       [services] The array of services ides
+     *
+     * @apiParamExample {json} Request-Example:
+     *
+     *  {
+     *      "city": "Москва",
+     *      "services": [1,2]
+     *  }
      *
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200
@@ -1960,16 +1968,18 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *
      * @apiParamExample {json} Request-Example:
      *
-     *  {
-     *      "salon_id": 3,
-     *      "services":[1,2],
-     *      "date":"2017-12-20"
-     *  }
+     *  [
+     *      {
+     *          "salon_id": 3,
+     *          "services":[1,2],
+     *          "date":"2017-12-20"
+     *      }
+     *  ]
      *
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200
      *  {
-     *      "data": {
+     *      "data": [{
      *          "employees": [
      *              {
      *                  "id": 2,
@@ -2004,7 +2014,7 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *                  ]
      *              }
      *          ]
-     *      }
+     *      }]
      *  }
      *
      * @apiErrorExample {json} Error-Response:

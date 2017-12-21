@@ -114,7 +114,14 @@ class Salon extends Model
                 $query->where('city', '=', $filter['city']);
             }
             if (isset($filter['services']) && count($filter['services']) > 0) {
-                $query->whereIn(DB::select());
+                $services = $filter['services'];
+                $query->whereIn("id", function ($salons) use($services) {
+                    $salons->from("salon_has_services as shs")
+                        ->select("shs.salon_id")
+                        ->whereIn("shs.service_id",$services)
+                        ->havingRaw("count(shs.service_id) = " . count($services))
+                        ->groupBy("shs.salon_id");
+                });
             }
         }
         return $query->get();
