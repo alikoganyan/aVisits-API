@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class Salon extends Model
 {
@@ -12,7 +13,7 @@ class Salon extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'img', 'country', 'city', 'address', 'street_number', 'latitude', 'longitude', 'current_time', 'user_id', 'chain_id','notify_about_appointments'
+        'title', 'img', 'country', 'city', 'address', 'street_number', 'latitude', 'longitude', 'current_time', 'user_id', 'chain_id', 'notify_about_appointments'
     ];
 
     public static function def_notifications_about_appointments($key = null)
@@ -33,6 +34,7 @@ class Salon extends Model
         }
         return $notifications;
     }
+
     /**
      * Get salon by id
      *
@@ -47,7 +49,7 @@ class Salon extends Model
 
     public static function getAll()
     {
-        return self::orderBy('id','desc')->get();
+        return self::orderBy('id', 'desc')->get();
     }
 
     /**
@@ -56,26 +58,31 @@ class Salon extends Model
      * @param $chainId
      * @return mixed
      */
-    public static function getByChainId($chainId) {
-        $salons = self::where('chain_id',$chainId)->get();
+    public static function getByChainId($chainId)
+    {
+        $salons = self::where('chain_id', $chainId)->get();
         return $salons;
     }
 
-    public function getImgAttribute($value) {
+    public function getImgAttribute($value)
+    {
         $ds = DIRECTORY_SEPARATOR;
-        return 'files'.$ds.'salons'.$ds.'images'.$ds.'main'.$ds.$value;
+        return 'files' . $ds . 'salons' . $ds . 'images' . $ds . 'main' . $ds . $value;
     }
 
-    public function getLatitudeAttribute($value) {
+    public function getLatitudeAttribute($value)
+    {
         return (float)$value;
     }
 
-    public function getLongitudeAttribute($value) {
+    public function getLongitudeAttribute($value)
+    {
         return (float)$value;
     }
 
-    public function getNotifyAboutAppointmentsAttribute($value) {
-        return explode(',',$value);
+    public function getNotifyAboutAppointmentsAttribute($value)
+    {
+        return explode(',', $value);
     }
 
     /**
@@ -88,21 +95,26 @@ class Salon extends Model
         return $this->hasMany('App\Models\SalonSchedule', 'salon_id', 'id');
     }
 
-    public static function salonsCities($chain) {
+    public static function salonsCities($chain)
+    {
         return self::select(['city'])
             ->distinct()
-            ->where(['chain_id'=>$chain])
-            ->orderBy('city','asc')
+            ->where(['chain_id' => $chain])
+            ->orderBy('city', 'asc')
             ->get();
     }
 
-    public static function salons($chain,$filter = null){
+    public static function salons($chain, $filter = null)
+    {
         $query = self::query();
-        $query->select(['id','title','img','country','city','address','street_number','latitude','longitude']);
-        $query->where('chain_id','=',$chain);
-        if($filter !== null){
-            if(isset($filter['city']) && !empty($filter['city'])){
-                $query->where('city','=',$filter['city']);
+        $query->select(['id', 'title', 'img', 'country', 'city', 'address', 'street_number', 'latitude', 'longitude']);
+        $query->where('chain_id', '=', $chain);
+        if ($filter !== null) {
+            if (isset($filter['city']) && !empty($filter['city'])) {
+                $query->where('city', '=', $filter['city']);
+            }
+            if (isset($filter['services']) && count($filter['services']) > 0) {
+                $query->whereIn(DB::select());
             }
         }
         return $query->get();
