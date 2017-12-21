@@ -21,12 +21,20 @@ class WidgetServiceController extends Controller
             $services = Service::getServices($this->chain, $filter);
         }
         else{
-            $services = ServiceCategory::where(["chain_id"=>$this->chain])
+            $services = ServiceCategory::select(["service_categories.id","service_categories.title"])
+                ->distinct()
+                ->where(["service_categories.chain_id"=>$this->chain])
+                ->join("service_categories as SG",function($join){
+                    $join->on("service_categories.id","=","SG.parent_id");
+                })
                 ->with(['groups'=>function($groups){
-                    $groups->with('services');
+                    $groups->select(["id","parent_id","title"])
+                        ->with(['services'=>function($service){
+                            $service->select(["id","service_category_id","title","description","duration"]);
+                        }]);
                 }])
                 ->get();
-            dd($services->toArray());
+            $services = ["categories"=>$services];
         }
         return response()->json(['data' => $services], 200);
     }

@@ -29,7 +29,6 @@ class AppointmentStoreRequest extends FormRequest
             "salon_id"=>"required|exists:salons,id",
             "employee_id"=>"required|exists:employees,id",
             "from_time"=>"required|date_format:H:i",
-            "to_time"=>"required|date_format:H:i",
             "day"=>"required|date_format:Y-m-d",
             "client_id"=>"required|exists:clients,id",
             "services"=>"required:array|min:1"
