@@ -2418,7 +2418,7 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      * @apiGroup Widget
      *
      * @apiParam {Integer}  salon_id The id of Salon
-     * @apiParam {Array}    employees The array of employee_id
+     * @apiParam {Array}    [employees] The array of employee_id
      * @apiParam {Date}     from format: Y-m-d , Example: 2018-01-03
      * @apiParam {Date}     to format: Y-m-d , Example: 2018-01-31
      *
@@ -2433,15 +2433,6 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200
-     *
-     * {
-     *      "status": "OK",
-     *      "message": "The appointment have been successfully "
-     * }
-     *
-     *
-     * @apiErrorExample {json} Error-Response:
-     *     HTTP/1.1 400
      *
      *  {
      *      "calendar": [
@@ -2467,6 +2458,11 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *          }
      *      ]
      *  }
+     *
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     *
      */
     Route::post('employee_calendar','Widget\WidgetSchedulesController@employeeCalendar');
 });

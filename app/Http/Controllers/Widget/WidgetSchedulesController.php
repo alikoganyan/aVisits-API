@@ -38,7 +38,7 @@ class WidgetSchedulesController extends Controller
             $item = ["date" => $date, "working_status" => 0];
             $filter['date'] = $date;
             $salon_schedule_status = SalonSchedule::getStatusByDate($filter['salon_id'], $date);
-            if ($salon_schedule_status === 1) {
+            if ($salon_schedule_status === 1 && (isset($filters['employees']) && count($filters['employees']) >= 1)) {
                 foreach ($filters['employees'] as $employee) {
                     $filter['employee_id'] = $employee;
                     $employee_schedule = $this->status($filter);
@@ -51,6 +51,8 @@ class WidgetSchedulesController extends Controller
                         break;
                     }
                 }
+            }else{
+                $item['working_status'] = $salon_schedule_status;
             }
             array_push($response, $item);
         }

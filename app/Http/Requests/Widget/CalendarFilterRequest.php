@@ -27,7 +27,7 @@ class CalendarFilterRequest extends FormRequest
     {
         return [
             "salon_id" => "required|exists:salons,id",
-            "employees" => "required|array",
+            "employees" => "array",
             "from" => "required|date_format:Y-m-d",
             "to" => "required|date_format:Y-m-d"
         ];
