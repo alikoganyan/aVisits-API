@@ -1871,18 +1871,30 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *     }
      * @apiGroup Widget
      *
-     * @apiParam {Number{11}} city The city name for filtering salons
-     * @apiParam {Array}       [services] The array of services ides
+     * @apiParam {Number{11}}   city The city name for filtering salons
+     * @apiParam {Array}        [services] The array of services ides
+     * @apiParam {Array}        [employees] The array objects like : {"employee_id" : 2,"services" : [1,2]}
      *
      * @apiParamExample {json} Request-Example:
      *
      *  {
      *      "city": "Москва",
-     *      "services": [1,2]
+     *      "services": [1,2].
+     *      "employees": [
+     *          {
+     *              "employee_id" : 2,
+     *              "services" : [1,2]
+     *          },
+     *          {
+     *              "employee_id" : 3,
+     *              "services":[1]
+     *          }
+     *      ]
      *  }
      *
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200
+     * When choosing of the salon precedes choosing of the employee
      *     "salons": [
      *          {
      *              "id": 2,
@@ -1896,6 +1908,27 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *              "longitude": "0.00000000"
      *          }
      *      ]
+     *
+     * When choosing of the employee precedes choosing of the salon
+     *  [
+     *      {
+     *          "city": "Москва",
+     *          "employee_id": 2,
+     *          "salons": [
+     *              {
+     *                  "id": 3,
+     *                  "title": "string",
+     *                  "img": "files\\salons\\images\\main\\Z1zwdZs0rLQ8H20d.png",
+     *                  "country": "Россия",
+     *                  "city": "Москва",
+     *                  "address": "string",
+     *                  "street_number": "string",
+     *                  "latitude": 0,
+     *                  "longitude": 0
+     *              }
+     *          ]
+     *      }
+     *  ]
      *
      * @apiErrorExample {json} Error-Response:
      *     HTTP/1.1 400

@@ -23,8 +23,24 @@ class WidgetSalonController extends Controller
     }
 
     public function salons(Request $request) {
-        $filter = $request->post();
-        $salons = Salon::salons($this->chain,$filter);
-        return response()->json(['data' => ['salons'=>$salons]], 200);
+        $filters = $request->post();
+        $response = [];
+        $filter["city"] = $filters["city"];
+        if(isset($filters["employees"]) && !empty($filters["employees"])){
+            foreach ($filters["employees"] as $employee){
+                $filter["employee_id"] = $employee["employee_id"];
+                if(isset($employee["services"]) && !empty($employee["services"])){
+                    $filter["services"] = $employee["services"];
+                }
+                $salons = Salon::salons($this->chain,$filter);
+                $res = $filter;
+                $res["salons"] = $salons;
+                $response[] = $res;
+            }
+        }else{
+            $salons = Salon::salons($this->chain,$filters);
+            $response["salons"] = $salons;
+        }
+        return response()->json(['data' => $response], 200);
     }
 }

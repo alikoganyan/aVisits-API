@@ -113,7 +113,7 @@ class Salon extends Model
             if (isset($filter['city']) && !empty($filter['city'])) {
                 $query->where('city', '=', $filter['city']);
             }
-            if (isset($filter['services']) && count($filter['services']) > 0) {
+            if ((isset($filter['services']) && count($filter['services']) > 0) && ( !isset($filter['employee_id']) || count($filter['employee_id']) <= 0)) {
                 $services = $filter['services'];
                 $query->whereIn("id", function ($salons) use($services) {
                     $salons->from("salon_has_services as shs")
@@ -122,6 +122,23 @@ class Salon extends Model
                         ->havingRaw("count(shs.service_id) = " . count($services))
                         ->groupBy("shs.salon_id");
                 });
+            }
+            if((isset($filter['employee_id']) && count($filter['employee_id']) > 0)){
+                $query->whereIn("id",function($subQuery) use($filter){
+                    $subQuery->select("A.salon_id")
+                        ->distinct()
+                        ->from("salon_has_employees as A")
+                        ->where("A.employee_id",$filter["employee_id"]);
+                        if((isset($filter['services']) && count($filter['services']) > 0)){
+                            $subQuery->join("salon_employee_services as B",function($join){
+                                $join->on("A.id","=","B.shm_id");
+                            })
+                                ->whereIn("B.service_id",$filter["services"])
+                                ->groupBy("B.shm_id")
+                                ->havingRaw("count(B.service_id) = " . count($filter["services"]));
+                        }
+                });
+                //dd($query->toSql());
             }
         }
         return $query->get();

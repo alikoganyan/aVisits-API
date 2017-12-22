@@ -49,7 +49,7 @@ class WidgetEmployeeController extends Controller
                     }
                 }
             }
-            array_push($response,['employees' => $employeesToArray, "date" => $filters['date'], "working_status" => 1]);
+            array_push($response,['employees' => $employeesToArray, "date" => $filters['date'], "working_status" => 1, "services"=>$filters["services"]]);
         }
         return response()->json(['data' => $response], 200);
     }

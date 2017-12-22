@@ -17,25 +17,7 @@ class WidgetServiceController extends Controller
     public function services(Request $request)
     {
         $filter = $request->post();
-        if(isset($filter['salon_id']) && !empty($filter['salon_id'])){
-            $services = Service::getServices($this->chain, $filter);
-        }
-        else{
-            $services = ServiceCategory::getCategoriesWithServices($this->chain,$filter);
-            $services = $services->toArray();
-            /*remove the objects which have not any service*/
-            foreach ($services as $cKey=>&$category) {
-                foreach ($category["groups"] as $gKey=>$group) {
-                    if(count($group["services"]) <= 0 ){
-                        unset($category["groups"][$gKey]);
-                    }
-                }
-                if(count($category["groups"]) <= 0 ){
-                    unset($services[$cKey]);
-                }
-            }
-            $services = ["categories"=>$services];
-        }
+        $services = Service::getServices($this->chain, $filter);
         return response()->json(['data' => $services], 200);
     }
 }

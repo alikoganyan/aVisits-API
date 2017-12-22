@@ -72,105 +72,109 @@ class Service extends Model
         $data = [];
         $response = [];
         if($filter !== null) {
-            if(isset($filter['salon_id'])) {
-                $salonId = $filter['salon_id'];
-                if(isset($filter['employees']) && count($filter['employees'])) {
-                    $query = Employee::query();
-                    $select = [
-                        'salon_has_employees.employee_id',
-                        'salon_employee_services.price',
-                        'salon_employee_services.duration',
-                        'services.id',
-                        'services.service_category_id',
-                        'services.title',
-                        'services.duration as default_duration',
-                        'services.description',
-                        'services.available_for_online_recording',
-                        'services.only_for_online_recording'
-                    ];
-                    $query->select($select);
-                    $query->selectRaw("GROUP_CONCAT(DISTINCT CONCAT('{\"id\": ',service_categories.id,',','\"parent_id\": ',COALESCE(service_categories.parent_id,'null'),',','\"title\": ','\"',service_categories.title,'\"','}')) as service_category");
-                    $query->distinct();
-                    $query->groupBy([
-                        'salon_has_employees.employee_id',
-                        'salon_employee_services.price',
-                        'salon_employee_services.duration',
-                        'services.id',
-                        'services.service_category_id',
-                        'services.title',
-                        'default_duration',
-                        'services.description',
-                        'services.available_for_online_recording',
-                        'services.only_for_online_recording'
-                    ]);
-                    $employees = $filter['employees'];
-                    $query->join('salon_has_employees', function ($join) use($salonId,$employees) {
-                        $join->on('employees.id', '=', 'salon_has_employees.employee_id')
-                            ->where('salon_has_employees.salon_id', '=', $salonId)
-                            ->whereIn('employee_id',$employees);
-                    });
-                    $query->join('salon_employee_services',function($join) {
-                        $join->on('salon_has_employees.id','=','salon_employee_services.shm_id');
-                    });
-                    $query->join('services',function($join) {
-                        $join->on('services.id','=','salon_employee_services.service_id');
-                    });
-                    $query->join('service_categories',function($join) {
-                        $join->on('services.service_category_id','=','service_categories.id');
-                    });
-                    $result = $temp = $query->get();
-                    $data = collect($result)->map(function($item){
-                        $item->service_category = \GuzzleHttp\json_decode($item->service_category);
-                        return $item;
-                    });
-                    $employees = [];
-                    foreach ($data as $item) {
-                        if(!array_key_exists($item->employee_id,$employees)) {
-                            $employees[$item->employee_id] = [
-                                "employee_id" => $item->employee_id,
-                                "service_groups" => []
-                            ];
+            $salonId = isset($filter['salon_id']) ? $filter['salon_id']: null;
+            if(isset($filter['employees']) && count($filter['employees'])) {
+                $query = Employee::query();
+                $select = [
+                    'salon_has_employees.employee_id',
+                    'salon_employee_services.price',
+                    'salon_employee_services.duration',
+                    'services.id',
+                    'services.service_category_id',
+                    'services.title',
+                    'services.duration as default_duration',
+                    'services.description',
+                    'services.available_for_online_recording',
+                    'services.only_for_online_recording'
+                ];
+                $query->select($select);
+                $query->selectRaw("GROUP_CONCAT(DISTINCT CONCAT('{\"id\": ',service_categories.id,',','\"parent_id\": ',COALESCE(service_categories.parent_id,'null'),',','\"title\": ','\"',service_categories.title,'\"','}')) as service_category");
+                $query->distinct();
+                $query->groupBy([
+                    'salon_has_employees.employee_id',
+                    'salon_employee_services.price',
+                    'salon_employee_services.duration',
+                    'services.id',
+                    'services.service_category_id',
+                    'services.title',
+                    'default_duration',
+                    'services.description',
+                    'services.available_for_online_recording',
+                    'services.only_for_online_recording'
+                ]);
+                $employees = $filter['employees'];
+                $query->join('salon_has_employees', function ($join) use($salonId,$employees) {
+                    $join->on('employees.id', '=', 'salon_has_employees.employee_id');
+                        if($salonId){
+                            $join->where('salon_has_employees.salon_id', '=', $salonId);
                         }
-                        if(!array_key_exists($item->service_category->id,$employees[$item->employee_id]['service_groups'])){
-                            $employees[$item->employee_id]['service_groups'][$item->service_category->id] = $item->service_category;
-                            $employees[$item->employee_id]['service_groups'][$item->service_category->id]->services = [];
-                        }
-                        $temp = clone $item;
-                        unset($temp->service_category);
-                        unset($temp->employee_id);
-                        $tempServiceModel = new Service($temp->toArray());
-                        $temp['min_max_prices'] = $tempServiceModel->minMaxPrices()
-                            ->first();
-                        array_push($employees[$item->employee_id]['service_groups'][$item->service_category->id]->services,$temp);
-                    };
-                    $employees = array_values($employees);
-                    foreach ($employees as &$e) {
-                        $e['service_groups'] = array_values($e['service_groups']);
+                    $join->whereIn('employee_id',$employees);
+                });
+                $query->join('salon_employee_services',function($join) {
+                    $join->on('salon_has_employees.id','=','salon_employee_services.shm_id');
+                });
+                $query->join('services',function($join) {
+                    $join->on('services.id','=','salon_employee_services.service_id');
+                });
+                $query->join('service_categories',function($join) {
+                    $join->on('services.service_category_id','=','service_categories.id');
+                });
+                $result = $temp = $query->get();
+                $data = collect($result)->map(function($item){
+                    $item->service_category = \GuzzleHttp\json_decode($item->service_category);
+                    return $item;
+                });
+                $employees = [];
+                foreach ($data as $item) {
+                    if(!array_key_exists($item->employee_id,$employees)) {
+                        $employees[$item->employee_id] = [
+                            "employee_id" => $item->employee_id,
+                            "service_groups" => []
+                        ];
                     }
-                    $response['employees'] = $employees;
+                    if(!array_key_exists($item->service_category->id,$employees[$item->employee_id]['service_groups'])){
+                        $employees[$item->employee_id]['service_groups'][$item->service_category->id] = $item->service_category;
+                        $employees[$item->employee_id]['service_groups'][$item->service_category->id]->services = [];
+                    }
+                    $temp = clone $item;
+                    unset($temp->service_category);
+                    unset($temp->employee_id);
+                    $tempServiceModel = new Service($temp->toArray());
+                    $temp['min_max_prices'] = $tempServiceModel->minMaxPrices()
+                        ->first();
+                    array_push($employees[$item->employee_id]['service_groups'][$item->service_category->id]->services,$temp);
+                };
+                $employees = array_values($employees);
+                foreach ($employees as &$e) {
+                    $e['service_groups'] = array_values($e['service_groups']);
                 }
-                else {
-                    $query = ServiceCategory::query()->from("service_categories as Q1")
-                        ->select([
+                $response['employees'] = $employees;
+            }
+            else {
+                $query = ServiceCategory::query()->from("service_categories as Q1")
+                    ->select([
                         'Q1.id',
                         'Q1.parent_id',
                         'Q1.title'
                     ]);
-                    $query->distinct();
-                    $query->whereNull('Q1.parent_id');
-                    $query->where(['Q1.chain_id'=>$chain_id]);
-                    $query->join('service_categories as Q2', function ($join) use($chain_id) {
-                        $join->on('Q2.parent_id','=','Q1.id');
-                    });
-                    $query->join('services', function ($join) use($chain_id) {
-                        $join->on('Q2.id','=','services.service_category_id')->whereNotNull("Q2.parent_id");
-                    });
-                    $query->join('salon_has_services as SHS', function ($join) use($salonId) {
-                        $join->on('SHS.service_id','=','services.id')->where(["salon_id"=>$salonId]);
-                    });
-                    $query->with(['groups'=>function($g) use($salonId) {
-                        $g->select(["id","parent_id","title"])
-                            ->with(['services'=>function($s) use($salonId) {
+                $query->distinct();
+                $query->whereNull('Q1.parent_id');
+                $query->where(['Q1.chain_id'=>$chain_id]);
+                $query->join('service_categories as Q2', function ($join) use($chain_id) {
+                    $join->on('Q2.parent_id','=','Q1.id');
+                });
+                $query->join('services', function ($join) use($chain_id) {
+                    $join->on('Q2.id','=','services.service_category_id')->whereNotNull("Q2.parent_id");
+                });
+                $query->join('salon_has_services as SHS', function ($join) use($salonId) {
+                    $join->on('SHS.service_id','=','services.id');
+                        if($salonId){
+                           $join->where(["salon_id"=>$salonId]);
+                        }
+                });
+                $query->with(['groups'=>function($g) use($salonId) {
+                    $g->select(["id","parent_id","title"])
+                        ->with(['services'=>function($s) use($salonId) {
                             $s->select(['services.id',
                                 'services.service_category_id',
                                 'services.title',
@@ -180,19 +184,26 @@ class Service extends Model
                                 'services.only_for_online_recording'])
                                 ->with("minMaxPrices")
                                 ->join('salon_has_services as SHS2', function ($join) use($salonId) {
-                                $join->on('SHS2.service_id','=','services.id')->where(["salon_id"=>$salonId]);
-                            });
+                                    $join->on('SHS2.service_id','=','services.id');
+                                        if($salonId){
+                                            $join->where(["salon_id"=>$salonId]);
+                                        }
+                                });
                         }])->whereIn("service_categories.id",function($subQ) use($salonId){
                             $subQ->select("service_category_id")
                                 ->from("services as S1")
                                 ->join('salon_has_services as SHS2', function ($join) use($salonId) {
-                                    $join->on('S1.id','=','SHS2.service_id')
-                                        ->where(['salon_id'=>$salonId]);
+                                    $join->on('S1.id','=','SHS2.service_id');
+                                    if($salonId){
+                                        $join->where(['salon_id'=>$salonId]);
+                                    }
                                 });
                         });
-                    }]);
-                    $response = ["categories"=>$query->get()];
-                }
+                }]);
+                $response = ["categories"=>$query->get()];
+            }
+            if(isset($filter['salon_id'])) {
+
             }
         }
         return $response;
