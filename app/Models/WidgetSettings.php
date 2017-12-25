@@ -67,7 +67,21 @@ class WidgetSettings extends Model
             "employee,address,service,time" => "Сотрудники -> Адрес -> Услуги -> Время",
         ];
     }
-
+    public static function getDefaultSettings() {
+        return [
+            "w_color"=>"#ff7f00",
+            "w_group_by_category"=>1,
+            "w_show_any_employee"=>0,
+            "w_step_display"=>15,
+            "w_step_search"=>0,
+            "w_let_check_steps"=>1,
+            "w_steps_g"=>"address,employee,service,time",
+            "w_steps_service"=>"address,service,employee_time",
+            "w_steps_employee"=>"address,employee,service,time",
+            "w_contact_step"=>"at_the_end",
+            "w_to_group_category"=>1
+        ];
+    }
     public function getWStepsGAttribute($value)
     {
         return explode(',',$value);

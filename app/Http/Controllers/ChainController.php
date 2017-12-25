@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Chain\ChainStoreRequest;
 use App\Http\Requests\Chain\ChainUpdateRequest;
 use App\Models\ChainPriceLevel;
+use App\Models\WidgetSettings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Chain;
@@ -28,6 +29,7 @@ Class ChainController extends Controller
                 $chain->img = $file['fileName'];
             }
         }*/
+        $this->setDefaultSettingsForWidget($chain);
         if ($chain->save()) {
             if($request->input('levels')){
                 foreach ($request->input('levels') as $key => $value) {
@@ -109,6 +111,7 @@ Class ChainController extends Controller
         $chain = new Chain();
         $chain->fill(["title" => "Сеть 1", "user_id" => Auth::id()]);
         $chain->user_id = Auth::id();
+        $this->setDefaultSettingsForWidget($chain);
         if ($chain->save()) {
             return $chain;
         }
@@ -138,5 +141,12 @@ Class ChainController extends Controller
             return response()->json(["data"=>"","status"=>"ERROR","message"=>"File upload failed!"],400);
         }
 
+    }
+
+    private function setDefaultSettingsForWidget($model){
+        $defSettings = WidgetSettings::getDefaultSettings();
+        foreach ($defSettings as $key=>$item) {
+            $model->setAttribute($key,$item);
+        }
     }
 }
