@@ -29,7 +29,6 @@ class Chain extends Model
         'w_steps_service',
         'w_steps_employee',
         'w_contact_step',
-        'w_to_group_category',
         'user_id'
     ];
     protected $appends = ['salonsCount'];

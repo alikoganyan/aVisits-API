@@ -20,7 +20,6 @@ class AddFieldsToChainForWigdget extends Migration
             $table->string('w_steps_service',255)->nullable()->after('w_steps_g');
             $table->string('w_steps_employee',255)->nullable()->after('w_steps_service');
             $table->enum('w_contact_step',['at_first','after_address','at_the_end'])->nullable()->after('w_steps_employee');
-            $table->tinyInteger('w_to_group_category',false,true)->nullable()->after('w_contact_step');
         });
     }
 

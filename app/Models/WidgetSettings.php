@@ -10,6 +10,8 @@ class WidgetSettings extends Model
 
     protected $fillable = [
         'id',
+        'img',
+        'phone_number',
         'w_color',
         'w_group_by_category',
         'w_show_any_employee',
@@ -20,13 +22,12 @@ class WidgetSettings extends Model
         'w_steps_service',
         'w_steps_employee',
         'w_contact_step',
-        'w_to_group_category'
+        'w_contact_step',
+        'w_notification_text'
     ];
 
     protected $hidden = [
         "title",
-        "img",
-        "phone_number",
         "user_id",
         "created_at",
         "updated_at",
@@ -67,6 +68,15 @@ class WidgetSettings extends Model
             "employee,address,service,time" => "Сотрудники -> Адрес -> Услуги -> Время",
         ];
     }
+
+    public static function getContactSteps() {
+        return [
+            "at_first"=>"В начале",
+            "after_address"=>"После выбора адреса",
+            "at_the_end"=>"В конце"
+        ];
+
+    }
     public static function getDefaultSettings() {
         return [
             "w_color"=>"#ff7f00",
@@ -79,21 +89,47 @@ class WidgetSettings extends Model
             "w_steps_service"=>"address,service,employee_time",
             "w_steps_employee"=>"address,employee,service,time",
             "w_contact_step"=>"at_the_end",
-            "w_to_group_category"=>1
+            "w_notification_text"=>""
         ];
     }
+
+    /**
+     * @param $value
+     * @return array
+     */
     public function getWStepsGAttribute($value)
     {
         return explode(',',$value);
     }
 
+    /**
+     * @param $value
+     * @return array
+     */
     public function getWStepsServiceAttribute($value)
     {
         return explode(',',$value);
     }
 
+    /**
+     * @param $value
+     * @return array
+     */
     public function getWStepsEmployeeAttribute($value)
     {
         return explode(',',$value);
+    }
+
+    /**
+     * @param $value
+     * @return string
+     *
+     */
+    public function getImgAttribute($value) {
+        if(!$value){
+            return null;
+        }
+        $ds = DIRECTORY_SEPARATOR;
+        return 'files'.$ds.'chains'.$ds.'images'.$ds.'main'.$ds.$value;
     }
 }

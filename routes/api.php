@@ -1816,6 +1816,86 @@ Route::group(['middleware' => ['auth.jwt', 'own.chain'], 'prefix' => '{chain}'],
      *     }
      */
     Route::put('employee-salon', 'EmployeeSalonController@edit');
+
+    /**
+     * @api {put} /{chain}/widget?token=:token Edit the Widget of Chain
+     * @apiName Edit the Widget of Chain
+     * @apiHeaderExample {json} Header-Example:
+     *     {
+     *       "Content-Type": "Application/json"
+     *     }
+     * @apiGroup Widget Settings
+     *
+     *
+     * @apiParam {String} w_color Styling color
+     * @apiParam {Number} w_group_by_category Group services within categories of the first level.  (1/0)
+     * @apiParam {Number} w_show_any_employee Show the option “any employee” when selecting employees.  (1/0)
+     * @apiParam {Number} w_step_display Step of outputting a session
+     * @apiParam {Number} w_step_search Step for searching for sessions
+     * @apiParam {Number} w_let_check_steps Give the client a choice: start with a choice of employees or services.
+     * @apiParam {String} w_steps_g Way
+     * @apiParam {String} w_steps_service Way (first service)
+     * @apiParam {String} w_steps_employee Way (first employee)
+     * @apiParam {String} w_contact_step Position of step "contacts"
+     * @apiParam {String} w_notification_text Notification text
+     *
+     * @apiParamExample {json} Request-Example:
+     *
+     *  {
+     *      "w_color": "#ff7f77",
+     *      "w_group_by_category": 1,
+     *      "w_show_any_employee": 0,
+     *      "w_step_display": 15,
+     *      "w_step_search": 0,
+     *      "w_let_check_steps": 1,
+     *      "w_steps_g": "address,employee,service,time",
+     *      "w_steps_service": "address,service,employee_time",
+     *      "w_steps_employee": "address,employee,service,time",
+     *      "w_contact_step": "at_the_end",
+     *      "w_notification_text":"Any text her"
+     *  }
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200
+     *  {
+     *      "settings": {
+     *          "id": 3,
+     *          "img": "files\\chains\\images\\main\\777_1512647742_07f6911d5242b0774dfb15fe1cab99db.png",
+     *          "phone_number": "+79998887777",
+     *          "w_color": "#ff7f77",
+     *          "w_group_by_category": 1,
+     *          "w_show_any_employee": 0,
+     *          "w_step_display": 15,
+     *          "w_step_search": 0,
+     *          "w_let_check_steps": 1,
+     *          "w_steps_g": [
+     *              "address",
+     *              "employee",
+     *              "service",
+     *              "time"
+     *          ],
+     *          "w_steps_service": [
+     *              "address",
+     *              "service",
+     *              "employee_time"
+     *          ],
+     *          "w_steps_employee": [
+     *              "address",
+     *              "employee",
+     *              "service",
+     *              "time"
+     *          ],
+     *          "w_contact_step": "at_the_end",
+     *          "w_notification_text": ""
+     *      }
+     *  }
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400
+     *     {
+     *       "Invalid input"
+     *     }
+     */
     Route::put('widget','WidgetController@update');
 });
 
@@ -2422,6 +2502,8 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *  {
      *      "settings": {
      *          "id": 3,
+     *          "img": "files\\chains\\images\\main\\777_1512647742_07f6911d5242b0774dfb15fe1cab99db.png",
+     *          "phone_number": "+79998887777",
      *          "w_color": "#78978",
      *          "w_group_by_category": 0,
      *          "w_show_any_employee": 0,
@@ -2440,7 +2522,7 @@ Route::group(['prefix' => 'widget/{chain}'], function () {
      *              "time"
      *          ],
      *          "w_contact_step": "at_the_end",
-     *          "w_to_group_category": 0
+     *          "w_notification_text": "Any text here"
      *      }
      *  }
      *
